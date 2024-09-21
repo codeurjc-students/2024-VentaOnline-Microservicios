@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Avenue Fashion</title>
+</head>
+
+<body>
+    <!-- Barra de navegación -->
+    <header>
+        <nav class="navbar-top">
+            <ul class="navbar-top-ul">
+                <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Registro</a>-->
+                </li>
+                <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Iniciar sesión</a>-->
+                </li>
+                <li class="navbar-top-item">
+                    <a href="/shopping_cart" class="navbar-top-links">
+                        <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
+                        <!-- <i class="zmdi zmdi-chevron-down"></i> -->
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar">
+            <!--<header class="nabvar-mobile is-size-5-mobile">
+                <a class="navbar-mobile-link has-text-white" href="#" id="btn-mobile"><i class="zmdi zmdi-menu"></i></a>
+                <a class="navbar-mobile-link has-text-white" href="index.html">Avenue Fashion</a>
+                <a class="navbar-mobile-link has-text-white" href="#"><i class="zmdi zmdi-shopping-cart"></i> Vacio</a>
+            </header>-->
+            <nav class="nav-menu" id="mySidenav">
+                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
+                <ul class="nav-menu-ul">
+                    {{#logged}}
+                    <div class="user-img">
+                        <a href="/login"><img src=/databases/user/{{iD}}/image alt=""></img></a>
+                    </div>
+                    {{/logged}}
+                    {{^logged}}
+                    <div class="user-img">
+                        <img src="/databases/user/39/image" alt="" width="50" height="50"></img>
+                    </div>   
+                    <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
+                    <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
+                    {{/logged}}
+                </ul>
+                <form>
+                    <div>
+                        <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
+                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>
+                        <input class="submit" type="button" value="search"/>
+                    </div>
+                </form>
+                <!--items listing-->     
+            </nav>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-cover">
+        <div class="banner-container ">
+            <h1 class="title-cover">AVE</h1>
+        </div>
+    </div>
+
+    <!-- Sección de fotografías -->
+    <div class="container">
+
+        <!--item searching-->
+        <div class="topbar-filter fw">
+			<p id="total-item-founded"></p>
+		</div>
+        <!--items listing founded-->
+        <div class="columns is-mobile is-multiline" id="itemFoundedListing">
+            <!--items info founded-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="items-founded-pagination">               
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                        </ul>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+
+        <div class="topbar-filter fw">
+			<p id="total-item"></p>
+		</div>
+        <!--items listing-->
+        <div class="columns is-mobile is-multiline" id="itemListing">
+            <!--items info-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="pagination">               
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--pagination-->
+    
+<!--spinner-->    
+    <div id="spinner-div" class="pt-5">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+    </div>
+
+    <div id="plotlyChart" width="400" height="150"></div>
+
+    <footer class="footer">     
+        <div class="footer-bar-top">
+            <li class="footer-bar-top-links">2024 Avenue Fashion</li>
+        </div>
+    </footer>
+    <script src="/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+</body>
+<script>
+    var tam=10;
+    var tam1;
+
+    let ruta='//localhost:8444/databases/items?size='+tam;
+
+    function loadInitItems(callback,tam){
+        $.ajax({
+            url:ruta
+        }).done(function (items){
+            
+            callback(items);
+        }) 
+    }
+
+    function showItemLoaded(item){
+        $('#itemListing').append(
+            '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
+            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
+            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+        )
+    }
+
+    function showItemFoundedLoaded(item){
+        $('#itemFoundedListing').append(
+            '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
+            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
+            '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+        )
+    }
+
+    $(document).ready(function() {
+        //first 10 items
+        loadInitItems(function(items, tam) {
+            $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
+            $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
+            if(items.size != 0){
+                for(var i=0; i<items.size; i++){
+                    showItemLoaded(items.content[i]);
+                }
+            }
+        });
+
+        //pagination
+        $('.pagination').click(function() {
+            tam+=10;
+
+            let ruta='http://localhost:8444/databases/items?size='+tam;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam-10 < item.content.length){
+                    for(var i=tam-10; i<item.content.length; i++){
+                        showItemLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
+
+        //items founded
+        $('.submit').click(function() {
+            $('#total-item-founded').empty();
+            $('#itemFoundedListing').empty();
+            tam1=10;
+            let value = $('#name').val();
+            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
+                if(item.size != 0){
+                    for(var i=0; i<item.size; i++){
+                        showItemFoundedLoaded(item.content[i]);
+                    }
+                }
+                
+            }) 
+        })
+
+        $('.items-founded-pagination').click(function() {
+            tam1+=10;
+            let value= $('#name').val();
+            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam1-10 < item.numberOfElements){
+                    for(var i=tam1-10; i<item.numberOfElements; i++){
+                        showItemFoundedLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
+
+    });
+
+</script>
+</html>
