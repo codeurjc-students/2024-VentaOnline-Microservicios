@@ -105,6 +105,19 @@
 
 4. As an administrator, I must be able to change the status of an order
 
+5. As a user, I must be able to see the products offered by the store when the app is launched. 
+
+    - Also, as an anonymous user, I should not be redirected to any page if I click on a product 
+
+    - In addition, as a registered user, I must have a button or click on the image of a product in order to buy it.  
+
+    - Also, as a registered user, I should be able to see the products I have selected as favorites 
+
+6. As an administrator user, I must have a button to add a new product to the store, so that by clicking on it, I will be redirected to a page where, for a product, I will define its name, description, available stock, price, image, size, color, gender, category; and can press on an add button, so that any user can see it on their home screen.
+
+7. As an admin user, I must be able to remove a product from the shopping cart, so next to each item there should be a delete button or icon, and after clicking on it, the item is no longer available in the store and is not visible to any user. 
+
+8. As an administrator user, I must have a button to edit the information of a product so that, from the home screen, having clicked on a button or image of a product, I am redirected to the page where the description of the product is shown, I can modify its information, apart from showing a message as an alert when there are 5 or less stocks available of the item.  and save your changes to update the product. 
 ## **3. Navigation diagram**
 
 Anonymous and registered user navigation:
