@@ -41,7 +41,7 @@
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/databases/user/39/image" alt="" width="50" height="50"></img>
+                        <img src="/databases/users/55/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
@@ -146,7 +146,7 @@
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
+            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
             '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
@@ -156,7 +156,7 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="/producto"><img src="/databases/item/' + item.id + 
+            '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
             '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
