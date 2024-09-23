@@ -115,7 +115,7 @@
 
 6. As an administrator user, I must have a button to add a new product to the store, so that by clicking on it, I will be redirected to a page where, for a product, I will define its name, description, available stock, price, image, size, color, gender, category; and can press on an add button, so that any user can see it on their home screen.
 
-7. As an admin user, I must be able to remove a product from the shopping cart, so next to each item there should be a delete button or icon, and after clicking on it, the item is no longer available in the store and is not visible to any user. 
+7. As an admin user, I must be able to remove a product from the store, so next to each item there should be a delete button or icon, and after clicking on it, the item is no longer available in the store and is not visible to any user. 
 
 8. As an administrator user, I must have a button to edit the information of a product so that, from the home screen, having clicked on a button or image of a product, I am redirected to the page where the description of the product is shown, I can modify its information, apart from showing a message as an alert when there are 5 or less stocks available of the item.  and save your changes to update the product. 
 ## **3. Navigation diagram**

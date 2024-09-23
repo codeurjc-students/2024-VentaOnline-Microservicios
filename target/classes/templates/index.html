@@ -31,11 +31,6 @@
             </ul>
         </nav>
         <nav class="navbar">
-            <!--<header class="nabvar-mobile is-size-5-mobile">
-                <a class="navbar-mobile-link has-text-white" href="#" id="btn-mobile"><i class="zmdi zmdi-menu"></i></a>
-                <a class="navbar-mobile-link has-text-white" href="index.html">Avenue Fashion</a>
-                <a class="navbar-mobile-link has-text-white" href="#"><i class="zmdi zmdi-shopping-cart"></i> Vacio</a>
-            </header>-->
             <nav class="nav-menu" id="mySidenav">
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
@@ -137,7 +132,7 @@
     var tam=10;
     var tam1;
 
-    let ruta='//localhost:8444/databases/items?size='+tam;
+    let ruta='//localhost:443/databases/items?size='+tam;
 
     function loadInitItems(callback,tam){
         $.ajax({
@@ -184,7 +179,7 @@
         $('.pagination').click(function() {
             tam+=10;
 
-            let ruta='http://localhost:8444/databases/items?size='+tam;
+            let ruta='http://localhost:443/databases/items?size='+tam;
 
             $('#spinner-div').show();
             $.ajax({
@@ -205,7 +200,7 @@
             $('#itemFoundedListing').empty();
             tam1=10;
             let value = $('#name').val();
-            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='http://localhost:443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -225,7 +220,7 @@
         $('.items-founded-pagination').click(function() {
             tam1+=10;
             let value= $('#name').val();
-            let ruta='http://localhost:8444/databases/items/'+value+'?size='+tam1;
+            let ruta='http://localhost:443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
