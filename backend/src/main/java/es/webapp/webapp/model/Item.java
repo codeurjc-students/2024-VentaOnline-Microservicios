@@ -36,10 +36,10 @@ public class Item {
     private Blob itemImage;
 
     @Column(name = "gender")
-    private Gender gender;
+    private String gender;
 
     @Column(name = "type")
-    private Type type;
+    private String type;
 
     @Column(name = "size")
     private String size;
@@ -53,13 +53,6 @@ public class Item {
     @OneToMany(mappedBy="item")
     private List<ItemToBuy> itemsToBuy;
 
-    public enum Type{
-        JEANS, T_SHIRTS, DRESS
-    }
-
-    public enum Gender{
-        WOMAN, MAN, UNISEX
-    }
 
     public Item(){}
 
@@ -129,19 +122,19 @@ public class Item {
         return itemImage;
     }
 
-    public void setGender(Gender gender){
+    public void setGender(String gender){
         this.gender = gender;
     }
     
-    public Gender getGender(){
+    public String getGender(){
         return gender;
     }
 
-    public void setType(Type type){
+    public void setType(String type){
         this.type = type;
     }
     
-    public Type getType(){
+    public String getType(){
         return type;
     }
 
