@@ -1,13 +1,18 @@
 package es.webapp.webapp.model;
 
 import java.sql.Blob;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -38,6 +43,19 @@ public class User {
     @Column(name = "image")
     private Blob avatar;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonIgnore
+    private Direction direction;
+
+    @ManyToMany
+    private List<Item> favouritesItems;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
+
     public User(){}
 
     public User(String email, String encodedPassword, String roles){
@@ -45,6 +63,50 @@ public class User {
         this.encodedPassword=encodedPassword;
         this.rol=roles;
     }
+
+    public Direction getDirection(){
+        return direction;
+    }
+
+    public void setDirection(Direction direction){
+        this.direction = direction;
+    }
+
+    public ShoppingCart getShoppingCart(){
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart){
+        this.shoppingCart = shoppingCart;
+    }
+
+    public void addOrder(Order order){
+        orders.add(order);
+        order.setUser(this);
+    }
+
+    public void removeOrder(Order order){
+        orders.remove(order);
+        order.setUser(null);
+    }
+
+    public void setFavouritesItems (List<Item> favourites){
+        this.favouritesItems = favourites;
+    }
+
+    public List<Item> getFavouritesItems(){
+        return favouritesItems;
+    }
+
+    /*public void addFavouriteItem(Item favouriteItem){
+        favouritesItems.add(favouriteItem);
+        favouriteItem.addUser(this);
+    }
+
+    public void removeFavouritesItems(Item favouriteItem){
+        favouritesItems.remove(favouriteItem);
+        favouriteItem.removeUser(null);
+    }*/
 
     public void setId(Integer id){
         this.id = id;
