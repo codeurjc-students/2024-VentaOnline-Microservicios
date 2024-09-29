@@ -30,6 +30,8 @@ public class Direction {
     //@JsonIgnore
     private User user;
 
+    public Direction(){}
+
     public Direction(String street, Integer number, Integer zipCode, String city){
         super();
         this.street=street;

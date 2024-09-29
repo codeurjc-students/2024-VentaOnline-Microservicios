@@ -28,8 +28,12 @@ public class UserService {
         return userRepo.findById(id);
     }
 
-    public Optional<User> findByName(String name){
+    public Optional<User> findByUsername(String name){
         return userRepo.findByUsername(name);
+    }
+
+    public Optional<User> findByEmail(String email){
+        return userRepo.findByEmail(email);
     }
     
 }
