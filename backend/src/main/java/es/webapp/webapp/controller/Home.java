@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -101,4 +102,22 @@ public class Home {
         return "login";
     }
     
+    @RequestMapping("/login")
+    public String login(Model model){
+        model.addAttribute("state_reg","");
+        model.addAttribute("state_log","");
+        model.addAttribute("size","");
+        model.addAttribute("zip_code","");
+        return "index";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(Model model) { 
+        return "index";
+    }
+
+    @RequestMapping("/loginerror")
+    public String loginerror(){
+        return "404";
+    }
 }
