@@ -24,8 +24,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     private String email;
@@ -116,12 +116,12 @@ public class User {
         return id;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public String getName(){
-        return name;
+    public String getUsername(){
+        return username;
     }
 
     public void setEmail(String email){

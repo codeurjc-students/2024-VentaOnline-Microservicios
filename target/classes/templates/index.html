@@ -36,12 +36,18 @@
                 <ul class="nav-menu-ul">
                     {{#logged}}
                     <div class="user-img">
-                        <a href="/login"><img src=/databases/user/{{iD}}/image alt=""></img></a>
+                        <a href="/login"><img src=/databases/user/{{id}}/image alt=""></img></a>
                     </div>
+                    <li class="nav-menu-item">
+                        <form action="/logout" method="post">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button class="nav-menu-item" type="submit">log out</button>						
+                        </form>
+                    </li>
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/databases/users/55/image" alt="" width="50" height="50"></img>
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
@@ -50,8 +56,9 @@
                 <form>
                     <div>
                         <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>
+                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>                       
                         <input class="submit" type="button" value="search"/>
+                        
                     </div>
                 </form>
                 <!--items listing-->     
@@ -132,7 +139,7 @@
     var tam=10;
     var tam1;
 
-    let ruta='//localhost:443/databases/items?size='+tam;
+    let ruta='//localhost:8443/databases/items?size='+tam;
 
     function loadInitItems(callback,tam){
         $.ajax({
@@ -179,7 +186,7 @@
         $('.pagination').click(function() {
             tam+=10;
 
-            let ruta='http://localhost:443/databases/items?size='+tam;
+            let ruta='https://localhost:8443/databases/items?size='+tam;
 
             $('#spinner-div').show();
             $.ajax({
@@ -200,7 +207,7 @@
             $('#itemFoundedListing').empty();
             tam1=10;
             let value = $('#name').val();
-            let ruta='http://localhost:443/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -220,7 +227,7 @@
         $('.items-founded-pagination').click(function() {
             tam1+=10;
             let value= $('#name').val();
-            let ruta='http://localhost:443/databases/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/databases/items/'+value+'?size='+tam1;
 
             $('#spinner-div').show();
             $.ajax({

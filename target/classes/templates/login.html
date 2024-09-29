@@ -24,7 +24,7 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/databases/user/{{iD}}/image" alt="" width="200" height="200"></img>
+                <img src="/databases/user/{{username}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
@@ -45,9 +45,14 @@
 
                     <input type="password" name="password" placeholder="Password" class="form-control-field">
                     <div class="title-hd-sm">
-                        <input type="hidden" name="_csrf" value="{{token}}"/>
                     </div>
                     <button class="btn btn-default btn-primary">Log in</button>
+                    {{#logged}}
+                    <div class="title-hd-sm">
+                        <input type="hidden" name="_csrf" value="{{token}}"/>
+                    </div>
+                    {{/logged}}
+                    <p></p>
                     <p>{{state_log}}</p>
                 </form>
             </div>
@@ -55,18 +60,25 @@
                 <h2 class="is-size-4">Registration</h2>
                 <form action="/new" method="post" class="form-control" enctype="multipart/form-data">
 
+                    <input type="text" name="username" placeholder="User name" class="form-control-field"></input>
                     <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
-
                     <input type="password" name="encodedPassword" placeholder="Password" class="form-control-field"></input>
-                    <input type="password" name="confirmation" placeholder="Confirm your password" class="form-control-field"></input>
+                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field"></input>
                     <div class="user-img">
                         <input type='file' name='imageField' accept=".jpg, .jpeg"/>
                     </div> 
-                    
-                    <button class="btn btn-default btn-primary">Create account</button>
-                    <div class="title-hd-sm">
-                        <input type="hidden" name="_csrf" value="{{token}}"/>
+                    <h2 class="is-size-4">Address</h2>
+                    <div class="columns">
+                        <div class="column">
+                            <input type="text" name="street" placeholder="Street" class="form-control-field"></input>
+                            <input type="number" name="number" placeholder="Number" class="form-control-field"></input>
+                        </div>
+                        <div class="column">
+                            <input type="number" name="zipCode" placeholder="Zip code" class="form-control-field"></input>
+                            <input type="text" name="city" placeholder="City" class="form-control-field"></input>
+                        </div>
                     </div>
+                    <button class="btn btn-default btn-primary">Create account</button>
                     <p></p>
                     <p>{{state_reg}}{{size}}</p>
                 </form>

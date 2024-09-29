@@ -27,13 +27,6 @@ public class DataBaseInitializer {
 
         //1:1 bidirectional relationship
         
-        User user1 = new User();
-        user1.setName("Ana");
-        user1.setEmail("ana1@gmail.com");
-        user1.setEncodedPassword(passwordEncoder.encode("1ana23"));
-        user1.setRol("USER");
-
-        user1.setDirection(new Direction("mullhenbergstrasse", 21, 38303, "otze"));
-        userRepo.save(user1);
+        
     }
 }
