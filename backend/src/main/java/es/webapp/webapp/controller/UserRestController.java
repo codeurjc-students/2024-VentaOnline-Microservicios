@@ -59,6 +59,22 @@ public class UserRestController {
         }
     }
 
+    @GetMapping("/{username}/image")
+    public ResponseEntity<Object> getLoggedUserImage(@PathVariable String username) throws SQLException{
+
+        Optional<User> user = userService.findByUsername(username);
+
+        if(user.isPresent() && user.get().getImageFile() != null){
+            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE,"image/jpeg")
+                .contentLength(user.get().getImageFile().length())
+                .body(file);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
 
@@ -73,6 +89,5 @@ public class UserRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-    
+    }    
 }

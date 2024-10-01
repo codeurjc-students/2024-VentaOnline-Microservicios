@@ -39,5 +39,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         //public pages
        // http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers("/").permitAll();
+        http.authorizeRequests().antMatchers("/login").permitAll();
+        http.authorizeRequests().antMatchers("/loginerror").permitAll();
+        http.authorizeRequests().antMatchers("/logout").permitAll();
+        http.authorizeRequests().antMatchers("/signup").permitAll(); 
+        
+        // Login form
+        http.formLogin().loginPage("/login");
+        http.formLogin().usernameParameter("username");
+        http.formLogin().passwordParameter("password");
+        http.formLogin().defaultSuccessUrl("/");
+        http.formLogin().failureUrl("/loginerror");
+
+        // Logout
+        http.logout().logoutUrl("/logout");
+        http.logout().logoutSuccessUrl("/");  
     }
 }

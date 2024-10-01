@@ -23,7 +23,6 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy="order")

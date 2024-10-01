@@ -103,13 +103,15 @@ public class Home {
     }
     
     @RequestMapping("/login")
-    public String login(Model model){
+    public String loginPage(Model model){
         model.addAttribute("state_reg","");
         model.addAttribute("state_log","");
         model.addAttribute("size","");
         model.addAttribute("zip_code","");
-        return "index";
+        return "login";
     }
+
+
 
     @RequestMapping("/logout")
     public String logout(Model model) { 

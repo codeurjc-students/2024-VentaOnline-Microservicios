@@ -50,10 +50,10 @@ public class User {
     @ManyToMany
     private List<Item> favouritesItems;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
     public User(){}

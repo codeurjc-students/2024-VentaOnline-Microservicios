@@ -24,7 +24,7 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/databases/users/{{username}}/image" alt="" width="200" height="200"></img>
+                <img src="/databases/{{username}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
@@ -41,17 +41,15 @@
                 <h2 class="is-size-4">Login</h2>
                 <form action="/login" class="form-control" method="post">
 
-                    <input type="email" name="email" placeholder="Email" class="form-control-field error">
+                    <input type="text" name="username" placeholder="Username" class="form-control-field error">
 
                     <input type="password" name="password" placeholder="Password" class="form-control-field">
                     <div class="title-hd-sm">
                     </div>
                     <button class="btn btn-default btn-primary">Log in</button>
-                    {{#logged}}
-                    <div class="title-hd-sm">
-                        <input type="hidden" name="_csrf" value="{{token}}"/>
-                    </div>
-                    {{/logged}}
+                    {{logged}}
+                 
+                  
                     <p></p>
                     <p>{{state_log}}</p>
                 </form>
