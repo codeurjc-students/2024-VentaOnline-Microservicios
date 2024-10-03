@@ -22,7 +22,7 @@
     <!-- Banner -->
     <div class="banner banner-second">
         <div class="banner-container ">
-            {{#logged}}
+            <!--{{#logged}}
             <div class="user-img">
                 <img src="/databases/{{username}}/image" alt="" width="200" height="200"></img>
             </div>
@@ -31,7 +31,7 @@
             <div class="user-img">
                 <img src="/databases/users/39/image" alt="" width="200" height="200"></img>
             </div>
-            {{/logged}}
+            {{/logged}}-->
         </div>
     </div>
 
@@ -41,44 +41,14 @@
                 <h2 class="is-size-4">Login</h2>
                 <form action="/login" class="form-control" method="post">
 
-                    <input type="text" name="username" placeholder="Username" class="form-control-field error">
+                    <input type="text" name="username" placeholder="Username" class="form-control-field error"></input>
 
-                    <input type="password" name="password" placeholder="Password" class="form-control-field">
+                    <input type="password" name="password" placeholder="Password" class="form-control-field"></input>
                     <div class="title-hd-sm">
+                    
+                        <input class="btn btn-default btn-primary" type="submit" value="Log in"></input>
                     </div>
-                    <button class="btn btn-default btn-primary">Log in</button>
-                    {{logged}}
-                 
-                  
                     <p></p>
-                    <p>{{state_log}}</p>
-                </form>
-            </div>
-            <div class="column">
-                <h2 class="is-size-4">Registration</h2>
-                <form action="/new" method="post" class="form-control" enctype="multipart/form-data">
-
-                    <input type="text" name="username" placeholder="User name" class="form-control-field"></input>
-                    <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
-                    <input type="password" name="encodedPassword" placeholder="Password" class="form-control-field"></input>
-                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field"></input>
-                    <div class="user-img">
-                        <input type='file' name='imageField' accept=".jpg, .jpeg"/>
-                    </div> 
-                    <h2 class="is-size-4">Address</h2>
-                    <div class="columns">
-                        <div class="column">
-                            <input type="text" name="street" placeholder="Street" class="form-control-field"></input>
-                            <input type="number" name="number" placeholder="Number" class="form-control-field"></input>
-                        </div>
-                        <div class="column">
-                            <input type="number" name="zipCode" placeholder="00000" class="form-control-field"></input>
-                            <input type="text" name="city" placeholder="City" class="form-control-field"></input>
-                        </div>
-                    </div>
-                    <button class="btn btn-default btn-primary">Create account</button>
-                    <p></p>
-                    <p>{{state_reg}}{{size}}{{zip_code}}</p>
                 </form>
             </div>
         </div>

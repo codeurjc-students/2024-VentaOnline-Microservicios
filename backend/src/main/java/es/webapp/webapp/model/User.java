@@ -31,7 +31,7 @@ public class User {
     private String email;
 
     @Column(name = "password")
-    private String encodedPassword;
+    private String password;
 
     @Column(name = "rol")
     private String rol;
@@ -60,7 +60,7 @@ public class User {
 
     public User(String email, String encodedPassword, String roles){
         this.email=email;
-        this.encodedPassword=encodedPassword;
+        this.password=encodedPassword;
         this.rol=roles;
     }
 
@@ -132,12 +132,12 @@ public class User {
         return email;
     }
 
-    public void setEncodedPassword(String password){
-        this.encodedPassword = password;
+    public void setPassword(String password){
+        this.password = password;
     }
 
-    public String getEncodedPassword(){
-        return encodedPassword;
+    public String getPassword(){
+        return password;
     }
 
     public String getRol(){

@@ -19,8 +19,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User add(User user){
-        user.setEncodedPassword(passwordEncoder.encode(user.getEncodedPassword()));
-        user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
         return userRepo.save(user);
     }
 

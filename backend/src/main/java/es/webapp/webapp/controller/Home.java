@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,8 @@ public class Home {
             String name = principal.getName();
             Optional<User> user = userService.findByUsername(name);
             model.addAttribute("username",user.get().getUsername());
+            model.addAttribute("admin", request.isUserInRole("ADMIN"));
+            model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);
         } else {
             model.addAttribute("logged",false);
@@ -44,8 +47,6 @@ public class Home {
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request){
-        //CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        //model.addAttribute("token", token.getToken());
         return "index";
     }
 
@@ -55,7 +56,7 @@ public class Home {
         model.addAttribute("state_log","");
         model.addAttribute("size","");
         model.addAttribute("zip_code","");
-        return "login";
+        return "signup";
     }
 
     @PostMapping("/new")
@@ -73,8 +74,8 @@ public class Home {
             user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
         }    
 
-        if(user.getUsername() != null && user.getEmail() != null && user.getEncodedPassword() != null && 
-            user.getEncodedPassword().equals(passwordConfirmation) && address.getStreet() != null &&
+        if(user.getUsername() != null && user.getEmail() != null && user.getPassword() != null && 
+            user.getPassword().equals(passwordConfirmation) && address.getStreet() != null &&
             address.getNumber() != null && address.getZipCode() != null && address.getCity() != null){
             if(passwordConfirmation.length() < 6 && passwordConfirmation.length() > 10){
                 model.addAttribute("size", "password must contains between 6 and 10 characters");
@@ -99,19 +100,14 @@ public class Home {
         }
         model.addAttribute("state_log", "");
 
-        return "login";
+        return "signup";
     }
-    
+
+
     @RequestMapping("/login")
-    public String loginPage(Model model){
-        model.addAttribute("state_reg","");
-        model.addAttribute("state_log","");
-        model.addAttribute("size","");
-        model.addAttribute("zip_code","");
+    public String login(Model model){
         return "login";
     }
-
-
 
     @RequestMapping("/logout")
     public String logout(Model model) { 
@@ -120,6 +116,6 @@ public class Home {
 
     @RequestMapping("/loginerror")
     public String loginerror(){
-        return "404";
+        return "brand";
     }
 }

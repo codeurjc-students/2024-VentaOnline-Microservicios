@@ -30,14 +30,14 @@ public class UserDetailService implements UserDetailsService{
 		Optional<User> user = userRepository.findByUsername(username);
 
 		if(!user.isPresent()){
-			new UsernameNotFoundException("404.html");
+			new UsernameNotFoundException("brand.html");
 		}
     
 		List<GrantedAuthority> roles = new ArrayList<>();
 		roles.add(new SimpleGrantedAuthority("ROLE_" + user.get().getRol()));
 
 		return new org.springframework.security.core.userdetails.User(user.get().getUsername(), 
-				user.get().getEncodedPassword(), roles);
+				user.get().getPassword(), roles);
 
     }
 }
