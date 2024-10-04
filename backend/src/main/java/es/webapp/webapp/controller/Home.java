@@ -116,6 +116,6 @@ public class Home {
 
     @RequestMapping("/loginerror")
     public String loginerror(){
-        return "brand";
+        return "error";
     }
 }

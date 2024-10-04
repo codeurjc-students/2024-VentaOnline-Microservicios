@@ -57,7 +57,7 @@ public class SecurityConfiguration{
                 httpForm.defaultSuccessUrl("/");
                 httpForm.usernameParameter("username");
                 httpForm.passwordParameter("password"); 
-                httpForm.failureUrl("/brand");
+                httpForm.failureUrl("/error");
             })
 
             .authorizeHttpRequests(registry -> {
