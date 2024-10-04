@@ -24,14 +24,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
-    private String encodedPassword;
+    private String password;
 
     @Column(name = "rol")
     private String rol;
@@ -50,19 +50,13 @@ public class User {
     @ManyToMany
     private List<Item> favouritesItems;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
     public User(){}
-
-    public User(String email, String encodedPassword, String roles){
-        this.email=email;
-        this.encodedPassword=encodedPassword;
-        this.rol=roles;
-    }
 
     public Direction getDirection(){
         return direction;
@@ -116,12 +110,12 @@ public class User {
         return id;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public String getName(){
-        return name;
+    public String getUsername(){
+        return username;
     }
 
     public void setEmail(String email){
@@ -132,12 +126,12 @@ public class User {
         return email;
     }
 
-    public void setEncodedPassword(String password){
-        this.encodedPassword = password;
+    public void setPassword(String password){
+        this.password = password;
     }
 
-    public String getEncodedPassword(){
-        return encodedPassword;
+    public String getPassword(){
+        return password;
     }
 
     public String getRol(){
