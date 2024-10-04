@@ -13,6 +13,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import es.webapp.webapp.data.Gender;
+import es.webapp.webapp.data.Size;
+import es.webapp.webapp.data.Type;
+
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
@@ -36,13 +40,13 @@ public class Item {
     private Blob itemImage;
 
     @Column(name = "gender")
-    private String gender;
+    private Gender gender;
 
     @Column(name = "type")
-    private String type;
+    private Type type;
 
     @Column(name = "size")
-    private String size;
+    private Size size;
 
     @Column(name = "stock")
     private Integer stock;
@@ -122,27 +126,27 @@ public class Item {
         return itemImage;
     }
 
-    public void setGender(String gender){
+    public void setGender(Gender gender){
         this.gender = gender;
     }
     
-    public String getGender(){
+    public Gender getGender(){
         return gender;
     }
 
-    public void setType(String type){
+    public void setType(Type type){
         this.type = type;
     }
     
-    public String getType(){
+    public Type getType(){
         return type;
     }
 
-    public void setSize(String size){
+    public void setSize(Size size){
         this.size = size;
     }
     
-    public String getSize(){
+    public Size getSize(){
         return size;
     }
 

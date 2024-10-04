@@ -66,7 +66,7 @@ public class SecurityConfiguration{
                 registry.antMatchers("/loginerror").permitAll();
                 registry.antMatchers("/logout").permitAll();
                 registry.antMatchers("/signup").permitAll();
-                registry.antMatchers("/new_item").hasAnyRole("ADMIN");
+                registry.antMatchers("/items/page").hasAnyRole("ADMIN");
             })
 
             .logout(httpLogout -> {
