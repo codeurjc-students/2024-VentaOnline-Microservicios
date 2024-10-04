@@ -58,12 +58,6 @@ public class User {
 
     public User(){}
 
-    public User(String email, String encodedPassword, String roles){
-        this.email=email;
-        this.password=encodedPassword;
-        this.rol=roles;
-    }
-
     public Direction getDirection(){
         return direction;
     }

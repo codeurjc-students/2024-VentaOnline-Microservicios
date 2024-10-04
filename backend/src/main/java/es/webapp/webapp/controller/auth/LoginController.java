@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,44 +20,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.webapp.webapp.data.AuthResponse;
+import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.UserRepo;
 import es.webapp.webapp.security.JWTGenerator;
-
-//import  es.webapp.webapp.security.jwt.AuthResponse;
-//import  es.webapp.webapp.security.jwt.LoginRequest;
-//import  es.webapp.webapp.security.jwt.UserLoginService;
-//import  es.webapp.webapp.security.jwt.AuthResponse.Status;
 
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
 
 	private AuthenticationManager authenticationManager;
-	private UserRepo userRepo;
-	private PasswordEncoder passwordEncoder;
 	private JWTGenerator jwtGenerator;
 
 	@Autowired
 	public LoginController(AuthenticationManager authenticationManager, UserRepo userRepo,
 						PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator){
-		this.authenticationManager = authenticationManager;
-		this.userRepo = userRepo;
-		this.passwordEncoder = passwordEncoder;		
+		this.authenticationManager = authenticationManager;	
 		this.jwtGenerator = jwtGenerator;				
 	}
 
+	@PostMapping("/login")
+	public ResponseEntity<AuthResponse> login(@RequestBody User user){
+
+		Authentication authentication = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		String token = jwtGenerator.generateToken(authentication);
+
+		return new ResponseEntity<>(new AuthResponse(token),HttpStatus.OK);
 	
-
-	/*@PostMapping("/refresh")
-	public ResponseEntity<AuthResponse> refreshToken(
-			@CookieValue(name = "refreshToken", required = false) String refreshToken) {
-
-		return userService.refresh(refreshToken);
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<AuthResponse> logout(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<String> logout() {
 
-		return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userService.logout(request, response)));
-	}*/
+		SecurityContextHolder.clearContext();
+
+		return new ResponseEntity<>("logout successfully",HttpStatus.OK);
+	}
 }
