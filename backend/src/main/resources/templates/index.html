@@ -35,11 +35,18 @@
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     {{#logged}}
+                    {{#user}}
                     <div class="user-img">
                         <a href="/login"><img src=/databases/{{username}}/image alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
-                    
+                    {{/user}}
+                    {{#admin}}
+                    <div class="user-img">
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
+                    </div>
+                    <li class="nav-menu-item"><a href="/new_item" class="nav-menu-link">New item</a></li>
+                    {{/admin}}
                     <form action="/logout" method="post">
                         <button class="nav-menu-link" type="submit">Log out</button>						
                     </form>
@@ -156,7 +163,7 @@
             '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
             '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
@@ -166,7 +173,7 @@
             '</span> <a href="/producto"><img src="/databases/items/' + item.id + 
             '/image" alt="" width="200" height="200"></a> <div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 

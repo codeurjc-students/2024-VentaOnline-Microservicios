@@ -26,7 +26,15 @@ public class DataBaseInitializer {
     public void init() throws IOException, URISyntaxException {
 
         //1:1 bidirectional relationship
-        
-        
+        User user1 = new User();
+        user1.setUsername("administrator1");
+        user1.setEmail("administrator1@gmail.com");
+        user1.setPassword(passwordEncoder.encode("admin123"));
+        user1.setPasswordConfirmation(passwordEncoder.encode("admin123"));
+        user1.setRol("ADMIN");
+
+        Direction address = new Direction("Calle Roma",2,85503,"Almería");
+        user1.setDirection(address);
+        userRepo.save(user1);
     }
 }

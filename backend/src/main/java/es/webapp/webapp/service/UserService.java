@@ -20,7 +20,7 @@ public class UserService {
 
     public User add(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
+        user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
         return userRepo.save(user);
     }
 
