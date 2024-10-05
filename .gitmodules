@@ -1,0 +1,3 @@
+[submodule "Inventory-Microservice"]
+	path = Inventory-Microservice
+	url = https://github.com/MaAlami2020/Inventory-Microservice.git

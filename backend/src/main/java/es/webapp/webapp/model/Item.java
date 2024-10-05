@@ -13,6 +13,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import es.webapp.webapp.data.Gender;
+import es.webapp.webapp.data.Size;
+import es.webapp.webapp.data.Type;
+
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
