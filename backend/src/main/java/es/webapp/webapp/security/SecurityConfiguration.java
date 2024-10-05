@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -75,5 +76,11 @@ public class SecurityConfiguration{
             })
             
             .build();
+    }
+
+    public void addCorsMapping(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins("https://localhost:8444")
+                .allowCredentials(true);
     }
 }

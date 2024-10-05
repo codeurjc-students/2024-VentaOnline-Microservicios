@@ -38,15 +38,5 @@ public class ItemController {
             model.addAttribute("logged",false);
         }
     }
-
-    @GetMapping("/page")
-    public String newItem(Model model, HttpServletRequest request){
-
-        if(request.isUserInRole("ADMIN")){
-            return "new_item";
-        } else {
-            return "error";
-        }
-    }
     
 }
