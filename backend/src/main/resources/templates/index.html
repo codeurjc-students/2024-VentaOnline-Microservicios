@@ -23,10 +23,14 @@
                     <!--<a href="login.html" class="navbar-top-links">Iniciar sesión</a>-->
                 </li>
                 <li class="navbar-top-item">
-                    <a href="/shopping_cart" class="navbar-top-links">
+                    {{#logged}}
+                    {{#user}}
+                    <a href="/shoppingCart/page" class="navbar-top-links">
                         <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
                         <!-- <i class="zmdi zmdi-chevron-down"></i> -->
                     </a>
+                    {{/user}}
+                    {{/logged}}
                 </li>
             </ul>
         </nav>

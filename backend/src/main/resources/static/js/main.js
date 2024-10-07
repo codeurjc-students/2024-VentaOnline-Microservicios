@@ -37,7 +37,7 @@ for (var i = 0; i < submenu.length; i++) {
 // script del slider de producto
 let activeImg = 0
 function slider(n) {
-    let images = document.getElementsByClassName("slider-item")
+    let images = document.getElementsByClassName("slider-img-container")
 
     for (i = 0; i < images.length; i++) {
 
