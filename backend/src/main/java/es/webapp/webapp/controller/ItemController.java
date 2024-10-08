@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.webapp.webapp.model.Item;
+import es.webapp.webapp.model.ItemToBuy;
+import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.UserService;
@@ -31,6 +33,12 @@ public class ItemController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ItemToBuyService itemToBuyService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -83,22 +91,22 @@ public class ItemController {
 
     private void showStocks(Model model, Optional<Item> item){
         if(item.get().getStocks() != null && item.get().getStocks()[0] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock1","S (Avaiable)");}else{model.addAttribute("stock1","Less than 5 items avaiable for size S");}  
+            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock1","(Avaiable)");}else{model.addAttribute("stock1","(Less than 5 items avaiable)");}  
         } else {
             model.addAttribute("stock1",0); 
         }
         if(item.get().getStocks() != null && item.get().getStocks()[1] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock2","M (Avaiable)");}else{model.addAttribute("stock2","Less than 5 items avaiable for size M");}  
+            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock2","(Avaiable)");}else{model.addAttribute("stock2","(Less than 5 items avaiable)");}  
         } else {
             model.addAttribute("stock2",0); 
         }
         if(item.get().getStocks() != null && item.get().getStocks()[2] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock3","L (Avaiable)");}else{model.addAttribute("stock3","Less than 5 items avaiable for size L");}    
+            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock3","(Avaiable)");}else{model.addAttribute("stock3","(Less than 5 items avaiable)");}    
         } else {
             model.addAttribute("stock3",0); 
         }
         if(item.get().getStocks() != null && item.get().getStocks()[3] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock4","XL (Avaiable)");}else{model.addAttribute("stock4","Less than 5 items avaiable for size XL");}  
+            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock4","(Avaiable)");}else{model.addAttribute("stock4","(Less than 5 items avaiable)");}  
         } else {
             model.addAttribute("stock4",0); 
         }
@@ -126,28 +134,48 @@ public class ItemController {
     }
 
     @PostMapping("/{id}/buy")
-    public String itemBuy(Model model, Item itemUpdated, @PathVariable Integer id) throws IOException{
+    public String itemBuy(Model model, Item item, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
 
-        /*Optional<Item> item = itemService.findById(id);
-        if(item.isPresent()){
-            if(!imageField.isEmpty()){
-                itemUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+        Optional<Item> product = itemService.findById(id);
+        if(product.isPresent()) {
+            product.get().setSize(item.getSize());
+        }
+
+        Principal principal = request.getUserPrincipal();
+
+        if(principal != null){
+            String name = principal.getName();
+            Optional<User> user = userService.findByUsername(name);
+            if(user.isPresent()) {
+                if(user.get().getShoppingCart() == null){
+                    ShoppingCart cart = new ShoppingCart();
+                    user.get().setShoppingCart(cart);
+                }
+                shoppingCartService.save(user.get().getShoppingCart());
+
+                itemToBuy.setItem(product.get());
+                itemToBuy.setShoppingCart(user.get().getShoppingCart());
+
+                itemToBuyService.save(itemToBuy);
+
+                model.addAttribute("name",product.get().getName());
+                model.addAttribute("price",product.get().getPrice());
+                model.addAttribute("gender",product.get().getGender());
+                
+                showSizes(model,product);
+                showStocks(model, product);
+    
+                model.addAttribute("type",product.get().getType());
+                model.addAttribute("description",product.get().getDescription());
+
+                model.addAttribute("status","item successfully added to the cart");
+                return "product";
+            } else {
+                return "error";
             }
-            
-            itemService.update(item.get().getId(), itemUpdated);
-            model.addAttribute("status","item updated");
-            
-            model.addAttribute("name",item.get().getName());
-            model.addAttribute("price",item.get().getPrice());
-            model.addAttribute("gender",item.get().getGender());
-            showSizes(model, item);
-            showStocks(model, item);
-            model.addAttribute("type",item.get().getType());
-            model.addAttribute("description",item.get().getDescription());
-            return "edition";
-        } else {
-            return "error";
-        }*/
+        }
+        return "error";
+
         return "product";
     }
     
