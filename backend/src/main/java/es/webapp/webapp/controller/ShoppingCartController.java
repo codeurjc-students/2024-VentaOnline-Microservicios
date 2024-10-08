@@ -39,7 +39,7 @@ public class ShoppingCartController {
 
     @GetMapping("/shoppingCart/page")
     public String shoppingCartPage(Model model){
-        return "shoppingCart";
+        return "product";
     }
     
 }

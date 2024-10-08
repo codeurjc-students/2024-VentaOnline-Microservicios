@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Avenue Fashion</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <nav class="nav-menu --nav-dark" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" href="/">Avenue Fashion</a>
+                <ul class="nav-menu-ul"></ul>
+            </nav>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-second">
+        <div class="banner-container">
+            <h1>Item information</h1>
+            <div class="columns">
+                
+                <div class="column">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Sizes: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
+
+                </div>
+                <div class="column">
+                    <p>{{name}}</p>
+                    <p>{{price}} €</p> 
+                    <p>{{gender}}</p>
+                    <p>{{size1}} {{size2}} {{size3}} {{size4}}</p>
+                    <p>{{type}}</p>
+                    <p>{{description}}</p>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<form action="/items/{{id}}/buy" method="post" class="form-control">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <img src="/databases/items/{{id}}/image" alt="camiseta" width="440" height="440"></img>
+            </div>
+            <div class="column">
+                <h3 class="is-size-4">{{^sizeByDefault}}Size and {{/sizeByDefault}}Quantity selection:</h3>
+                    <div class="columns is-multiline">
+                        {{^sizeByDefault}}
+                        <div class="column is-one-third">
+                            <label for="size">Size</label>
+                            <div class="form-control-field" id="size">
+                                {{#sizeS}}
+                                <label><input type="radio" id="size1" name="sizes[0]" value="S" required/> S</label>
+                                {{/sizeS}}   
+                                {{#sizeM}}
+                                <label><input type="radio" id="size2" name="sizes[1]" value="M" required/> M</label>
+                                {{/sizeM}}   
+                                {{#sizeL}} 
+                                <label><input type="radio" id="size3" name="sizes[2]" value="L" required/> L</label>
+                                {{/sizeL}}   
+                                {{#sizeXL}}
+                                <label><input type="radio" id="size4" name="sizes[3]" value="XL" required/> XL</label>
+                                {{/sizeXL}} 
+                            </div>
+                        </div>
+                        <div class="column is-one-third">
+                            <label for="quality">Stock:</label>
+                            {{#sizeS}}
+                            <p>{{stock1}}</p>
+                            {{/sizeS}}   
+                            {{#sizeM}}
+                            <p>{{stock2}}</p>
+                            {{/sizeM}}   
+                            {{#sizeL}} 
+                            <p>{{stock3}}</p>
+                            {{/sizeL}}   
+                            {{#sizeXL}}
+                            <p>{{stock4}}</p>
+                            {{/sizeXL}}       
+                        </div>  
+                        {{/sizeByDefault}}
+                        <div class="column is-one-third">
+                            <label for="quality">Quantity:</label>
+                            <input type="number" name="count" placeholder="amount to buy" class="form-control-field" min="1" required/>
+                        </div>  
+                    </div>
+                    <div class="columns is-multiline">
+                        <div class="column is-full is-marginless">
+                            <button class="btn btn-default btn-outline">Buy</button>
+                        </div>
+                        {{status}}
+                    </div>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-bar-top">
+            <div class="container">
+                <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/main.js"></script>
+
+</body>
+</html>

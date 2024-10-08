@@ -1,7 +1,7 @@
 package es.webapp.webapp.model;
 
 import java.sql.Blob;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import es.webapp.webapp.data.Gender;
-import es.webapp.webapp.data.Size;
-import es.webapp.webapp.data.Type;
-
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
+
+    private static final Integer NUM = 4; 
 
     @Id
     @Column(name = "id")
@@ -45,10 +43,14 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "size")
+    @Column(name = "sizes")
+    private String[] sizes = new String[NUM];
+
     private String size;
 
-    @Column(name = "stock")
+    @Column(name = "stocks")
+    private Integer[] stocks = new Integer[NUM];
+
     private Integer stock;
 
     @ManyToMany
@@ -58,7 +60,41 @@ public class Item {
     private List<ItemToBuy> itemsToBuy;
 
 
-    public Item(){}
+    public Item(){
+        Arrays.fill(stocks, 0);
+    }
+
+    public void setSize(String size){
+        this.size = size;
+    }
+    
+    public String getSize(){
+        return size;
+    }
+
+    public void setSizes(String [] size){
+        this.sizes = size;
+    }
+    
+    public String [] getSizes(){
+        return sizes;
+    }
+
+    public void setStock(Integer stock){
+        this.stock = stock;
+    }
+    
+    public Integer getStock(){
+        return stock;
+    }
+
+    public void setStocks(Integer [] stock){
+        this.stocks = stock;
+    }
+
+    public Integer [] getStocks(){
+        return stocks;
+    }
 
     public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
@@ -140,21 +176,5 @@ public class Item {
     
     public String getType(){
         return type;
-    }
-
-    public void setSize(String size){
-        this.size = size;
-    }
-    
-    public String getSize(){
-        return size;
-    }
-
-    public void setStock(Integer stock){
-        this.stock = stock;
-    }
-
-    public Integer getStock(){
-        return stock;
     }
 }
