@@ -31,6 +31,7 @@
         <div class="banner-container ">
             <h1>Shopping cart</h1>
             <h2 class="zmdi zmdi-shopping-cart"></h2> 
+            <a href="/"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
         </div>
     </div>
 
@@ -38,40 +39,11 @@
     <div class="container">
         <div class="columns">
             <div class="slider" id="slider">
-                <div class="slider-img-container active">
-                    <img src="/img/item-1.png" alt="camiseta">
-                    <h3 class="is-size-4">Classic Sweatshirt</h3>
-                    <div class="course-rating-container">
-                        <div class="rating-stars" style="--rating: 86%">
-                        </div>
-                    </div>
-                    <p class=""> 3 comentarios | Compartir: <a class="icon-socials" href="#"><i class="zmdi zmdi-facebook"></i></a>
-                    <a class="icon-socials" href="#"><i class="zmdi zmdi-twitter"></i></a>
-                    <a class="icon-socials" href="#"><i class="zmdi zmdi-instagram"></i></a>
-                    <a class="icon-socials" href="#"><i class="zmdi zmdi-pinterest"></i></a>
-                    <a class="icon-socials" href="#"><i class="zmdi zmdi-email"></i></a>
-                    </p>
-                    <h2 class="price is-size-4"><sup>$</sup>89.99</h2>
-                    <p class="has-text-grey"> <strong>Disponibilidad:</strong> En stock</p>
-                    <p class="has-text-grey"><strong>Código del procuto: </strong>#56843265</p>
-                    <p class="text-default">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-                        repellat, sequi doloremque accusamus, voluptates nihil commodi necessitatibus, ullam
-                        fugit ea a illo maxime repudiandae. Iusto totam nemo nam ullam officiis?</p>
-                </div>
-
-                <div class="slider-img-container">
-                    <img src="/img/item-2.png" alt="camiseta">
-                </div>
-                <div class="slider-img-container">
-                    <img src="/img/item-5.png" alt="camiseta">
-                </div>
-                <div class="slider-button-left slider-buttons" onclick="previus()">
-                    <i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i>
-                </div>
-                <div class="slider-button-right slider-buttons" onclick="next()">
-                    <i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i>
-                </div>
                 
+                <div class="button-left">    
+                </div>
+                <div class="button-right">
+                </div>
             </div>
         </div>
     </div>
@@ -81,12 +53,94 @@
     <footer class="footer">
         <div class="footer-bar-top">
             <div class="container">
-                <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+                <a class="footer-bar-top-links">2024 Avenue Fashion</a>
             </div>
         </div>
     </footer>
 
     <script src="/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
+<script>
 
+    let ruta='//localhost:8443/databases/shoppingcart/{{username}}/items';
+    let sizes = ['S','M','L','XL'];
+  
+
+    function loadInitItems(callback){
+        $.ajax({
+            url:ruta
+        }).done(function (items){
+            callback(items);
+        })
+    }
+
+    function showFirstItem(items){
+        for(var i=0; i<items.item.sizes.length; i++){
+            if(items.item.sizes[i] == items.size){
+                if(items.item.stocks[i] >= 5){              
+                    $('.slider').append(
+                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
+                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
+                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+                        '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+                        '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                        '</p></div>'
+                    )
+                } else{ 
+                    $('.slider').append(
+                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
+                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
+                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+                        '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+                        '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                        '</p></div>'
+                    )
+                }
+                break;
+            }
+        }
+    }
+
+    function showOtherItems(items){
+        $('.slider').append(
+            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
+            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
+            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+            '</p></div>'
+        )
+    }
+
+    function showPreviousButton(){
+        $('.button-left').append(
+            '<div class="slider-button-left slider-buttons" onclick="previus()"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
+        )
+    }
+
+    function showNextButton(){
+        $('.button-right').append(
+            '<div class="slider-button-right slider-buttons" onclick="next()"><i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i></div>'
+        )
+    }
+
+    $(document).ready(function() {
+
+        loadInitItems(function(items) {
+            if(items.size != 0){
+                showFirstItem(items[0]);
+                for(var i=1; i<items.length; i++){
+                    showOtherItems(items[i]);
+                }
+                showPreviousButton();
+                showNextButton();
+            }
+        });
+
+    });
+</script>
 </html>

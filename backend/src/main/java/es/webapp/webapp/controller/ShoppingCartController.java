@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.webapp.webapp.model.ItemToBuy;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.service.ItemToBuyService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -22,6 +25,9 @@ public class ShoppingCartController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ItemToBuyService itemToBuyService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -57,6 +63,18 @@ public class ShoppingCartController {
         }
 
         return "shoppingCart";
+    }
+
+    @GetMapping("/items/{id}/remove")
+    public String removeItemToBuy(Model model, @PathVariable Integer id){
+
+        Optional<ItemToBuy> item = itemToBuyService.findById(id);
+
+        if(item.isPresent()) {
+            itemToBuyService.deleteById(id);
+            return "shoppingCart";
+        }
+        return "error";
     }
     
 }

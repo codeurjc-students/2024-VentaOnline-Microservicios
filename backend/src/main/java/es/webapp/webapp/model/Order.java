@@ -18,15 +18,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Order {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     private User user;
-
-    @OneToMany(mappedBy="order")
-    private List<ItemToBuy> itemsToBuy;
 
     @Column(name="totalCost")
     private Double totalCost;
@@ -43,11 +39,11 @@ public class Order {
 
     public Order(){}
 
-    public void setId(Long id){
+    public void setId(Integer id){
         this.id = id;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
     }
 
@@ -59,7 +55,7 @@ public class Order {
         return user;
     }
     
-    public void addItemToBuy(ItemToBuy itemToBuy){
+    /*public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
         itemToBuy.setOrder(this);
     }
@@ -67,7 +63,7 @@ public class Order {
     public void removeItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.remove(itemToBuy);
         itemToBuy.setOrder(null);
-    }
+    }*/
 
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
