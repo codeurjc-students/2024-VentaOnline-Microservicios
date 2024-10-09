@@ -48,7 +48,7 @@
     </div>
 
 
-<form action="/items/{{id}}/buy" method="post" class="form-control">
+<form action="/items/{{id}}/purchase" method="post" class="form-control">
     <div class="container">
         <div class="columns">
             <div class="column">
@@ -56,53 +56,52 @@
             </div>
             <div class="column">
                 <h3 class="is-size-4">{{^sizeByDefault}}Size and {{/sizeByDefault}}Quantity selection:</h3>
-                    <div class="columns is-multiline">
-                        {{^sizeByDefault}}
-                        <div class="column is-one-third">
-                            <label for="size">Size</label>
-                            <div class="form-control-field" id="size">
-                                {{#sizeS}}
-                                <label><input type="radio" id="size1" name="size" value="S" required/> S</label>
-                                {{/sizeS}}   
-                                {{#sizeM}}
-                                <label><input type="radio" id="size2" name="size" value="M" required/> M</label>
-                                {{/sizeM}}   
-                                {{#sizeL}} 
-                                <label><input type="radio" id="size3" name="size" value="L" required/> L</label>
-                                {{/sizeL}}   
-                                {{#sizeXL}}
-                                <label><input type="radio" id="size4" name="size" value="XL" required/> XL</label>
-                                {{/sizeXL}} 
-                            </div>
-                        </div>
-                        <div class="column is-one-third">
-                            <label for="quality">Stock:</label>
+                <div class="columns is-multiline">
+                    {{^sizeByDefault}}
+                    <div class="column is-one-third">
+                        <label for="size">Size</label>
+                        <div class="form-control-field" id="size">
                             {{#sizeS}}
-                            <p><strong>size S: </strong>{{stock1}}</p>
+                            <label><input type="radio" id="size1" name="size" value="S" required/> S</label>
                             {{/sizeS}}   
                             {{#sizeM}}
-                            <p><strong>size M: </strong>{{stock2}}</p>
+                            <label><input type="radio" id="size2" name="size" value="M" required/> M</label>
                             {{/sizeM}}   
                             {{#sizeL}} 
-                            <p><strong>size L: </strong>{{stock3}}</p>
+                            <label><input type="radio" id="size3" name="size" value="L" required/> L</label>
                             {{/sizeL}}   
                             {{#sizeXL}}
-                            <p><strong>size XL: </strong>{{stock4}}</p>
-                            {{/sizeXL}}       
-                        </div>  
-                        {{/sizeByDefault}}
-                        <div class="column is-one-third">
-                            <label for="quality">Quantity:</label>
-                            <input type="number" name="count" placeholder="amount to buy" class="form-control-field" min="1" required/>
-                        </div> 
-                         
-                    </div>
-                    <div class="columns is-multiline">
-                        <div class="column is-full is-marginless">
-                            <button class="btn btn-default btn-outline">Buy</button>
+                            <label><input type="radio" id="size4" name="size" value="XL" required/> XL</label>
+                            {{/sizeXL}} 
                         </div>
-                        {{status}}
                     </div>
+                    <div class="column is-one-third">
+                        <label for="quality">Stock:</label>
+                        {{#sizeS}}
+                        <p><strong>size S: </strong>{{stock1}}</p>
+                        {{/sizeS}}   
+                        {{#sizeM}}
+                        <p><strong>size M: </strong>{{stock2}}</p>
+                        {{/sizeM}}   
+                        {{#sizeL}} 
+                        <p><strong>size L: </strong>{{stock3}}</p>
+                        {{/sizeL}}   
+                        {{#sizeXL}}
+                        <p><strong>size XL: </strong>{{stock4}}</p>
+                        {{/sizeXL}}       
+                    </div>  
+                    {{/sizeByDefault}}
+                    <div class="column is-one-third">
+                        <label for="quality">Quantity:</label>
+                        <input type="number" name="count" placeholder="amount to buy" class="form-control-field" min="1" required/>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline">Buy</button>
+                    </div>
+                    {{status}}
+                </div>
             </div>
         </div>
     </div>

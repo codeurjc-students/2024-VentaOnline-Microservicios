@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import es.webapp.webapp.model.Item;
 import es.webapp.webapp.model.ItemToBuy;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
+import es.webapp.webapp.service.ItemToBuyService;
+import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -55,6 +55,10 @@ public class ItemController {
         } else {
             model.addAttribute("logged",false);
         }
+        model.addAttribute("sizeS",false);
+        model.addAttribute("sizeM",false);
+        model.addAttribute("sizeL",false);
+        model.addAttribute("sizeXL",false);
         model.addAttribute("sizeByDefault",false);
     }
 
@@ -133,50 +137,49 @@ public class ItemController {
         return "product";
     }
 
-    @PostMapping("/{id}/buy")
+    @PostMapping("/{id}/purchase")
     public String itemBuy(Model model, Item item, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
 
         Optional<Item> product = itemService.findById(id);
         if(product.isPresent()) {
-            product.get().setSize(item.getSize());
-        }
 
-        Principal principal = request.getUserPrincipal();
+            Principal principal = request.getUserPrincipal();
 
-        if(principal != null){
-            String name = principal.getName();
-            Optional<User> user = userService.findByUsername(name);
-            if(user.isPresent()) {
-                if(user.get().getShoppingCart() == null){
-                    ShoppingCart cart = new ShoppingCart();
-                    user.get().setShoppingCart(cart);
+            if(principal != null){
+                String name = principal.getName();
+                Optional<User> user = userService.findByUsername(name);
+                if(user.isPresent()) {
+                    if(user.get().getShoppingCart() == null){
+                        ShoppingCart cart = new ShoppingCart();
+                        user.get().setShoppingCart(cart);
+                    }
+                    shoppingCartService.save(user.get().getShoppingCart());
+
+                    itemToBuy.setItem(product.get());
+                    itemToBuy.setShoppingCart(user.get().getShoppingCart());
+
+                    itemToBuyService.save(itemToBuy);
+
+                    model.addAttribute("name",product.get().getName());
+                    model.addAttribute("price",product.get().getPrice());
+                    model.addAttribute("gender",product.get().getGender());
+                    
+                    showSizes(model,product);
+                    showStocks(model, product);
+        
+                    model.addAttribute("type",product.get().getType());
+                    model.addAttribute("description",product.get().getDescription());
+
+                    model.addAttribute("status","item successfully added to the cart");
+                    return "product";
+                } else {
+                    return "error";
                 }
-                shoppingCartService.save(user.get().getShoppingCart());
-
-                itemToBuy.setItem(product.get());
-                itemToBuy.setShoppingCart(user.get().getShoppingCart());
-
-                itemToBuyService.save(itemToBuy);
-
-                model.addAttribute("name",product.get().getName());
-                model.addAttribute("price",product.get().getPrice());
-                model.addAttribute("gender",product.get().getGender());
-                
-                showSizes(model,product);
-                showStocks(model, product);
-    
-                model.addAttribute("type",product.get().getType());
-                model.addAttribute("description",product.get().getDescription());
-
-                model.addAttribute("status","item successfully added to the cart");
-                return "product";
-            } else {
-                return "error";
             }
+            return "error";
+
         }
         return "error";
-
-        return "product";
     }
     
 }

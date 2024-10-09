@@ -21,6 +21,8 @@ public class ItemToBuy {
     @JsonIgnore
     private Item item;
 
+    private String size;
+
     private Integer count;
 
     @ManyToOne
@@ -39,6 +41,14 @@ public class ItemToBuy {
 
     public Long getId(){
         return id;
+    }
+
+    public String getSize(){
+        return size;
+    }
+
+    public void setSize(String size){
+        this.size = size;
     }
 
     public void setItem(Item item){

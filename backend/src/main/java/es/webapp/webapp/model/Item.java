@@ -46,8 +46,6 @@ public class Item {
     @Column(name = "sizes")
     private String[] sizes = new String[NUM];
 
-    private String size;
-
     @Column(name = "stocks")
     private Integer[] stocks = new Integer[NUM];
 
@@ -62,14 +60,6 @@ public class Item {
 
     public Item(){
         Arrays.fill(stocks, 0);
-    }
-
-    public void setSize(String size){
-        this.size = size;
-    }
-    
-    public String getSize(){
-        return size;
     }
 
     public void setSizes(String [] size){
