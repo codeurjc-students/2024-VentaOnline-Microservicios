@@ -10,11 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.UserService;
 
 @Controller
+@RequestMapping("/shoppingcart")
 public class ShoppingCartController {
 
     @Autowired
@@ -37,9 +40,23 @@ public class ShoppingCartController {
         }
     }
 
-    @GetMapping("/shoppingCart/page")
-    public String shoppingCartPage(Model model){
-        return "product";
+    @GetMapping("/page")
+    public String shoppingCartPage(Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+
+        if(principal != null){
+            String name = principal.getName();
+            Optional<User> user = userService.findByUsername(name);
+            if(user.isPresent()) {
+                if(user.get().getShoppingCart() == null){
+                    ShoppingCart cart = new ShoppingCart();
+                    user.get().setShoppingCart(cart);
+                }
+            }
+        }
+
+        return "shoppingCart";
     }
     
 }
