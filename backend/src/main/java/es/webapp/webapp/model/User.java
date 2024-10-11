@@ -27,6 +27,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "email")
     private String email;
 
@@ -74,7 +77,7 @@ public class User {
         this.shoppingCart = shoppingCart;
     }
 
-    public void addOrder(Order order){
+   /* public void addOrder(Order order){
         orders.add(order);
         order.setUser(this);
     }
@@ -82,7 +85,7 @@ public class User {
     public void removeOrder(Order order){
         orders.remove(order);
         order.setUser(null);
-    }
+    }*/
 
     public void setFavouritesItems (List<Item> favourites){
         this.favouritesItems = favourites;
@@ -116,6 +119,14 @@ public class User {
 
     public String getUsername(){
         return username;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void setEmail(String email){

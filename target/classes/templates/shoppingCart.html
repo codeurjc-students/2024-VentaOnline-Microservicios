@@ -31,7 +31,8 @@
         <div class="banner-container ">
             <h1>Shopping cart</h1>
             <h2 class="zmdi zmdi-shopping-cart"></h2> 
-            <a href="/"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            <a href="/orders/new"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            <div class="has-text-light">{{order}}</div>
         </div>
     </div>
 
@@ -63,7 +64,7 @@
 </body>
 <script>
 
-    let ruta='//localhost:8443/databases/shoppingcart/{{username}}/items';
+    let ruta='//localhost:8443/databases/shoppingcart/{{username}}/items/';
     let sizes = ['S','M','L','XL'];
   
 
@@ -76,16 +77,15 @@
     }
 
     function showFirstItem(items){
-        for(var i=0; i<items.item.sizes.length; i++){
-            if(items.item.sizes[i] == items.size){
-                if(items.item.stocks[i] >= 5){              
+        if(items.item.sizes == null){
+            if(items.item.stocks[i] >= 5){              
                     $('.slider').append(
                         '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                         '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                         '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                        '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
+                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
                         '</p></div>'
                     )
                 } else{ 
@@ -94,12 +94,37 @@
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                         '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                         '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                        '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
+                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
                         '</p></div>'
                     )
                 }
-                break;
+        } else {
+            for(var i=0; i<items.item.sizes.length; i++){
+                if(items.item.sizes[i] == items.size){
+                    if(items.item.stocks[i] >= 5){              
+                        $('.slider').append(
+                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
+                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
+                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                            '</p></div>'
+                        )
+                    } else{ 
+                        $('.slider').append(
+                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
+                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
+                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
+                            '</p></div>'
+                        )
+                    }
+                    break;
+                }
             }
         }
     }

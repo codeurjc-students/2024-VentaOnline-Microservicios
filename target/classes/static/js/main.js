@@ -52,6 +52,10 @@ function slider(n) {
     images[n].className += " active"
 }
 
+function newOrder(){
+    alert("order created successfully");
+}
+
 function next() {
     activeImg++
     if (activeImg > 2) {

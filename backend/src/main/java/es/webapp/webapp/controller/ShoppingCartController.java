@@ -59,10 +59,14 @@ public class ShoppingCartController {
                     ShoppingCart cart = new ShoppingCart();
                     user.get().setShoppingCart(cart);
                 }
+                model.addAttribute("order","");
+                return "shoppingCart";
+            } else {
+                return "error";
             }
-        }
-
-        return "shoppingCart";
+        } else {
+            return "error";
+        }       
     }
 
     @GetMapping("/items/{id}/remove")
@@ -72,6 +76,7 @@ public class ShoppingCartController {
 
         if(item.isPresent()) {
             itemToBuyService.deleteById(id);
+            model.addAttribute("order","");
             return "shoppingCart";
         }
         return "error";

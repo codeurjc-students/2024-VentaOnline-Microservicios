@@ -1,5 +1,6 @@
 package es.webapp.webapp.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "tbl_order")
 public class Order {
 
     @Id
@@ -28,14 +33,10 @@ public class Order {
     private Double totalCost;
 
     @Column(name="date")
-    private Date creationDate;
+    private LocalDate creationDate;
 
     @Column(name="state")
-    private State state;
-
-    public enum State{
-        PENDING, IN_PROGRESS, CONFIRMED, CANCELLED
-    }
+    private String state;
 
     public Order(){}
 
@@ -73,19 +74,19 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(Date creationDate){
+    public void setCreationDate(LocalDate creationDate){
         this.creationDate = creationDate;
     }
 
-    public Date getCreationDate(){
+    public LocalDate getCreationDate(){
         return creationDate;
     }
 
-    public void setState(State state){
+    public void setState(String state){
         this.state = state;
     }
 
-    public State getState(){
+    public String getState(){
         return state;
     }
 }
