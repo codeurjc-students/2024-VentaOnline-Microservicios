@@ -27,6 +27,7 @@ public class Order {
     private Integer id;
 
     @ManyToOne
+    
     private User user;
 
     @Column(name="totalCost")

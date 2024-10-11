@@ -1,6 +1,7 @@
 package es.webapp.webapp.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,10 @@ public class ShoppingCartController {
             model.addAttribute("admin", request.isUserInRole("ADMIN"));
             model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);
+            List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.get().getShoppingCart());
+            if(itemsToBuy.size() > 0){
+                model.addAttribute("neworder",false);
+            }
         } else {
             model.addAttribute("logged",false);
         }
@@ -58,6 +63,12 @@ public class ShoppingCartController {
                 if(user.get().getShoppingCart() == null){
                     ShoppingCart cart = new ShoppingCart();
                     user.get().setShoppingCart(cart);
+                }
+                List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.get().getShoppingCart());
+                if(itemsToBuy.size() > 0){
+                    model.addAttribute("neworder",false);
+                } else {
+                    model.addAttribute("neworder","");
                 }
                 model.addAttribute("order","");
                 return "shoppingCart";

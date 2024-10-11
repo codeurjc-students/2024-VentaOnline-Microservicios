@@ -48,9 +48,14 @@ public class OrderController {
             model.addAttribute("admin", request.isUserInRole("ADMIN"));
             model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);
+            List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.get().getShoppingCart());
+            if(itemsToBuy.size() > 0){
+                model.addAttribute("neworder",false);
+            }
         } else {
             model.addAttribute("logged",false);
         }
+        
         model.addAttribute("order","");
     }
 
@@ -69,6 +74,7 @@ public class OrderController {
             for(ItemToBuy item: itemsToBuy){
                 cost += item.getItem().getPrice();
                 item.setOrder(order);
+                item.setShoppingCart(null);
             }
 
             order.setTotalCost(cost);
@@ -76,6 +82,8 @@ public class OrderController {
             order.setCreationDate(LocalDate.now());
             order.setUser(user.get());
             orderService.save(order);
+           
+            model.addAttribute("neworder",true);
             model.addAttribute("order","order successfully created");
 
             return "shoppingCart";

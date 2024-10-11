@@ -31,8 +31,14 @@
         <div class="banner-container ">
             <h1>Shopping cart</h1>
             <h2 class="zmdi zmdi-shopping-cart"></h2> 
-            <a href="/orders/new"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            {{#neworder}}
             <div class="has-text-light">{{order}}</div>
+            <h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">CART EMPTY !!!</h1>
+            {{/neworder}}
+            {{^neworder}}
+            <a href="/orders/new"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            
+            {{/neworder}}
         </div>
     </div>
 
@@ -64,7 +70,7 @@
 </body>
 <script>
 
-    let ruta='//localhost:8443/databases/shoppingcart/{{username}}/items/';
+    let ruta='/databases/shoppingcart/{{username}}/items';
     let sizes = ['S','M','L','XL'];
   
 
@@ -78,7 +84,7 @@
 
     function showFirstItem(items){
         if(items.item.sizes == null){
-            if(items.item.stocks[i] >= 5){              
+            if(items.item.stock >= 5){              
                     $('.slider').append(
                         '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
@@ -102,7 +108,7 @@
         } else {
             for(var i=0; i<items.item.sizes.length; i++){
                 if(items.item.sizes[i] == items.size){
-                    if(items.item.stocks[i] >= 5){              
+                    if(items.item.stock >= 5){              
                         $('.slider').append(
                             '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
                             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
@@ -141,15 +147,15 @@
         )
     }
 
-    function showPreviousButton(){
+    function showPreviousButton(n){
         $('.button-left').append(
-            '<div class="slider-button-left slider-buttons" onclick="previus()"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
+            '<div class="slider-button-left slider-buttons" onclick="previus(' + n + ')"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
         )
     }
 
-    function showNextButton(){
+    function showNextButton(n){
         $('.button-right').append(
-            '<div class="slider-button-right slider-buttons" onclick="next()"><i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i></div>'
+            '<div class="slider-button-right slider-buttons" onclick="next(' + n + ')"><i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i></div>'
         )
     }
 
@@ -161,8 +167,9 @@
                 for(var i=1; i<items.length; i++){
                     showOtherItems(items[i]);
                 }
-                showPreviousButton();
-                showNextButton();
+                console.log(items.length);
+                showPreviousButton(items.length);
+                showNextButton(items.length);
             }
         });
 
