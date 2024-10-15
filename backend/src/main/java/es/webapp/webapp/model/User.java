@@ -2,6 +2,7 @@ package es.webapp.webapp.model;
 
 import java.sql.Blob;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +41,7 @@ public class User {
     private String rol;
 
     private String passwordConfirmation;
+    //private Item item;
 
     @Lob
     //@Type(type = "org.hibernate.type.ImageType")
@@ -53,13 +55,15 @@ public class User {
     @ManyToMany
     private List<Item> favouritesItems;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
     private ShoppingCart shoppingCart;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    public User(){}
+    public User(){
+        favouritesItems = new ArrayList<>();
+    }
 
     public Direction getDirection(){
         return direction;
@@ -95,14 +99,30 @@ public class User {
         return favouritesItems;
     }
 
+    public void setOrders (List<Order> orders){
+        this.orders = orders;
+    }
+
+    public List<Order> getOrders(){
+        return orders;
+    }
+
+    /*public void setItem(Item item){
+        this.item = item;
+    }
+
+    public Item getItem(){
+        return item;
+    }*/
+
     /*public void addFavouriteItem(Item favouriteItem){
         favouritesItems.add(favouriteItem);
-        favouriteItem.addUser(this);
+        favouriteItem.setUser(this);
     }
 
     public void removeFavouritesItems(Item favouriteItem){
         favouritesItems.remove(favouriteItem);
-        favouriteItem.removeUser(null);
+        favouriteItem.setUser(null);
     }*/
 
     public void setId(Integer id){

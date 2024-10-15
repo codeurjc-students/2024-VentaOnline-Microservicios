@@ -3,6 +3,8 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -182,6 +184,13 @@ public class ItemController {
         return "error";
     }
 
-    
-    
+    @GetMapping("/{id}/favourites/{username}/new")
+    public String addFavourite(Model model, @PathVariable Integer id, @PathVariable String username)  {
+        Optional<Item> item = itemService.findById(id);
+        Optional<User> user = userService.findByUsername(username);
+        
+        userService.newItem(user.get().getId(),item.get());
+        return "index";
+
+    }
 }

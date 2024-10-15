@@ -50,9 +50,10 @@ public class Item {
     private Integer[] stocks = new Integer[NUM];
 
     private Integer stock;
+    //private User user;
 
     @ManyToMany
-    private List<User> favourites;
+    private List<User> favouritesUsers;
 
     @OneToMany(mappedBy="item")
     private List<ItemToBuy> itemsToBuy;
@@ -60,6 +61,7 @@ public class Item {
 
     public Item(){
         Arrays.fill(stocks, 0);
+        favouritesUsers = new ArrayList<>();
     }
 
     public void setSizes(String [] size){
@@ -69,6 +71,14 @@ public class Item {
     public String [] getSizes(){
         return sizes;
     }
+
+    /*public void setUser(User user){
+        this.user = user;
+    }
+
+    public User getUser(){
+        return user;
+    }*/
 
     public void setStock(Integer stock){
         this.stock = stock;
@@ -96,21 +106,25 @@ public class Item {
         itemToBuy.setItem(null);
     }
 
-    public List<User> getFavourites(){
-        return favourites;
+    //complete users listing
+    public List<User> getFavouritesUsers(){
+        return favouritesUsers;
     }
 
     public void setFavouritesUsers(List<User> favourites){
-        this.favourites = favourites;
+        this.favouritesUsers = favourites;
     }
 
-    public void addUser(User favouriteUser){
-        this.favourites.add(favouriteUser);
+    /*addition of a particular user
+    public void addUser(User user){
+        this.favouritesUsers.add(user);
+        user.setItem(this);
     }
 
     public void removeUser(User favouriteUser){
         this.favourites.remove(favouriteUser);
-    }
+        user.setItem(null);
+    }*/
 
     public void setName(String name){
         this.name = name;

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.webapp.webapp.model.Item;
+import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.ItemRepo;
 
 @Service
@@ -15,6 +16,10 @@ public class ItemService {
     
     @Autowired
     private ItemRepo itemRepo;
+
+    public Item save(Item item){
+        return itemRepo.save(item);
+    }
 
     public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
@@ -27,4 +32,8 @@ public class ItemService {
     public Page<Item> findByName(String name, Pageable page){
         return itemRepo.findByName(name, page);
     }
+
+    /*public Page<Item> findByUser(User user, Pageable page){
+        return itemRepo.findByUser(user, page);
+    }*/
 }

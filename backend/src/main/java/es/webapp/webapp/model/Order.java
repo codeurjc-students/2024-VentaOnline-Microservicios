@@ -1,22 +1,14 @@
 package es.webapp.webapp.model;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tbl_order")
@@ -37,9 +29,13 @@ public class Order {
     private LocalDate creationDate;
 
     @Column(name="state")
-    private String state;
+    private State state;
 
     public Order(){}
+
+    public enum State {
+        PENDING, CONFIRMED, DELIVERED, CANCELLED
+    }
 
     public void setId(Integer id){
         this.id = id;
@@ -83,11 +79,11 @@ public class Order {
         return creationDate;
     }
 
-    public void setState(String state){
+    public void setState(State state){
         this.state = state;
     }
 
-    public String getState(){
+    public State getState(){
         return state;
     }
 }

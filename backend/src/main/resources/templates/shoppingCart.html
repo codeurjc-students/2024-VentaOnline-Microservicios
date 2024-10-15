@@ -36,7 +36,7 @@
             <h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">CART EMPTY !!!</h1>
             {{/neworder}}
             {{^neworder}}
-            <a href="/orders/new"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            <a href="//localhost:8445/orders/new/user/{{id}}"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
             
             {{/neworder}}
         </div>
@@ -167,9 +167,10 @@
                 for(var i=1; i<items.length; i++){
                     showOtherItems(items[i]);
                 }
-                console.log(items.length);
                 showPreviousButton(items.length);
                 showNextButton(items.length);
+            } else {
+                console.log(null);
             }
         });
 

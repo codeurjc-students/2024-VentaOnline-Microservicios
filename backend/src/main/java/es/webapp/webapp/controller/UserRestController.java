@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +40,46 @@ public class UserRestController {
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }    
+    }
+    
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(User userUpdated, @PathVariable Integer id, MultipartFile imageField) throws IOException{
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()){
+            if(!imageField.isEmpty()){
+                userUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+            }
+            if(userUpdated.getPassword() != null && userUpdated.getPassword() != null && userUpdated.getPassword().equals(userUpdated.getPasswordConfirmation())){
+                userService.updatePassword(userUpdated);
+            } else {
+                userService.setPassword(id, userUpdated);
+            }
+            userService.update(id,userUpdated);
+            return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/users/{id}")
+    public User getUserByUsername(@PathVariable Integer id){
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/api/users/{username}")
+    public ResponseEntity<User> getUserByUsernameAPI(@PathVariable String username){
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{

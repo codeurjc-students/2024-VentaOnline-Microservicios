@@ -1,23 +1,17 @@
 package es.webapp.webapp.controller;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.UserService;
 
@@ -40,8 +34,10 @@ public class Home {
             model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);
         } else {
+            model.addAttribute("username","");
             model.addAttribute("logged",false);
         }
+        model.addAttribute("status","");
     }
 
     @GetMapping("/")
