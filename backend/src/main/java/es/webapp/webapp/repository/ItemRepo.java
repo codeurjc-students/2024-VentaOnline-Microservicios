@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import es.webapp.webapp.model.Item;
-import es.webapp.webapp.model.User;
 
 public interface ItemRepo extends JpaRepository<Item, Integer> {
 

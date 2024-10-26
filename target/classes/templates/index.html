@@ -44,23 +44,18 @@
                         <a href="/login"><img src=/databases/{{username}}/image alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{username}}" class="nav-menu-link">Orders</a></li>
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
                         <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
                     </div>
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
-                    {{#user}}
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{id}}" class="nav-menu-link">Orders</a></li>
-                    {{/user}}
-                    {{#admin}}
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>
-                    {{/admin}}
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
                     {{/admin}}
                     <form action="/logout" method="post">
                         <button class="nav-menu-link" type="submit">Log out</button>						
                     </form>
-
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">

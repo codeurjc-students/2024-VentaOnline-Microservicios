@@ -2,7 +2,6 @@ package es.webapp.webapp.controller;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;

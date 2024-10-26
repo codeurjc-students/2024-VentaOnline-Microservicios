@@ -3,6 +3,7 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -35,27 +36,30 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        return userService.findAll();
+    }
+
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(User userUpdated, @PathVariable Integer id, MultipartFile imageField) throws IOException{
+    public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
         Optional<User> user = userService.findById(id);
         if(user.isPresent()){
-            if(!imageField.isEmpty()){
-                userUpdated.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-            }
-            if(userUpdated.getPassword() != null && userUpdated.getPassword() != null && userUpdated.getPassword().equals(userUpdated.getPasswordConfirmation())){
+            userUpdated.setImageFile(user.get().getImageFile());
+            if(userUpdated.getPassword() != null && userUpdated.getPasswordConfirmation() != null && userUpdated.getPassword().equals(userUpdated.getPasswordConfirmation())){
                 userService.updatePassword(userUpdated);
             } else {
                 userService.setPassword(id, userUpdated);
             }
             userService.update(id,userUpdated);
-            return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+            return new ResponseEntity<>(userUpdated, HttpStatus.OK);        
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -90,7 +94,9 @@ public class UserRestController {
         
         user.get().setImageFile(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
 
-        userService.add(user.get());
+        
+        userService.setPassword(id,user.get());
+        userService.update(id, user.get());
 
         if(user.isPresent()){
             return ResponseEntity.created(location).build();

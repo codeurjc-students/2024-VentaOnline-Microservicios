@@ -1,12 +1,9 @@
 package es.webapp.webapp.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +30,10 @@ public class UserService {
 
     public Optional<User> findById(Integer id){
         return userRepo.findById(id);
+    }
+
+    public List<User> findAll(){
+        return userRepo.findAll();
     }
 
     public Optional<User> findByUsername(String name){
@@ -105,5 +106,4 @@ public class UserService {
         userRepo.save(newUser);
     }
 
-    
 }

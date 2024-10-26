@@ -3,8 +3,6 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
-import java.util.List;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 

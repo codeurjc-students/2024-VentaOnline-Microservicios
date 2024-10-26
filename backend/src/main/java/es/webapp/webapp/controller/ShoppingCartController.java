@@ -57,9 +57,9 @@ public class ShoppingCartController {
         Principal principal = request.getUserPrincipal();
 
         if(principal != null){
-            String name = principal.getName();
-            System.out.println(name);
-            Optional<User> user = userService.findByUsername(name);
+            String username = principal.getName();
+            //System.out.println(name);
+            Optional<User> user = userService.findByUsername(username);
             if(user.isPresent()) {
                 if(user.get().getShoppingCart() == null){
                     ShoppingCart cart = new ShoppingCart();

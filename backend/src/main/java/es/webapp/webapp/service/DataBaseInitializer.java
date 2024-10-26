@@ -19,7 +19,7 @@ import es.webapp.webapp.repository.UserRepo;
 @Service
 public class DataBaseInitializer {
 
-    @Autowired
+    /*@Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -57,5 +57,5 @@ public class DataBaseInitializer {
     public void setUserImage(User user, String ClasspathResource)throws IOException{
 		Resource image = new ClassPathResource(ClasspathResource);
 		user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-	}
+	}*/
 }
