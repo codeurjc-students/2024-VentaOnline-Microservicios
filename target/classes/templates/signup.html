@@ -41,22 +41,23 @@
                 <h2 class="is-size-4">Registration</h2>
                 <form action="/new" method="post" class="form-control" enctype="multipart/form-data">
 
-                    <input type="text" name="username" placeholder="User name" class="form-control-field"></input>
-                    <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
-                    <input type="password" name="encodedPassword" placeholder="Password" class="form-control-field"></input>
-                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field"></input>
+                    <input type="text" name="username" placeholder="User name" class="form-control-field" required></input>
+                    <input type="text" name="name" placeholder="Name" class="form-control-field" required></input>
+                    <input type="email" name="email" placeholder="Email" class="form-control-field" required></input>
+                    <input type="password" name="encodedPassword" placeholder="Password" class="form-control-field" required></input>
+                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field" required></input>
                     <div class="user-img">
                         <input type='file' name='imageField' accept=".jpg, .jpeg"/>
                     </div> 
                     <h2 class="is-size-4">Address</h2>
                     <div class="columns">
                         <div class="column">
-                            <input type="text" name="street" placeholder="Street" class="form-control-field"></input>
-                            <input type="number" name="number" placeholder="Number" class="form-control-field"></input>
+                            <input type="text" name="street" placeholder="Street" class="form-control-field" required></input>
+                            <input type="number" name="number" placeholder="Number" class="form-control-field" required></input>
                         </div>
                         <div class="column">
-                            <input type="number" name="zipCode" placeholder="00000" class="form-control-field"></input>
-                            <input type="text" name="city" placeholder="City" class="form-control-field"></input>
+                            <input type="number" name="zipCode" placeholder="00000" class="form-control-field" required></input>
+                            <input type="text" name="city" placeholder="City" class="form-control-field" required></input>
                         </div>
                     </div>
                     <button class="btn btn-default btn-primary">Create account</button>

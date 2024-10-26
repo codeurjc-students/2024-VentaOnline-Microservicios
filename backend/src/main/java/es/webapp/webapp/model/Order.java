@@ -1,53 +1,47 @@
 package es.webapp.webapp.model;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tbl_order")
 public class Order {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
+    
     private User user;
-
-    @OneToMany(mappedBy="order")
-    private List<ItemToBuy> itemsToBuy;
 
     @Column(name="totalCost")
     private Double totalCost;
 
     @Column(name="date")
-    private Date creationDate;
+    private LocalDate creationDate;
 
     @Column(name="state")
     private State state;
 
-    public enum State{
-        PENDING, IN_PROGRESS, CONFIRMED, CANCELLED
-    }
-
     public Order(){}
 
-    public void setId(Long id){
+    public enum State {
+        PENDING, CONFIRMED, DELIVERED, CANCELLED
+    }
+
+    public void setId(Integer id){
         this.id = id;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
     }
 
@@ -59,7 +53,7 @@ public class Order {
         return user;
     }
     
-    public void addItemToBuy(ItemToBuy itemToBuy){
+    /*public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
         itemToBuy.setOrder(this);
     }
@@ -67,7 +61,7 @@ public class Order {
     public void removeItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.remove(itemToBuy);
         itemToBuy.setOrder(null);
-    }
+    }*/
 
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
@@ -77,11 +71,11 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(Date creationDate){
+    public void setCreationDate(LocalDate creationDate){
         this.creationDate = creationDate;
     }
 
-    public Date getCreationDate(){
+    public LocalDate getCreationDate(){
         return creationDate;
     }
 

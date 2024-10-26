@@ -1,7 +1,7 @@
 package es.webapp.webapp.model;
 
 import java.sql.Blob;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import es.webapp.webapp.data.Gender;
-import es.webapp.webapp.data.Size;
-import es.webapp.webapp.data.Type;
-
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
+
+    private static final Integer NUM = 4; 
 
     @Id
     @Column(name = "id")
@@ -45,20 +43,58 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "size")
-    private String size;
+    @Column(name = "sizes")
+    private String[] sizes = new String[NUM];
 
-    @Column(name = "stock")
+    @Column(name = "stocks")
+    private Integer[] stocks = new Integer[NUM];
+
     private Integer stock;
+    //private User user;
 
     @ManyToMany
-    private List<User> favourites;
+    private List<User> favouritesUsers;
 
     @OneToMany(mappedBy="item")
     private List<ItemToBuy> itemsToBuy;
 
 
-    public Item(){}
+    public Item(){
+        Arrays.fill(stocks, 0);
+        favouritesUsers = new ArrayList<>();
+    }
+
+    public void setSizes(String [] size){
+        this.sizes = size;
+    }
+    
+    public String [] getSizes(){
+        return sizes;
+    }
+
+    /*public void setUser(User user){
+        this.user = user;
+    }
+
+    public User getUser(){
+        return user;
+    }*/
+
+    public void setStock(Integer stock){
+        this.stock = stock;
+    }
+    
+    public Integer getStock(){
+        return stock;
+    }
+
+    public void setStocks(Integer [] stock){
+        this.stocks = stock;
+    }
+
+    public Integer [] getStocks(){
+        return stocks;
+    }
 
     public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
@@ -70,21 +106,25 @@ public class Item {
         itemToBuy.setItem(null);
     }
 
-    public List<User> getFavourites(){
-        return favourites;
+    //complete users listing
+    public List<User> getFavouritesUsers(){
+        return favouritesUsers;
     }
 
     public void setFavouritesUsers(List<User> favourites){
-        this.favourites = favourites;
+        this.favouritesUsers = favourites;
     }
 
-    public void addUser(User favouriteUser){
-        this.favourites.add(favouriteUser);
+    /*addition of a particular user
+    public void addUser(User user){
+        this.favouritesUsers.add(user);
+        user.setItem(this);
     }
 
     public void removeUser(User favouriteUser){
         this.favourites.remove(favouriteUser);
-    }
+        user.setItem(null);
+    }*/
 
     public void setName(String name){
         this.name = name;
@@ -140,21 +180,5 @@ public class Item {
     
     public String getType(){
         return type;
-    }
-
-    public void setSize(String size){
-        this.size = size;
-    }
-    
-    public String getSize(){
-        return size;
-    }
-
-    public void setStock(Integer stock){
-        this.stock = stock;
-    }
-
-    public Integer getStock(){
-        return stock;
     }
 }

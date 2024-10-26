@@ -16,6 +16,10 @@ public class ItemService {
     @Autowired
     private ItemRepo itemRepo;
 
+    public Item save(Item item){
+        return itemRepo.save(item);
+    }
+
     public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
     }
@@ -27,4 +31,8 @@ public class ItemService {
     public Page<Item> findByName(String name, Pageable page){
         return itemRepo.findByName(name, page);
     }
+
+    /*public Page<Item> findByUser(User user, Pageable page){
+        return itemRepo.findByUser(user, page);
+    }*/
 }

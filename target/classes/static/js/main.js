@@ -52,18 +52,22 @@ function slider(n) {
     images[n].className += " active"
 }
 
-function next() {
+function newOrder(){
+    alert("order created successfully");
+}
+
+function next(n) {
     activeImg++
-    if (activeImg > 2) {
+    if (activeImg > n) {
         activeImg = 0
     }
     slider(activeImg)
 }
 
-function previus() {
+function previus(n) {
     activeImg--
     if (activeImg < 0) {
-        activeImg = 2
+        activeImg = n
     }
     slider(activeImg)
 }

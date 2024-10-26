@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ItemToBuy {
@@ -15,30 +14,37 @@ public class ItemToBuy {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
-    @JsonIgnore
     private Item item;
+
+    private String size;
 
     private Integer count;
 
     @ManyToOne
-    @JsonIgnore
-    private ShoppingCart shoppingCart;
+    private Order order;
 
     @ManyToOne
-    @JsonIgnore
-    private  Order order;
+    private ShoppingCart shoppingCart;
 
     public ItemToBuy() {}
 
-    public void setId(Long id){
+    public void setId(Integer id){
         this.id=id;
     }
 
-    public Long getId(){
+    public Integer getId(){
         return id;
+    }
+
+    public String getSize(){
+        return size;
+    }
+
+    public void setSize(String size){
+        this.size = size;
     }
 
     public void setItem(Item item){
@@ -47,6 +53,14 @@ public class ItemToBuy {
 
     public Item getItem(){
         return item;
+    }
+
+    public void setOrder(Order order){
+        this.order=order;
+    }
+
+    public Order getOrder(){
+        return order;
     }
 
     public void setCount(Integer count){
@@ -64,12 +78,5 @@ public class ItemToBuy {
     public ShoppingCart getShoppingCart(){
         return shoppingCart;
     }
-
-    public void setOrder(Order order){
-        this.order=order;
-    }
-
-    public Order getOrder(){
-        return order;
-    }    
+   
 }

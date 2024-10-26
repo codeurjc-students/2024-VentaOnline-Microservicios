@@ -3,6 +3,7 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,12 +36,54 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }    
+    }
+    
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        return userService.findAll();
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()){
+            userUpdated.setImageFile(user.get().getImageFile());
+            if(userUpdated.getPassword() != null && userUpdated.getPasswordConfirmation() != null && userUpdated.getPassword().equals(userUpdated.getPasswordConfirmation())){
+                userService.updatePassword(userUpdated);
+            } else {
+                userService.setPassword(id, userUpdated);
+            }
+            userService.update(id,userUpdated);
+            return new ResponseEntity<>(userUpdated, HttpStatus.OK);        
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/users/{id}")
+    public User getUserByUsername(@PathVariable Integer id){
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/api/users/{username}")
+    public ResponseEntity<User> getUserByUsernameAPI(@PathVariable String username){
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
@@ -50,7 +94,9 @@ public class UserRestController {
         
         user.get().setImageFile(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
 
-        userService.add(user.get());
+        
+        userService.setPassword(id,user.get());
+        userService.update(id, user.get());
 
         if(user.isPresent()){
             return ResponseEntity.created(location).build();

@@ -1,3 +1,6 @@
 [submodule "Inventory-Microservice"]
 	path = Inventory-Microservice
 	url = https://github.com/MaAlami2020/Inventory-Microservice.git
+[submodule "Order-Microservice"]
+	path = Order-Microservice
+	url = https://github.com/MaAlami2020/Order-Microservice.git
