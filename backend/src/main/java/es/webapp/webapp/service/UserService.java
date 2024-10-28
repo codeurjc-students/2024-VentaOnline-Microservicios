@@ -36,8 +36,12 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public Optional<User> findByUsername(String name){
-        return userRepo.findByUsername(name);
+    public Optional<User> findByUsername(String username){
+        return userRepo.findByUsername(username);
+    }
+
+    public Optional<User> findByName(String name){
+        return userRepo.findByName(name);
     }
 
 

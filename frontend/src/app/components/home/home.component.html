@@ -1,0 +1,155 @@
+<body>
+    <!-- Barra de navegación -->
+    <header>
+        <nav class="navbar-top">
+            <ul class="navbar-top-ul">
+                <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Registro</a>-->
+                </li>
+                <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Iniciar sesión</a>-->
+                </li>
+                <li #user *ngIf="loginService.isLogged()" class="navbar-top-item">
+                    <!--user is registered and logged-->
+
+                    
+                    <a href="/shoppingcart/page" class="navbar-top-links">
+                        <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
+                        <!-- <i class="zmdi zmdi-chevron-down"></i> -->
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!--<nav class="navbar">
+            <nav class="nav-menu" id="mySidenav">
+                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
+                <ul class="nav-menu-ul">
+                    {{#logged}}
+                    {{#user}}
+                    <div class="user-img">
+                        <a href="/login"><img src=/databases/{{username}}/image alt="" width="50" height="50"></img></a>
+                    </div>
+                    <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{username}}" class="nav-menu-link">Orders</a></li>
+                    {{/user}}
+                    {{#admin}}
+                    <div class="user-img">
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
+                    </div>
+                    <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
+                    {{/admin}}
+                    <form action="/logout" method="post">
+                        <button class="nav-menu-link" type="submit">Log out</button>						
+                    </form>
+                    {{/logged}}
+                    {{^logged}}
+                    <div class="user-img">
+                        <img src="/databases/users/39/image" alt="" width="50" height="50"></img>
+                    </div>   
+                    <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
+                    <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
+                    {{/logged}}
+                </ul>
+                <form>
+                    <div>
+                        <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
+                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>                       
+                        <input class="submit" type="button" value="search"/>
+                        
+                    </div>
+                </form>
+                <!--items listing-->     
+            <!--</nav>
+        </nav>-->
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-cover">
+        <div class="banner-container ">
+            <h1 class="title-cover">AVE</h1>
+        </div>
+    </div>
+
+    <!-- Sección de fotografías -->
+    <div class="container">
+
+        <div class="topbar-filter fw">
+            <p id="total-fav-item"></p>
+		</div>   
+
+        <div class="columns is-mobile is-multiline" id="favouritesItems">
+            <!--favourites items-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="fav-items-pagination">               
+                            <li><button class="nav-menu-lin">more results</button></li>
+                        </ul>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+
+        <!--item searching-->
+        <div class="topbar-filter fw">
+			<p id="total-item-founded"></p>
+		</div>
+        
+        <!--items listing founded-->
+        <div class="columns is-mobile is-multiline" id="itemFoundedListing">
+            <!--items info founded-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="items-founded-pagination">               
+                            <li><button class="nav-menu-lin">more results</button></li>
+                        </ul>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+
+        <div class="topbar-filter fw">
+			<p id="total-item"></p>
+		</div>
+        <!--items listing-->
+        <div class="columns is-mobile is-multiline" id="itemListing">
+            <!--items info-->
+        </div>
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <ul class="pagination">               
+                            <li><button class="nav-menu-lin">more results</button></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--pagination-->
+    
+<!--spinner-->    
+    <div id="spinner-div" class="pt-5">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+    </div>
+
+    <div id="plotlyChart" width="400" height="150"></div>
+
+    <footer class="footer">     
+        <div class="footer-bar-top">
+            <li class="footer-bar-top-links">2024 Avenue Fashion</li>
+        </div>
+    </footer>
+    <!--<script src="/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+    
+</body>

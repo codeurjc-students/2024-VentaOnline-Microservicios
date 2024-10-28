@@ -2,9 +2,12 @@ package es.webapp.webapp.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.security.Principal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +50,17 @@ public class UserRestController {
     public List<User> getUsers(){
         return userService.findAll();
     }
+
+    @GetMapping("/users/current")
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        Optional<User> user = userService.findByName(principal.getName());
+        if(user.isPresent()){
+            return ResponseEntity.ok(user.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
