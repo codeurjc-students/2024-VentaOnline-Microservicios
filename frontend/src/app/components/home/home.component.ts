@@ -21,16 +21,25 @@ export class HomeComponent {
 
   constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
 
+  ngOnInit(){
+    this.itemService.getItems().subscribe(
+      items => {
+
+      },
+      error => alert(error)
+    );
+  }
+
   logout(){
-    this.loginService.logout();
-    this.router.navigate(['/home']);
+    //this.loginService.logout();
+    //this.router.navigate(['/home']);
   }
 
   searchItem(){
-    this.itemService.getItems().subscribe(
+    this.itemService.getFoundedItems().subscribe(
       items => {
         let data: any = items;
-        console.log(data);
+        //console.log(data);
         for(var i=0; i<data.content.length; i++){
           if(data.content[i].title == this.name){
             this.itemsFounded.push(data.content[i]);
