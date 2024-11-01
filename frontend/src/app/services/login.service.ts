@@ -1,15 +1,19 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { User } from '../models/User.model';
 
 
-const USER_URL = '/databases/users';
+const ROOT_URL = '//localhost:8443/databases';
+const AUTH_URL = '//localhost:8443/api/auth';
+const USER_URL = '/users';
+
 
 @Injectable({ providedIn: 'root'})
 export class LoginService {
 
     user: any;
+    admin:any;
     logged: boolean = false;
     
     //constructor
@@ -18,7 +22,7 @@ export class LoginService {
     }
 
     reqIsLogged() {
-        this.https.get(USER_URL+ '/current', {withCredentials: true}).subscribe(
+        this.https.get(ROOT_URL + USER_URL+ '/current', {withCredentials: true}).subscribe(
             response => {
                 this.user = response as User;
                 this.logged = true;
@@ -28,11 +32,39 @@ export class LoginService {
         );
     }
 
+    logout(){
+        this.https.post(AUTH_URL + '/logout', { withCredentials: true})
+        .subscribe((resp: any) => {
+            this.logged = false;
+            this.user = undefined;
+        });
+    }
+
     isLogged(){
         return this.logged;
     }
 
+    isUser(){
+        return this.user && this.user.rol.indexOf('USER') !== -1;
+    }
+
+    isAdmin(){
+        return this.admin && this.admin.rol.indexOf('ADMIN') !== -1;
+    }
+
     handleError(error: any){
         return throwError(() => "Server error (" + error.status + "): " + error.text());
+    }
+
+    getUserImage(){
+        return ROOT_URL + '/' + this.user.username + '/image'; 
+    }
+
+    getAnonymousImage(){
+        return ROOT_URL + USER_URL + '/39/image';
+    }
+
+    getUserName(){
+        return this.user.username;
     }
 }

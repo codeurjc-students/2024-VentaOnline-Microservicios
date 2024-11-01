@@ -52,9 +52,9 @@ public class UserRestController {
     }
 
     @GetMapping("/users/current")
-    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+    public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        Optional<User> user = userService.findByName(principal.getName());
+        Optional<User> user = userService.findByUsername(principal.getName());
         if(user.isPresent()){
             return ResponseEntity.ok(user.get());
         }
