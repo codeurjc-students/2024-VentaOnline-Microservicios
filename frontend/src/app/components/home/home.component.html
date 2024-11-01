@@ -112,12 +112,46 @@
         </div>
 
         <div class="topbar-filter fw">
-			<p id="total-item"></p>
+			<p id="total-item" *ngIf="capacity"><span>{{capacity}} items</span> in total</p>
 		</div>
         <!--items listing-->
         <div class="columns is-mobile is-multiline" id="itemListing">
+
             <!--items info-->
+            <div class="column is-half-mobile is-one-quarter-desktop">
+                <div *ngFor="let item of items">
+                    <div class="card">
+                        <span class="price">{{item.price}}</span>
+                        <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                        <div #user *ngIf="loginService.isUser()">
+                            <div class="card-simple-options">
+                                <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">ADD</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
+                            <h2 class="has-text-centered">{{item.description}}
+                                <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
+                            </h2>
+                            <div class="card-buttons">
+                                <div *ngIf="loginService.isLogged()">
+                                    <div #user *ngIf="loginService.isUser()">
+                                        <a [routerLink]="['/items/' + item.id + '/favourites/' + loginService.getUserName() + '/new']" class="btn btn--mini-rounded">
+                                            <i class="zmdi zmdi-favorite-outline"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="page-single">
             <div class="container">
                 <div class="row">

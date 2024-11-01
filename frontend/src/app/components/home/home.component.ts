@@ -16,15 +16,18 @@ import { ItemService } from '../../services/item.service';
 export class HomeComponent {
 
   name: any;
+  capacity: number = 0;
+  private tam: number = 10;
   itemsFounded: Item[] = [];
   items: Item[] = [];
 
   constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
 
   ngOnInit(){
-    this.itemService.getItems().subscribe(
+    this.itemService.getItems(this.tam).subscribe(
       items => {
-
+        this.capacity = items.totalElements;
+        this.items = items.content;
       },
       error => alert(error)
     );
@@ -48,6 +51,10 @@ export class HomeComponent {
       },
       error => alert(error)
     );
+  }
+
+  itemImage(id: number | undefined){
+    return this.itemService.getItemImage(id);
   }
 
 }
