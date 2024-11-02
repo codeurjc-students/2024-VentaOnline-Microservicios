@@ -4,8 +4,8 @@ import { throwError } from 'rxjs';
 import { User } from '../models/User.model';
 
 
-const ROOT_URL = '//localhost:8443/databases';
-const AUTH_URL = '//localhost:8443/api/auth';
+const ROOT_URL = 'https://localhost:8443/databases';
+const AUTH_URL = 'https://localhost:8443/api/auth';
 const USER_URL = '/users';
 
 

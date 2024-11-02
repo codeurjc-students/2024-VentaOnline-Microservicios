@@ -22,6 +22,7 @@ import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.UserService;
 
+
 @RestController
 @RequestMapping("/databases")
 public class ItemRestController {
@@ -55,7 +56,7 @@ public class ItemRestController {
         }
     }
 
-    @GetMapping("/items/{id}/image")
+    /*@GetMapping("/items/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable Integer id) throws SQLException {
 
         Optional<Item> item = itemService.findById(id);
@@ -69,5 +70,5 @@ public class ItemRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 }

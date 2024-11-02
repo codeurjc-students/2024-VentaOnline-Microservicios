@@ -5,7 +5,6 @@ import { LoginService } from '../../services/login.service';
 import { Item } from '../../models/Item.model';
 import { ItemService } from '../../services/item.service';
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -29,7 +28,7 @@ export class HomeComponent {
         this.capacity = items.totalElements;
         this.items = items.content;
       },
-      error => alert(error)
+      error => console.log(error)
     );
   }
 
@@ -54,7 +53,7 @@ export class HomeComponent {
   }
 
   itemImage(id: number | undefined){
-    return this.itemService.getItemImage(id);
+    return  'https://localhost:8444/databases/items/' + id + '/image';
   }
 
 }

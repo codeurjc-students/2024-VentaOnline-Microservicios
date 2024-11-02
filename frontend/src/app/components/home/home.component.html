@@ -1,4 +1,4 @@
-<body>
+
     <!-- Barra de navegación -->
     <header>
         <nav class="navbar-top">
@@ -24,36 +24,36 @@
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
                 <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
-                <ul class="nav-menu-ul">
+               
                     <div *ngIf="loginService.isLogged()">
-                        <div #user *ngIf="loginService.isUser()">
+                        <ul #user *ngIf="loginService.isUser()" class="nav-menu-ul">
                             <div class="user-img">
                                 <img [src]="loginService.getUserImage()" alt="" width="50" height="50"/>
                             </div>
                             <!--<li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li> NO FUNCTIONALITY-->
                             <li class="nav-menu-item"><a [routerLink]="['/orders/user/',loginService.getUserName()]" class="nav-menu-link">Orders</a></li>
-                        </div>
-                        <div #admin *ngIf="loginService.isAdmin()">
+                        </ul>
+                        <ul #admin *ngIf="loginService.isAdmin()" class="nav-menu-ul">
                             <div class="user-img">
                                 <img [src]="loginService.getAnonymousImage()" alt="" width="50" height="50"/>
                             </div>
                             <li class="nav-menu-item"><a [routerLink]="['/items']" class="nav-menu-link">Inventory</a></li>
                             <li class="nav-menu-item"><a [routerLink]="['/orders/admin']" class="nav-menu-link">Orders</a></li>      
-                        </div>
+                        </ul>
                             <button class="nav-menu-link" type="submit" (click)="logout()">Log out</button>	
                     </div>
-                    <div *ngIf="!loginService.isLogged()">
+                    <ul *ngIf="!loginService.isLogged()" class="nav-menu-ul">
                         <div class="user-img">
                             <img [src]="loginService.getAnonymousImage()" alt="" width="50" height="50"/>
                         </div>   
                         <li class="nav-menu-item"><a [routerLink]="['/signup']" class="nav-menu-link">Registration</a></li>
                         <li class="nav-menu-item"><a [routerLink]="['/login']" class="nav-menu-link">Login</a></li>
-                    </div>
-                </ul>
+                    </ul>
+            
                 <!--search an item-->
                 <div>
                     <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                    <input id="name" [(ngModel)]="name" placeholder="Search..."/>                       
+                    <!--input id="name" [(ngModel)]="name" placeholder="Search..."/>-->                       
                     <input class="submit" type="button" (click)="searchItem()"/>
                     
                 </div>
@@ -118,32 +118,29 @@
         <div class="columns is-mobile is-multiline" id="itemListing">
 
             <!--items info-->
-            <div class="column is-half-mobile is-one-quarter-desktop">
-                <div *ngFor="let item of items">
-                    <div class="card">
-                        <span class="price">{{item.price}}</span>
-                        <img [src]="itemImage(item.id)" alt="" width="200" height="200">
-                        <div #user *ngIf="loginService.isUser()">
-                            <div class="card-simple-options">
-                                <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
-                                    <div class="columns is-multiline">
-                                        <div class="column is-full is-marginless">ADD</div>
-                                    </div>
-                                </a>
-                            </div>
+            <div *ngFor="let item of items" class="column is-half-mobile is-one-quarter-desktop">        
+                <div class="card">
+                    <span class="price">{{item.price}}</span>
+                    <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                    <div #user *ngIf="loginService.isUser()">
+                        <div class="card-simple-options">
+                            <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
+                                <div class="columns is-multiline">
+                                    <div class="column is-full is-marginless"><p>ADD</p></div>
+                                </div>
+                            </a>
                         </div>
-                        <div class="card-info">
-                            <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
-                            <h2 class="has-text-centered">{{item.description}}
-                                <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
-                            </h2>
-                            <div class="card-buttons">
-                                <div *ngIf="loginService.isLogged()">
-                                    <div #user *ngIf="loginService.isUser()">
-                                        <a [routerLink]="['/items/' + item.id + '/favourites/' + loginService.getUserName() + '/new']" class="btn btn--mini-rounded">
-                                            <i class="zmdi zmdi-favorite-outline"></i>
-                                        </a>
-                                    </div>
+                    </div>
+                    <div class="card-info">
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
+                        <h4 class="has-text-centered">{{item.description}}</h4>
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
+                        <div class="card-buttons">
+                            <div *ngIf="loginService.isLogged()">
+                                <div #user *ngIf="loginService.isUser()">
+                                    <a [routerLink]="['/items/' + item.id + '/favourites/' + loginService.getUserName() + '/new']" class="btn btn--mini-rounded">
+                                        <i class="zmdi zmdi-favorite-outline"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -184,4 +181,4 @@
     <!--<script src="/js/main.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
     
-</body>
+

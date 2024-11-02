@@ -1,0 +1,15 @@
+{
+    "/databases/*": {
+        "target":"https://localhost:8443",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    },
+    "/databases/items/*": {
+        "target":"https://localhost:8444",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+}
+

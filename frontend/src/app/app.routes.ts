@@ -14,7 +14,7 @@ export const routes: Routes = [
     { path: 'orders/user/:username', component: OrderComponent },
     { path: 'orders/admin', component: AdminOrderComponent },
     { path: 'items', component: InventoryComponent },
-    { path: '/items/:id/favourites/:username/new', component: HomeComponent },
+    { path: 'items/:id/favourites/:username/new', component: HomeComponent },
 //    { path: 'items/:id/page', component: ProductComponent},
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
