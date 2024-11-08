@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, Observable, throwError } from "rxjs";
 
-const ROOT_URL = 'https://localhost:8443';
-const ITEM_URL = '/databases/items';
+//const ROOT_URL = 'https://localhost:8443';
+//const ITEM_URL = '/databases/items';
 const BASE_URL = '/databases';
 
 @Injectable({providedIn: 'root'})
@@ -12,7 +12,7 @@ export class ItemService{
     constructor(private http: HttpClient){}
 
     getFoundedItems(): Observable<any>{
-        return this.http.get(ROOT_URL + BASE_URL).pipe(
+        return this.http.get(BASE_URL).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })

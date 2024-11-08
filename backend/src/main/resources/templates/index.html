@@ -210,7 +210,8 @@
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + 
+            '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 

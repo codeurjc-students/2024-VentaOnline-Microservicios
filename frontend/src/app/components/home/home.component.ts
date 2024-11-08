@@ -16,6 +16,7 @@ export class HomeComponent {
 
   name: any;
   capacity: number = 0;
+  founded: number = 0;
   private tam: number = 10;
   itemsFounded: Item[] = [];
   items: Item[] = [];
@@ -54,6 +55,14 @@ export class HomeComponent {
 
   itemImage(id: number | undefined){
     return  'https://localhost:8444/databases/items/' + id + '/image';
+  }
+
+  showMore(){
+    this.tam += 10;
+    this.itemService.getItems(this.tam).subscribe(
+      items => this.items = items.content,
+      error => console.log(error)
+    );
   }
 
 }

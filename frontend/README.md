@@ -1,4 +1,4 @@
-# Frontend
+<!--# Frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
 
@@ -24,4 +24,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.-->
+
+hubo que añadir en un documento "proxy.conf.json" las rutas a la cual ser redirigido cada vez que desde el forntend se hiciese una consulta en el backend
+
+# Compilación:
+Para levantar la aplicación, se ejecuta el comando `ng serve`. No obstante esto ocasiona que nuestra web esté disponible en la url definida por defecto: https://localhost:4200/ <----------  (SOLUCIONAR)
