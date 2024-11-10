@@ -23,6 +23,8 @@ export class HomeComponent {
   foundedItems: Item[] = [];
   items: Item[] = [];
   data: any;
+  favourites: number = 0;
+  favouritesItems: Item[] = [];
 
   constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
 
@@ -34,6 +36,13 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+
+    this.itemService.getUserFavouritesItems(this.tam, this.loginService.getCurrentUser().username).subscribe(
+      items => {
+        this.favourites = items.totalElements;
+        this.favouritesItems = items.content;
+      }
+    )
   }
 
   logout(){
@@ -84,6 +93,8 @@ export class HomeComponent {
       error => console.log(error)
     );
   }
+
+  showMoreFavItems(){}
 
   showMoreFoundedItems(){
     this.tam1 += 10;

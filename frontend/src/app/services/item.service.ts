@@ -11,13 +11,13 @@ export class ItemService{
 
     constructor(private http: HttpClient){}
 
-    /*getFoundedItems(tam1: number, name: string): Observable<any>{
-        return this.http.get(BASE_URL + '/items/'+name+'?size=' + tam1).pipe(
+    getFavouritesItems(tam: number, username: string): Observable<any>{
+        return this.http.get(BASE_URL + '/items/favourites/'+ username +'?size=' + tam).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
         )as Observable<any>;
-    }*/
+    }
 
     getItems(tam: number): Observable<any>{
         return this.http.get(BASE_URL + '/items?size=' + tam).pipe(
