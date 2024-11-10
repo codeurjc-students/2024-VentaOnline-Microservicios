@@ -67,4 +67,8 @@ export class LoginService {
     getUserName(){
         return this.user.username;
     }
+
+    getCurrentUser(){
+        return this.user;
+    }
 }

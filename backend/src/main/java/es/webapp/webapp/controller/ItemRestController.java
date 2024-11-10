@@ -1,6 +1,7 @@
 package es.webapp.webapp.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class ItemRestController {
     @GetMapping("/items")
     public Page<Item> getItems(Pageable page){
         return itemService.findAll(page);
+    }
+
+    @GetMapping("/itemsListing")
+    public List<Item> getItemsListing(){
+        return itemService.findAll();
     }
 
     @GetMapping("/items/{name}")
