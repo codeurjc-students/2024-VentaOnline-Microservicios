@@ -44,8 +44,8 @@ export class HomeComponent {
   }
 
   logout(){
-    //this.loginService.logout();
-    //this.router.navigate(['/home']);
+    this.loginService.logout();
+    this.router.navigate(['/home']);
   }
 
   showFavouritesItems(){
