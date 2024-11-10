@@ -32,6 +32,13 @@ export class LoginService {
         );
     }
 
+    login(user: string, pass: string) {
+        this.https.post(AUTH_URL + '/login', {username: user, password: pass}, {withCredentials: true}).subscribe(
+            (_: any) => this.reqIsLogged,
+            (error) => alert("wrong credentials")
+        );
+    }
+
     logout(){
         this.https.post(AUTH_URL + '/logout', { withCredentials: true})
         .subscribe((resp: any) => {
