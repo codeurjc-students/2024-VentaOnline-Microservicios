@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app.routes';
   declarations: [
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     ServerModule,
     FormsModule,

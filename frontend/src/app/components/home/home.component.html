@@ -53,8 +53,8 @@
                 <!--search an item-->
                 <div>
                     <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                    <!--input id="name" [(ngModel)]="name" placeholder="Search..."/>-->                       
-                    <input class="submit" type="button" (click)="searchItem()"/>
+                    <input id="name" [(ngModel)]="name" placeholder="Search...">                  
+                    <button (click)="searchItem()">Search</button>
                     
                 </div>
                 <!--items listing-->     
@@ -98,7 +98,7 @@
         <!--items listing founded-->
         <div class="columns is-mobile is-multiline" id="itemFoundedListing">
             <!--items founded info-->
-            <div *ngFor="let item of itemsFounded" class="column is-half-mobile is-one-quarter-desktop">
+            <div *ngFor="let item of data" class="column is-half-mobile is-one-quarter-desktop">
                 <div class="card">
                     <span class="price">{{item.price}}</span>
                     <img [src]="itemImage(item.id)" alt="" width="200" height="200">
@@ -133,7 +133,7 @@
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <ul class="items-founded-pagination">               
-                            <li><button class="nav-menu-lin">more results</button></li>
+                            <li><button class="nav-menu-lin" (click)="showMoreFoundedItems()">more results</button></li>
                         </ul>
                     </div>                  
                 </div>
@@ -183,7 +183,7 @@
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <ul class="pagination">               
-                            <li><button class="nav-menu-lin" (click)="showMore()">more results</button></li>
+                            <li><button class="nav-menu-lin" (click)="showMoreItems()">more results</button></li>
                         </ul>
                     </div>
                     

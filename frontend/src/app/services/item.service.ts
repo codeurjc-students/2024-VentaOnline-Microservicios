@@ -11,13 +11,13 @@ export class ItemService{
 
     constructor(private http: HttpClient){}
 
-    getFoundedItems(): Observable<any>{
-        return this.http.get(BASE_URL).pipe(
+    /*getFoundedItems(tam1: number, name: string): Observable<any>{
+        return this.http.get(BASE_URL + '/items/'+name+'?size=' + tam1).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
         )as Observable<any>;
-    }
+    }*/
 
     getItems(tam: number): Observable<any>{
         return this.http.get(BASE_URL + '/items?size=' + tam).pipe(
@@ -25,6 +25,14 @@ export class ItemService{
                 return this.handleError(error);
             })
         )as Observable<any>;
+    }
+
+    getTotalItems(): Observable<any>{
+     return this.http.get(BASE_URL + '/itemsListing').pipe(
+        catchError((error) => {
+            return this.handleError(error);
+        })
+     )as Observable<any>; 
     }
 
     /*getItemImage(id: number | undefined): Observable<any>{

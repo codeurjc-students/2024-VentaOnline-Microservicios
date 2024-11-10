@@ -1,5 +1,6 @@
 package es.webapp.webapp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class ItemService {
 
     public Page<Item> findAll(Pageable page){
         return itemRepo.findAll(page);
+    }
+
+    public List<Item> findAll(){
+        return itemRepo.findAll();
     }
 
     public Optional<Item> findById(Integer id){
