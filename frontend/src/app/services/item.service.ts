@@ -11,7 +11,7 @@ export class ItemService{
 
     constructor(private http: HttpClient){}
 
-    getFavouritesItems(tam: number, username: string): Observable<any>{
+    getUserFavouritesItems(tam: number, username: string): Observable<any>{
         return this.http.get(BASE_URL + '/items/favourites/'+ username +'?size=' + tam).pipe(
             catchError((error) => {
                 return this.handleError(error);

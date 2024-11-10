@@ -13,7 +13,7 @@
                     <li #user *ngIf="loginService.isUser()" class="navbar-top-item">
                         <!--user is registered and logged-->
                         
-                        <a href="/shoppingcart/page" class="navbar-top-links">
+                        <a [routerLink]="['/shoppingcart/page']" class="navbar-top-links">
                             <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
                             <!-- <i class="zmdi zmdi-chevron-down"></i> -->
                         </a>

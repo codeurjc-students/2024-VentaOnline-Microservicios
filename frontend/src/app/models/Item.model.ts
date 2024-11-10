@@ -3,14 +3,14 @@ import { User } from "./User.model";
 
 export interface Item {
     id?: number,
-    name: String,
-    description: String,
+    name: string,
+    description: string,
     price: number,
     image: Blob,
-    gender: String,
-    type: String,
+    gender: string,
+    type: string,
     stock: number,
-    sizes: String[],
+    sizes: string[],
     stocks: number[],
     favouritesUsers: User[],
     itemsToBuy: ItemToBuy[]

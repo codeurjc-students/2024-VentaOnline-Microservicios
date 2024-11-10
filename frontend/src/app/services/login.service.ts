@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 import { User } from '../models/User.model';
 
 
-const ROOT_URL = 'https://localhost:8443/databases';
-const AUTH_URL = 'https://localhost:8443/api/auth';
+const ROOT_URL = '/databases';
+const AUTH_URL = '/api/auth';
 const USER_URL = '/users';
 
 
@@ -52,10 +52,6 @@ export class LoginService {
         return this.admin && this.admin.rol.indexOf('ADMIN') !== -1;
     }
 
-    handleError(error: any){
-        return throwError(() => "Server error (" + error.status + "): " + error.text());
-    }
-
     getUserImage(){
         return ROOT_URL + '/' + this.user.username + '/image'; 
     }
@@ -70,5 +66,26 @@ export class LoginService {
 
     getCurrentUser(){
         return this.user;
+    }
+
+    addUser(user: User){
+        return this.https.post(ROOT_URL + USER_URL + '/new',user).pipe(
+            catchError((error) => {
+                return this.handleError(error)
+            })
+        );
+
+    }
+
+    setUserImage(user: User, formData: FormData){
+        return this.https.post(ROOT_URL + USER_URL + user.id + '/image', formData).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        );
+    }
+
+    handleError(error: any){
+        return throwError(() => "Server error (" + error.status + "): " + error.text());
     }
 }

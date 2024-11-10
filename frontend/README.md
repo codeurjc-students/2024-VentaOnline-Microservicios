@@ -30,3 +30,5 @@ hubo que añadir en un documento "proxy.conf.json" las rutas a la cual ser redir
 
 # Compilación:
 Para levantar la aplicación, se ejecuta el comando `ng serve`. No obstante esto ocasiona que nuestra web esté disponible en la url definida por defecto: https://localhost:4200/ <----------  (SOLUCIONAR)
+
+Para generar cada componente se ejecutó el comando `ng generate component <nombre-del-componente>` o `ng g c <nombre-del-componente>`

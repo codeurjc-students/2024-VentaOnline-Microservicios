@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Item } from '../../models/Item.model';
@@ -9,9 +9,9 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RouterLink],
   templateUrl: './home.component.html',
-  providers: [ItemService]
+  providers: [ItemService, LoginService]
 })
 export class HomeComponent {
 
@@ -26,7 +26,7 @@ export class HomeComponent {
   favourites: number = 0;
   favouritesItems: Item[] = [];
 
-  constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
+  constructor(private router: Router, activatedRoute: ActivatedRoute, public loginService: LoginService, public itemService: ItemService){}
 
   ngOnInit(){
     this.itemService.getItems(this.tam).subscribe(
@@ -36,18 +36,26 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+    
+  }
 
-    this.itemService.getUserFavouritesItems(this.tam, this.loginService.getCurrentUser().username).subscribe(
-      items => {
-        this.favourites = items.totalElements;
-        this.favouritesItems = items.content;
-      }
-    )
+  registration(){
+    this.router.navigate(['/signup']);
   }
 
   logout(){
     //this.loginService.logout();
     //this.router.navigate(['/home']);
+  }
+
+  showFavouritesItems(){
+    this.itemService.getUserFavouritesItems(this.tam, this.loginService.getCurrentUser()).subscribe(
+      items => {
+        this.favourites = items.totalElements-1;
+        this.favouritesItems = items.content;
+      },
+      error => console.log(error)
+    );
   }
 
   searchItem(){
