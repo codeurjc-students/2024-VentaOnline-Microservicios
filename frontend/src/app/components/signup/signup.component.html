@@ -1,4 +1,3 @@
-
     <header>
         <nav class="navbar">
             <nav class="nav-menu --nav-dark-light" id="mySidenav">
@@ -12,7 +11,7 @@
         <div class="banner-container">
             <ul *ngIf="!loginService.isLogged()">
                 <div class="user-img">
-                    <img [src]="loginService.getUserImage()" alt="" width="200" height="200"/>
+                    <img [src]="getUnknownImage()" alt="" width="200" height="200"/>
                 </div>
             </ul>
         </div>

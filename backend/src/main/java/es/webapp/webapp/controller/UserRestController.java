@@ -52,15 +52,15 @@ public class UserRestController {
     }
 
     @GetMapping("/users/current")
-    public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         Optional<User> user = userService.findByUsername(principal.getName());
         if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
-        }
-        return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(user.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } 
     }
-    
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
@@ -119,21 +119,7 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/{username}/image")
-    public ResponseEntity<Object> getLoggedUserImage(@PathVariable String username) throws SQLException{
 
-        Optional<User> user = userService.findByUsername(username);
-
-        if(user.isPresent() && user.get().getImageFile() != null){
-            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE,"image/jpeg")
-                .contentLength(user.get().getImageFile().length())
-                .body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @GetMapping("/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{

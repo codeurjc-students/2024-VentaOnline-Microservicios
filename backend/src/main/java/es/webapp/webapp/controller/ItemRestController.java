@@ -40,7 +40,7 @@ public class ItemRestController {
         return itemService.findAll(page);
     }
 
-    @GetMapping("/itemsListing")
+    @GetMapping("/items/listing")
     public List<Item> getItemsListing(){
         return itemService.findAll();
     }

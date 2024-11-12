@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { User } from '../../models/User.model';
 import { Direction } from '../../models/Direction.model';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RouterOutlet],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
@@ -40,6 +40,10 @@ export class SignupComponent {
       },
       (_: any) => alert("registering faild")
     );
+  }
+
+  getUnknownImage(){
+    return this.loginService.getAnonymousUserImage();
   }
 
   uploadImage(user: User){

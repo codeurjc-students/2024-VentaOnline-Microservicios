@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { User } from '../models/User.model';
 
 
-const ROOT_URL = '/databases';
 const AUTH_URL = '/api/auth';
-const USER_URL = '/users';
+const USER_URL = 'https://localhost:8443/databases/users';
 
 
 @Injectable({ providedIn: 'root'})
@@ -18,16 +17,18 @@ export class LoginService {
     
     //constructor
     constructor(private https: HttpClient){
-        this.reqIsLogged();
+        //this.reqIsLogged();
     }
 
     reqIsLogged() {
-        this.https.get(ROOT_URL + USER_URL+ '/current', {withCredentials: true}).subscribe(
+        this.https.get(USER_URL + '/current', {withCredentials: true}).subscribe(
             response => {
                 this.user = response as User;
                 this.logged = true;
             }, error => {
-                this.handleError(error);
+                if (error.status != 404) {
+                    console.error('Error when asking if logged: ' + JSON.stringify(error));
+                }
             }
         );
     }
@@ -40,8 +41,8 @@ export class LoginService {
     }
 
     logout(){
-        this.https.post(AUTH_URL + '/logout', { withCredentials: true})
-        .subscribe((resp: any) => {
+        this.https.post(AUTH_URL + '/logout', { withCredentials: true}).subscribe(
+            (resp: any) => {
             this.logged = false;
             this.user = undefined;
         });
@@ -59,12 +60,16 @@ export class LoginService {
         return this.admin && this.admin.rol.indexOf('ADMIN') !== -1;
     }
 
-    getUserImage(){
-        return ROOT_URL + '/' + this.user.username + '/image'; 
+    getUserImage(): Observable<any>{
+        return this.https.get(USER_URL + '/' + this.user.username + '/image').pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>; 
     }
 
-    getAnonymousImage(){
-        return ROOT_URL + USER_URL + '/39/image';
+    getAnonymousUserImage(){
+        return USER_URL + '/39/image';
     }
 
     getUserName(){
@@ -76,7 +81,7 @@ export class LoginService {
     }
 
     addUser(user: User){
-        return this.https.post(ROOT_URL + USER_URL + '/new',user).pipe(
+        return this.https.post(USER_URL + '/new',user).pipe(
             catchError((error) => {
                 return this.handleError(error)
             })
@@ -85,7 +90,7 @@ export class LoginService {
     }
 
     setUserImage(user: User, formData: FormData){
-        return this.https.post(ROOT_URL + USER_URL + user.id + '/image', formData).pipe(
+        return this.https.post(USER_URL + user.id + '/image', formData).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
