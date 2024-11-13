@@ -33,36 +33,36 @@ import es.webapp.webapp.service.UserService;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
-@RequestMapping("/databases")
+//@RequestMapping("/databases")
 public class UserRestController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users/new")
+    @PostMapping("/api/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
-    @GetMapping("/users")
+    @GetMapping("/databases/users")
     public List<User> getUsers(){
         return userService.findAll();
     }
 
-    @GetMapping("/users/current")
-    public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
+    @GetMapping("/databases/users/current")
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         Optional<User> user = userService.findByUsername(principal.getName());
         if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
-        }
-        return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(user.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } 
     }
-    
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/databases/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
         Optional<User> user = userService.findById(id);
         if(user.isPresent()){
@@ -79,7 +79,7 @@ public class UserRestController {
         }
     }
     
-    @GetMapping("/users/{id}")
+    @GetMapping("/databases/users/{id}")
     public User getUserByUsername(@PathVariable Integer id){
         Optional<User> user = userService.findById(id);
         if(user.isPresent()) {
@@ -89,7 +89,7 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/api/users/{username}")
+    @GetMapping("/databases/api/users/{username}")
     public ResponseEntity<User> getUserByUsernameAPI(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()) {
@@ -99,7 +99,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/users/{id}/image")
+    @PostMapping("/databases/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -119,23 +119,9 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/{username}/image")
-    public ResponseEntity<Object> getLoggedUserImage(@PathVariable String username) throws SQLException{
 
-        Optional<User> user = userService.findByUsername(username);
 
-        if(user.isPresent() && user.get().getImageFile() != null){
-            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE,"image/jpeg")
-                .contentLength(user.get().getImageFile().length())
-                .body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/users/{id}/image")
+    @GetMapping("/databases/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
 
         Optional<User> user = userService.findById(id);

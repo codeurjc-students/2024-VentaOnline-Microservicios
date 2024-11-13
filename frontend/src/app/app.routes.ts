@@ -6,6 +6,8 @@ import { LoginComponent } from './components/login/login.component';
 import { OrderComponent } from './components/order/order.component';
 import { AdminOrderComponent } from './components/admin-order/admin-order.component'; 
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
+import { LogoutComponent } from './components/logout/logout.component';
 //import { ProductComponent } from './components/product/product.compoenent';
 
 export const routes: Routes = [
@@ -18,6 +20,8 @@ export const routes: Routes = [
 //    { path: 'items/:id/page', component: ProductComponent},
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
+    { path: 'shoppingcart/page', component: ShoppingcartComponent},
     { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

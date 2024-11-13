@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Item } from '../../models/Item.model';
@@ -9,9 +9,9 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RouterOutlet],
   templateUrl: './home.component.html',
-  providers: [ItemService]
+  providers: [ItemService, LoginService]
 })
 export class HomeComponent {
 
@@ -25,8 +25,9 @@ export class HomeComponent {
   data: any;
   favourites: number = 0;
   favouritesItems: Item[] = [];
-
-  constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
+  id: number = 39;
+  
+  constructor(private router: Router, activatedRoute: ActivatedRoute, public loginService: LoginService, public itemService: ItemService){}
 
   ngOnInit(){
     this.itemService.getItems(this.tam).subscribe(
@@ -36,19 +37,27 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+    
+  }
 
-    this.itemService.getUserFavouritesItems(this.tam, this.loginService.getCurrentUser().username).subscribe(
-      items => {
-        this.favourites = items.totalElements;
-        this.favouritesItems = items.content;
-      }
-    )
+  registration(){
+    this.router.navigate(['/signup']);
   }
 
   logout(){
-    //this.loginService.logout();
-    //this.router.navigate(['/home']);
+    this.loginService.logout();
+    this.router.navigate(['/home']);
   }
+
+  //showFavouritesItems(){
+  //  this.itemService.getUserFavouritesItems(this.tam, this.loginService.getCurrentUser().username).subscribe(
+  //    items => {
+  //      this.favourites = items.totalElements-1;
+  //      this.favouritesItems = items.content;
+  //    },
+  //    error => console.log(error)
+  //  );
+  //}
 
   searchItem(){
     this.itemService.getTotalItems().subscribe(
@@ -82,8 +91,12 @@ export class HomeComponent {
     );
   }
 
+  getAnonymousImage(){
+    return this.loginService.getAnonymousUserImage();
+  }
+
   itemImage(id: number | undefined){
-    return  'https://localhost:8444/databases/items/' + id + '/image';
+    return  'https://localhost:8444/inventory/items/' + id + '/image';
   }
 
   showMoreItems(){

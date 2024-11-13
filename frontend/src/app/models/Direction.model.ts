@@ -5,6 +5,5 @@ export interface Direction{
     street: String,
     number: number,
     zipCode: number,
-    city: String,
-    user: User
+    city: String
 }
