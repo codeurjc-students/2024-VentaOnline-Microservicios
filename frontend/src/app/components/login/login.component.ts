@@ -17,10 +17,10 @@ export class LoginComponent {
     if(!user || !pass){
       alert("some fields are incorrect");
     } else {
-      //event.preventDefault();
+      event.preventDefault();
 
       this.loginService.login(user,pass);
-      //this.router.navigate(['/home']);
+      this.router.navigate(['/home']);
     }
   }
 

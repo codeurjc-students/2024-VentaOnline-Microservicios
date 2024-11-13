@@ -55,7 +55,7 @@ public class UserRestController {
     }
 
     @GetMapping("/api/users/current")
-    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+    public ResponseEntity<User> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Optional<User> user = userService.findByUsername(username);
