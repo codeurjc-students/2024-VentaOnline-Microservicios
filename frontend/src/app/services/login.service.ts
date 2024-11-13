@@ -66,12 +66,8 @@ export class LoginService {
         return this.admin && this.admin.rol.indexOf('ADMIN') !== -1;
     }
 
-    getUserImage(): Observable<any>{
-        return this.https.get(USER_URL + '/' + this.user.username + '/image').pipe(
-            catchError((error) => {
-                return this.handleError(error);
-            })
-        )as Observable<any>; 
+    getUserImage(){
+        return '/api/users/' + this.user.id + '/image';
     }
 
     getAnonymousUserImage(){

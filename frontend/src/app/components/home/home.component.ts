@@ -95,6 +95,10 @@ export class HomeComponent {
     return this.loginService.getAnonymousUserImage();
   }
 
+  getImage(){
+    return this.loginService.getUserImage();
+  }
+
   itemImage(id: number | undefined){
     return  'https://localhost:8444/inventory/items/' + id + '/image';
   }
