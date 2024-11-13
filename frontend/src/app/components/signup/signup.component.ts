@@ -21,7 +21,7 @@ export class SignupComponent {
   shoppingCart: ShoppingCart;
 
   @ViewChild('avatar')
-  file: any;
+  avatar: any;
 
   constructor(private router: Router, public loginService: LoginService){
     this.address = {street: '', number:'', zipCode:'', city: ''};
@@ -36,13 +36,19 @@ export class SignupComponent {
       || !this.address.zipCode || !this.address.city){
         alert("some fields are empty");
     } else {
-      this.loginService.addUser(this.user).subscribe(
-        (user: any) => {
-         
-          this.uploadImage(user);
-        },
-        (_: any) => alert("registering failed")
-      );
+      let image: any;
+      image = this.avatar.nativeElement.files[0];
+      if(!image){
+        alert("please, insert a profile image");
+      } else {
+        this.loginService.addUser(this.user).subscribe(
+          (user: any) => {
+
+            this.uploadImage(user);
+          },
+          (_: any) => alert("registering failed")
+        );
+      }
     }
   }
 
@@ -51,9 +57,7 @@ export class SignupComponent {
   }
 
   uploadImage(user: User){
-    console.log(!this.file);
-    const image = this.file.nativeElement.files[0];
-    console.log(image);
+    const image = this.avatar.nativeElement.files[0];
     if(image) {
       let formData = new FormData();
       formData.append("avatar", image);
@@ -64,7 +68,7 @@ export class SignupComponent {
         },
         (error: any) => alert("error uploading user image")
       );
-    }
+    }   
   }
 
 }
