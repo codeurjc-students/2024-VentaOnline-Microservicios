@@ -20,11 +20,11 @@ export class SignupComponent {
   address: Direction;
   shoppingCart: ShoppingCart;
 
-  @ViewChild('file')
-  avatar: any;
+  @ViewChild('avatar')
+  file: any;
 
   constructor(private router: Router, public loginService: LoginService){
-    this.address = {street: '', number:0, zipCode:0, city: ''};
+    this.address = {street: '', number:'', zipCode:'', city: ''};
     this.shoppingCart = {totalCost: 0, items: []};
     this.user = {username: '', name: '', email: '', password: '', passwordConfirmation: '', rol: 'USER', direction: this.address, favouritesItems: [], shoppingCart: this.shoppingCart, orders: []};
 
@@ -32,14 +32,14 @@ export class SignupComponent {
 
   registerUser(){
     if(!this.user.username || !this.user.name || !this.user.email || !this.user.password 
-      || this.user.password == this.user.passwordConfirmation || !this.address.street || !this.address.number
+      || this.user.password != this.user.passwordConfirmation || !this.address.street || !this.address.number
       || !this.address.zipCode || !this.address.city){
         alert("some fields are empty");
     } else {
       this.loginService.addUser(this.user).subscribe(
         (user: any) => {
-          alert("registered successfully");
-          //this.uploadImage(user);
+         
+          this.uploadImage(user);
         },
         (_: any) => alert("registering failed")
       );
@@ -51,16 +51,12 @@ export class SignupComponent {
   }
 
   uploadImage(user: User){
-    let image: any;
-    if(!this.avatar){
-      image = this.loginService.getAnonymousUserImage();
-    } else {
-      image = this.avatar.nativeElement.files[0];
-    }
+    console.log(!this.file);
+    const image = this.file.nativeElement.files[0];
+    console.log(image);
     if(image) {
       let formData = new FormData();
-      formData.append("imageField", image);
-    
+      formData.append("avatar", image);
       this.loginService.setUserImage(user, formData).subscribe(
         (_:any) => {
           alert("registered successfully");

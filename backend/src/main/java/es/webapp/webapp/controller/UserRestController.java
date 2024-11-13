@@ -99,7 +99,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/databases/users/{id}/image")
+    @PostMapping("/api/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -121,7 +121,7 @@ public class UserRestController {
 
 
 
-    @GetMapping("/databases/users/{id}/image")
+    @GetMapping("/api/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
 
         Optional<User> user = userService.findById(id);

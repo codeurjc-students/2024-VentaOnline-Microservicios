@@ -24,12 +24,12 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/databases/users/{{username}}/image" alt="" width="200" height="200"></img>
+                <img src="/api/users/{{id}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
             <div class="user-img">
-                <img src="/databases/users/39/image" alt="" width="200" height="200"></img>
+                <img src="/api/users/39/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
         </div>

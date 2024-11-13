@@ -69,7 +69,7 @@ export class LoginService {
     }
 
     getAnonymousUserImage(){
-        return 'https://localhost:8443' + USER_URL + '/39/image';
+        return '/api/users/39/image';
     }
 
     getUserName(){
@@ -90,7 +90,7 @@ export class LoginService {
     }
 
     setUserImage(user: User, formData: FormData){
-        return this.https.post(USER_URL + user.id + '/image', formData).pipe(
+        return this.https.post('/api/users/' + user.id + '/image', formData).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
