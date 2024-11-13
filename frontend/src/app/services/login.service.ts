@@ -20,12 +20,12 @@ export class LoginService {
         //this.reqIsLogged();
     }
 
-    reqIsLogged() {
-        this.https.get(USER_URL + '/current', {withCredentials: true}).subscribe(
-            response => {
-                this.user = response as User;
+    reqIsLogged(user: string, pass: string) {
+        this.https.get<User>('/api/users/current', {withCredentials: true}).subscribe(
+            (response: User) => {
+                this.user = response;
                 this.logged = true;
-            }, error => {
+            }, (error) => {
                 if (error.status != 404) {
                     console.error('Error when asking if logged: ' + JSON.stringify(error));
                 }
@@ -35,7 +35,12 @@ export class LoginService {
 
     login(user: string, pass: string) {
         this.https.post(AUTH_URL + '/login', {username: user, password: pass}, {withCredentials: true}).subscribe(
-            (_: any) => this.reqIsLogged,
+            (response: any) => {
+                this.reqIsLogged(user,pass)
+                console.log(response);
+                console.log(this.user);
+                console.log(this.logged);
+            },
             (error) => alert("wrong credentials")
         );
     }

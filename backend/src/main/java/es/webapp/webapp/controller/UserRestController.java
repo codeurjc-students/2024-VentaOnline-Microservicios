@@ -16,6 +16,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,14 +54,15 @@ public class UserRestController {
         return userService.findAll();
     }
 
-    @GetMapping("/databases/users/current")
+    @GetMapping("/api/users/current")
     public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
-        Principal principal = request.getUserPrincipal();
-        Optional<User> user = userService.findByUsername(principal.getName());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()){
-            return new ResponseEntity<>(user.get(),HttpStatus.OK);
+            return ResponseEntity.ok(user.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         } 
     }
 
