@@ -5,7 +5,7 @@ import { User } from '../models/User.model';
 
 
 const AUTH_URL = '/api/auth';
-const USER_URL = 'https://localhost:8443/databases/users';
+const USER_URL = '/databases/users';
 
 
 @Injectable({ providedIn: 'root'})
@@ -69,7 +69,7 @@ export class LoginService {
     }
 
     getAnonymousUserImage(){
-        return USER_URL + '/39/image';
+        return 'https://localhost:8443' + USER_URL + '/39/image';
     }
 
     getUserName(){
@@ -81,7 +81,7 @@ export class LoginService {
     }
 
     addUser(user: User){
-        return this.https.post(USER_URL + '/new',user).pipe(
+        return this.https.post('/api/users/new',user).pipe(
             catchError((error) => {
                 return this.handleError(error)
             })

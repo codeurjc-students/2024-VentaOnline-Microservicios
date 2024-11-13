@@ -22,26 +22,26 @@
             <div class="column">
                 <h2 class="is-size-4">Registration</h2>
 
-                    <input type="text" [(ngModel)]="user.username" placeholder="User name" class="form-control-field" required/>
-                    <input type="text" [(ngModel)]="user.name" placeholder="Name" class="form-control-field" required/>
-                    <input type="email" [(ngModel)]="user.email" placeholder="Email" class="form-control-field" required/>
-                    <input type="password" [(ngModel)]="user.password" placeholder="Password" class="form-control-field" required/>
-                    <input type="password" [(ngModel)]="user.passwordConfirmation" placeholder="Confirm your password" class="form-control-field" required/>
-                    <div class="user-img">
-                        <input #avatar type='file' name='imageField' accept=".jpg, .jpeg"/>
-                    </div> 
-                    <h2 class="is-size-4">Address</h2>
-                    <div class="columns">
-                        <div class="column">
-                            <input type="text" [(ngModel)]="address.street" placeholder="Street" class="form-control-field" required/>
-                            <input type="number" [(ngModel)]="address.number" placeholder="Number" class="form-control-field" required/>
-                        </div>
-                        <div class="column">
-                            <input type="number" [(ngModel)]="address.zipCode" placeholder="00000" class="form-control-field" required/>
-                            <input type="text" [(ngModel)]="address.city" placeholder="City" class="form-control-field" required/>
-                        </div>
+                <input type="text" [(ngModel)]="user.username" placeholder="User name" class="form-control-field" required/>
+                <input type="text" [(ngModel)]="user.name" placeholder="Name" class="form-control-field" required/>
+                <input type="email" [(ngModel)]="user.email" placeholder="Email" class="form-control-field" required/>
+                <input type="password" [(ngModel)]="user.password" placeholder="Password" class="form-control-field" required/>
+                <input type="password" [(ngModel)]="user.passwordConfirmation" placeholder="Confirm your password" class="form-control-field" required/>
+                <div class="user-img">
+                    <input #avatar type='file' name='imageField' accept=".jpg, .jpeg"/>
+                </div> 
+                <h2 class="is-size-4">Address</h2>
+                <div class="columns">
+                    <div class="column">
+                        <input type="text" [(ngModel)]="address.street" placeholder="Street" class="form-control-field" required/>
+                        <input type="number" [(ngModel)]="address.number" placeholder="Number" class="form-control-field" required/>
                     </div>
-                    <button class="btn btn-default btn-primary" (click)="registerUser()">Create account</button>
+                    <div class="column">
+                        <input type="number" [(ngModel)]="address.zipCode" placeholder="00000" class="form-control-field" required/>
+                        <input type="text" [(ngModel)]="address.city" placeholder="City" class="form-control-field" required/>
+                    </div>
+                </div>
+                <button class="btn btn-default btn-primary" (click)="registerUser()">Create account</button>
               
             </div>
         </div>

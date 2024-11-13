@@ -48,7 +48,7 @@ public class User {
     @Column(name = "image")
     private Blob avatar;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
     //@JsonIgnore
     private Direction direction;
 

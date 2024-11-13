@@ -1,6 +1,6 @@
 {
-    "/databases/*": {
-        "target":"https://localhost:8443/",
+    "/databases": {
+        "target":"https://localhost:8443",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
@@ -11,7 +11,7 @@
         "logLevel": "debug",
         "changeOrigin": true
     },
-    "/api/auth/*": {
+    "/api": {
         "target":"https://localhost:8443",
         "secure": false,
         "logLevel": "debug",

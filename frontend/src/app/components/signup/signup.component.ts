@@ -31,15 +31,19 @@ export class SignupComponent {
   }
 
   registerUser(){
-    this.loginService.addUser(this.user).subscribe(
-      (user: any) => {
-        if(user == null){
-          alert("it might be some empty fields");
-        }
-        this.uploadImage(user);
-      },
-      (_: any) => alert("registering faild")
-    );
+    if(!this.user.username || !this.user.name || !this.user.email || !this.user.password 
+      || this.user.password == this.user.passwordConfirmation || !this.address.street || !this.address.number
+      || !this.address.zipCode || !this.address.city){
+        alert("some fields are empty");
+    } else {
+      this.loginService.addUser(this.user).subscribe(
+        (user: any) => {
+          alert("registered successfully");
+          //this.uploadImage(user);
+        },
+        (_: any) => alert("registering failed")
+      );
+    }
   }
 
   getUnknownImage(){
@@ -47,10 +51,16 @@ export class SignupComponent {
   }
 
   uploadImage(user: User){
-    const image = this.avatar.nativeElement.files[0];
+    let image: any;
+    if(!this.avatar){
+      image = this.loginService.getAnonymousUserImage();
+    } else {
+      image = this.avatar.nativeElement.files[0];
+    }
     if(image) {
       let formData = new FormData();
       formData.append("imageField", image);
+    
       this.loginService.setUserImage(user, formData).subscribe(
         (_:any) => {
           alert("registered successfully");
