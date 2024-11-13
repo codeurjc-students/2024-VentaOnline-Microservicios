@@ -17,15 +17,16 @@ export class LoginService {
     
     //constructor
     constructor(private https: HttpClient){
-        //this.reqIsLogged();
+        this.reqIsLogged();
     }
 
     reqIsLogged() {
-        this.https.get(USER_URL + '/current', {withCredentials: true}).subscribe(
-            response => {
+        this.https.get<User>('/api/users/current', {withCredentials: true}).subscribe(
+            (response:User) => {
+                //console.log(response);
                 this.user = response as User;
                 this.logged = true;
-            }, error => {
+            }, (error) => {
                 if (error.status != 404) {
                     console.error('Error when asking if logged: ' + JSON.stringify(error));
                 }
@@ -35,8 +36,13 @@ export class LoginService {
 
     login(user: string, pass: string) {
         this.https.post(AUTH_URL + '/login', {username: user, password: pass}, {withCredentials: true}).subscribe(
-            (_: any) => this.reqIsLogged,
-            (error) => alert("wrong credentials")
+            response => {
+                this.reqIsLogged
+                //console.log(response),
+                //console.log(this.user),
+                //console.log(this.logged)
+            },
+            error => alert("wrong credentials")
         );
     }
 
