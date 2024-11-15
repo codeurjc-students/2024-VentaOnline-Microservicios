@@ -61,6 +61,7 @@ public class ItemRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
 
     /*@GetMapping("/items/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable Integer id) throws SQLException {

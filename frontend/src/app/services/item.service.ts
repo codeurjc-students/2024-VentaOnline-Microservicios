@@ -34,6 +34,13 @@ export class ItemService{
         )as Observable<any>; 
     }
 
+    getItem(id: number): Observable<any>{
+        return this.https.get(INVENTORY_URL + '/' + id).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>;
+    }
     /*getItemImage(id: number | undefined): Observable<any>{
         return this.https.get(ITEM_URL + '/' + id + '/image').pipe(
             catchError((error) => {
@@ -55,7 +62,7 @@ export class ItemService{
     }*/
 
     deleteItem(id: number | undefined): Observable<any>{
-        return this.https.delete(INVENTORY_URL + id).pipe(
+        return this.https.delete(INVENTORY_URL + '/' + id).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })

@@ -1,0 +1,155 @@
+<header>
+    <nav class="navbar">
+        <nav class="nav-menu --nav-dark" id="mySidenav">
+            <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" [routerLink]="['/home']">Avenue Fashion</a>
+            <ul class="nav-menu-ul"></ul>
+        </nav>
+    </nav>
+</header>
+<!-- Banner -->
+<div *ngIf="item" class="banner banner-second">
+    <div class="banner-container">
+        <h1>Current item</h1>
+        <div class="columns">
+            <div class="column">
+                <img [src]="itemImage(item.id)" alt="" width="450" height="450"/>
+            </div>
+            <div class="column">
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Size 1: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Size 2: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Size 3: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Size 4: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size S: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size M: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size L: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size XL: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
+
+            </div>
+            <div class="column">
+                <p>{{item.name}}</p>
+                <p>{{item.price}} €</p> 
+                <p>{{item.gender}}</p>
+                <p>{{item.sizes[0]}}</p>
+                <p>{{item.sizes[1]}}</p>
+                <p>{{item.sizes[2]}}</p>
+                <p>{{item.sizes[3]}}</p>
+                <p>{{item.type}}</p>
+                <p>{{item.stock[0]}}</p>
+                <p>{{item.stock[1]}}</p>
+                <p>{{item.stock[2]}}</p>
+                <p>{{item.stock[3]}}</p>
+                <p>{{item.description}}</p>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="columns">
+        <div class="column is-two-fifths-desktop">
+            <div class="slider" id="slider">
+                <div class="slider-img-container">
+                    <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                </div>
+            </div>
+            <input type='file' name='imageField' accept=".jpg, .jpeg, .png"/>
+        </div>
+        <div class="column">
+            <h3 class="is-size-4">New item</h3>
+            <div class="columns">
+                <div class="column">
+                    <input type="text" name="name" placeholder="name" class="form-control-field"/>
+                </div>
+                <div class="column">
+                    <input type="number" name="price" placeholder="price" class="form-control-field" min="0" step="0.01"/>
+                </div>
+            </div>
+             
+        
+                <div class="columns is-multiline">
+                    <div class="column is-one-third">
+                        <label for="size">Size</label>
+                        <div class="form-control-field" id="size">
+                            <label><input type="checkbox" id="size1" name="sizes[0]" value="S"/> S</label>
+                            <label><input type="checkbox" id="size2" name="sizes[1]" value="M"/> M</label>
+                            <label><input type="checkbox" id="size3" name="sizes[2]" value="L"/> L</label>
+                            <label><input type="checkbox" id="size4" name="sizes[3]" value="XL"/> XL</label>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <label for="quality">Stock:</label>
+                        {{#sizeS}}
+                        <input type="number" name="stocks[0]" placeholder="stock for size S" class="form-control-field"/>
+                        {{/sizeS}}   
+                        {{#sizeM}}
+                        <input type="number" name="stocks[1]" placeholder="stock for size M" class="form-control-field"/>
+                        {{/sizeM}}   
+                        {{#sizeL}} 
+                        <input type="number" name="stocks[2]" placeholder="stock for size L" class="form-control-field"/> 
+                        {{/sizeL}}   
+                        {{#sizeXL}}
+                        <input type="number" name="stocks[3]" placeholder="stock for size XL" class="form-control-field"/> 
+                        {{/sizeXL}}       
+                    </div>    
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-one-third">
+                        <label for="color">Gender</label>
+                        <div class="form-control-field" id="gender">
+                            <label><input type="radio" id="gender1" name="gender" value="man"/> man</label>
+                            <label><input type="radio" id="gender2" name="gender" value="woman"/> woman</label>
+                            <label><input type="radio" id="gender3" name="gender" value="unisex"/> unisex</label>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <label for="size">Type</label>
+                        <div class="form-control-field" id="type">
+                            <label><input type="radio" id="type1" name="type" value="jeans"/> jeans</label>
+                            <label><input type="radio" id="type2" name="type" value="t-shirt"/> t_shirt</label>
+                            <label><input type="radio" id="type3" name="type" value="dress"/> dress</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline">update item</button>
+                    </div>
+                    {{status}}
+                </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="columns is-tablet">
+        <div class="column">
+            <div class="tabs-container">                
+                <div class="tabs-panels">
+                    <div class="tab-panel active-panel">
+                        <div class="container">
+                            <div class="columns">
+                                <div class="column">
+                                    <h2 class="is-size-4">Additional information</h2>
+                                    <textarea name="description" placeholder="description" class="form-control-field"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<footer class="footer">
+    <div class="footer-bar-top">
+        <div class="container">
+            <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+        </div>
+    </div>
+</footer>
