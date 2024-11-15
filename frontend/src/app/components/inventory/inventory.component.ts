@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { FormsModule } from '@angular/forms';
 import { ItemService } from '../../services/item.service';
@@ -24,7 +24,7 @@ export class InventoryComponent {
   tam: number = 10;
   tam1: number = 10;
 
-  constructor(public loginService: LoginService, public itemService: ItemService){}
+  constructor(public router: Router, public loginService: LoginService, public itemService: ItemService){}
 
   ngOnInit(){
     this.itemService.getItems(this.tam).subscribe(
@@ -96,5 +96,23 @@ export class InventoryComponent {
       },
       error => console.log(error)
     );
+  }
+
+  moreInventoryItems(){
+    this.tam += 10;
+    this.itemService.getItems(this.tam).subscribe(
+      items => this.items = items.content,
+      error => console.log(error)
+    );
+  }
+
+  //updateItem(id: number){
+  //  this.itemService.updateItem(id);
+  //  this.router.navigate(['/items']);
+  //}
+
+  deleteItem(id: number | undefined){
+    this.itemService.deleteItem(id);
+    this.router.navigate(['/items']);
   }
 }

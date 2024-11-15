@@ -8,8 +8,8 @@ import { AdminOrderComponent } from './components/admin-order/admin-order.compon
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
 import { LogoutComponent } from './components/logout/logout.component';
-//import { ProductComponent } from './components/product/product.compoenent';
 import { ItemAggregationComponent } from './components/item-aggregation/item-aggregation.component';
+import { ProductComponent } from './components/product/product.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'orders/admin', component: AdminOrderComponent },
     { path: 'items', component: InventoryComponent },
     { path: 'items/:id/favourites/:username/new', component: HomeComponent },
-//    { path: 'items/:id/page', component: ProductComponent},
+    { path: 'items/:id/page', component: ProductComponent},
     { path: 'items/page', component: ItemAggregationComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },

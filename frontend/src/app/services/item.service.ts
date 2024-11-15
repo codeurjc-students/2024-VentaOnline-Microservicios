@@ -8,10 +8,10 @@ const INVENTORY_URL = '/api/inventory/items';
 @Injectable({providedIn: 'root'})
 export class ItemService{
 
-    constructor(private http: HttpClient){}
+    constructor(private https: HttpClient){}
 
     getUserFavouritesItems(tam: number, username: string): Observable<any>{
-        return this.http.get(ITEM_URL + '/favourites/'+ username +'?size=' + tam).pipe(
+        return this.https.get(ITEM_URL + '/favourites/'+ username +'?size=' + tam).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
@@ -19,7 +19,7 @@ export class ItemService{
     }
 
     getItems(tam: number): Observable<any>{
-        return this.http.get(ITEM_URL + '?size=' + tam).pipe(
+        return this.https.get(ITEM_URL + '?size=' + tam).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
@@ -27,7 +27,7 @@ export class ItemService{
     }
 
     getTotalItems(): Observable<any>{
-        return this.http.get(ITEM_URL + '/listing').pipe(
+        return this.https.get(ITEM_URL + '/listing').pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
@@ -35,7 +35,7 @@ export class ItemService{
     }
 
     /*getItemImage(id: number | undefined): Observable<any>{
-        return this.http.get(ITEM_URL + '/' + id + '/image').pipe(
+        return this.https.get(ITEM_URL + '/' + id + '/image').pipe(
             catchError((error) => {
                 return this.handleError(error);
             })
@@ -46,8 +46,23 @@ export class ItemService{
         return '/api/inventory/items/' + id + '/image';
     }
 
+    /*updateItem(id: number): Observable<any>{
+        return this.https.put(INVENTORY_URL + ).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>;
+    }*/
+
+    deleteItem(id: number | undefined): Observable<any>{
+        return this.https.delete(INVENTORY_URL + id).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>;
+    }
+
     private handleError(error: any){
         return throwError(() => "Server error(" + error.status + "): " + error.text);
     }
-
 }

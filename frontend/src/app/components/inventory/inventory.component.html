@@ -40,32 +40,26 @@
                 <div class="card">
                     <span class="price">{{item.price}}</span>
                     <img [src]="itemImage(item.id)" alt="" width="200" height="200">
-                    <div #user *ngIf="loginService.isUser()">
-                        <div class="card-simple-options">
-                            <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
-                                <div class="columns is-multiline">
-                                    <div class="column is-full is-marginless"><p>EDIT</p></div>
-                                </div>
-                            </a>
-                            <a [routerLink]="['/items/' + item.id + '/delete']" class="btn btn--mini-rounded">
-                                <div class="columns is-multiline">
-                                    <div class="column is-full is-marginless"><p>DELETE</p></div>
-                                </div>
-                            </a>
-                        </div>
+                    <div class="card-simple-options">
+                        <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
+                            <div class="columns is-multiline">
+                                <div class="column is-full is-marginless"><p>EDIT</p></div>
+                            </div>
+                        </a>
+                        <button (click)="deleteItem(item.id)" class="btn btn--mini-rounded">
+                            <div class="columns is-multiline">
+                                <div class="column is-full is-marginless"><p>DELETE</p></div>
+                            </div>
+                        </button>
                     </div>
                     <div class="card-info">
                         <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
                         <h4 class="has-text-centered">{{item.description}}</h4>
                         <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
                         <div class="card-buttons">
-                            <div *ngIf="loginService.isLogged()">
-                                <div #user *ngIf="loginService.isUser()">
-                                    <a [routerLink]="['#']" class="btn btn--mini-rounded">
-                                        <i class="zmdi zmdi-favorite-outline"></i>
-                                    </a>
-                                </div>
-                            </div>
+                            <a [routerLink]="['#']" class="btn btn--mini-rounded">
+                                <i class="zmdi zmdi-favorite-outline"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -84,17 +78,45 @@
         </div>
 
         <div class="topbar-filter fw">
-			<p id="total-item"></p>
+			<p id="total-item"><span>{{capacity}} items</span> in total</p>
 		</div>
         <div class="columns is-mobile is-multiline" id="itemListing">
             <!--items info-->
+            <div *ngFor="let item of items" class="column is-half-mobile is-one-quarter-desktop">
+                <div class="card">
+                    <span class="price">{{item.price}}</span>
+                    <img [src]="itemImage(item.id)" alt="" width="200" height="200"/>
+                    <div class="card-simple-options">
+                        <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
+                            <div class="columns is-multiline">
+                                <div class="column is-full is-marginless"><p>EDIT</p></div>
+                            </div>
+                        </a>
+                        <button (click)="deleteItem(item.id)" class="btn btn--mini-rounded">
+                            <div class="columns is-multiline">
+                                <div class="column is-full is-marginless"><p>DELETE</p></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card-info">
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
+                        <h4 class="has-text-centered">{{item.description}}</h4>
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
+                        <div class="card-buttons">
+                            <a [routerLink]="['#']" class="btn btn--mini-rounded">
+                                <i class="zmdi zmdi-favorite-outline"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>'
         </div>
         <div class="page-single">
             <div class="container">
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <ul class="pagination">               
-                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" (click)="moreInventoryItems()">more results</button></li>
                         </ul>
                     </div>
                     
