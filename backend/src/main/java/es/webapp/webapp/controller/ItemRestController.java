@@ -25,7 +25,7 @@ import es.webapp.webapp.service.UserService;
 
 
 @RestController
-@RequestMapping("/databases")
+@RequestMapping("/api")
 public class ItemRestController {
 
     @Autowired

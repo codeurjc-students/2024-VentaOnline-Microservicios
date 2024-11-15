@@ -17,12 +17,12 @@
             <div class="column">
                 <h2 class="is-size-4">Login</h2>
 
-                <input #user type="text" name="username" placeholder="Username" class="form-control-field error"/>
+                <input #username type="text" name="username" placeholder="Username" class="form-control-field error"/>
 
-                <input #pass type="password" name="password" placeholder="Password" class="form-control-field"/>
+                <input #password type="password" name="password" placeholder="Password" class="form-control-field"/>
                 <div class="title-hd-sm">
                 
-                    <button class="btn btn-default btn-primary" type="submit" (click)="login($event,user.value,pass.value)">log in</button>
+                    <button class="btn btn-default btn-primary" type="submit" (click)="login($event,username.value,password.value)">log in</button>
                 </div>
             </div>
         </div>

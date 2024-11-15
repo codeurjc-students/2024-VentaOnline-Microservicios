@@ -86,7 +86,7 @@
         if(items.item.sizes == null){
             if(items.item.stock >= 5){              
                     $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                         '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                         '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
@@ -96,7 +96,7 @@
                     )
                 } else{ 
                     $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                         '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                         '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
@@ -110,7 +110,7 @@
                 if(items.item.sizes[i] == items.size){
                     if(items.item.stock >= 5){              
                         $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
                             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                             '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
@@ -120,7 +120,7 @@
                         )
                     } else{ 
                         $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
                             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                             '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
@@ -137,7 +137,7 @@
 
     function showOtherItems(items){
         $('.slider').append(
-            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/databases/items/' + items.item.id + 
+            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
             '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 

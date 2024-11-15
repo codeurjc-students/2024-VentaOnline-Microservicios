@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 
-const ITEM_URL = '/databases/items';
+const ITEM_URL = '/api/items';
+const INVENTORY_URL = '/api/inventory/items';
 
 @Injectable({providedIn: 'root'})
 export class ItemService{
@@ -40,6 +41,10 @@ export class ItemService{
             })
         )as Observable<any>;
     }*/
+
+    getItemImage(id: number | undefined){
+        return '/api/inventory/items/' + id + '/image';
+    }
 
     private handleError(error: any){
         return throwError(() => "Server error(" + error.status + "): " + error.text);

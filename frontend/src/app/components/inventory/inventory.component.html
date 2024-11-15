@@ -1,48 +1,82 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<body>
     <header>
         <nav class="navbar-top">
             <ul class="navbar-top-ul">
                 <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Registro</a>-->
                 </li>
                 <li class="navbar-top-item">
+                    <!--<a href="login.html" class="navbar-top-links">Iniciar sesión</a>-->
                 </li>
             </ul>
         </nav>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="//localhost:8443/">Avenue Fashion</li>
+                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" [routerLink]="['/home']">Avenue Fashion</li>
                 <ul class="nav-menu-ul">
                     <div class="user-img">
-                        <img src="//localhost:8443/databases/users/39/image" alt="" width="50" height="50"></img>
+                        <img [src]="getUnknownImage()" alt="" width="50" height="50"/>
                     </div>
-                    <li class="nav-menu-item"><a href="//localhost:8444/items/page" class="nav-menu-link">New item</a></li>
+                    <li class="nav-menu-item"><a [routerLink]="['/items/page']" class="nav-menu-link">New item</a></li>
                 </ul>
-                <form>
+                    <!--search an item-->
                     <div>
                         <span class="form-group-icon"><i class="zmdi zmdi-search"></i></span>
-                        <input id="name" name="name" type="text" val="" placeholder="Search..."/>                       
-                        <input class="submit" type="button" value="search"/>
-                        
-                    </div>
-                </form>   
+                        <input id="name" [(ngModel)]="name" placeholder="Search..."/>                       
+                        <button (click)="searchItem()">Search</button>
+                    </div>  
             </nav>
         </nav>
     </header>
+
+    <!-- Sección de fotografías -->
     <div class="container">
 
         <div class="topbar-filter fw">
-			<p id="total-item-founded"></p>
+			<p id="total-item-founded">Found <span>{{founded}} items </span></p>
 		</div>
         <div class="columns is-mobile is-multiline" id="itemFoundedListing">
+            <!--items info founded-->
+            <div *ngFor="let item of data" class="column is-half-mobile is-one-quarter-desktop">
+                <div class="card">
+                    <span class="price">{{item.price}}</span>
+                    <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                    <div #user *ngIf="loginService.isUser()">
+                        <div class="card-simple-options">
+                            <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
+                                <div class="columns is-multiline">
+                                    <div class="column is-full is-marginless"><p>EDIT</p></div>
+                                </div>
+                            </a>
+                            <a [routerLink]="['/items/' + item.id + '/delete']" class="btn btn--mini-rounded">
+                                <div class="columns is-multiline">
+                                    <div class="column is-full is-marginless"><p>DELETE</p></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.name}}</h4>
+                        <h4 class="has-text-centered">{{item.description}}</h4>
+                        <h4 class="has-text-black has-text-centered has-text-weight-bold">{{item.price}} €</h4>
+                        <div class="card-buttons">
+                            <div *ngIf="loginService.isLogged()">
+                                <div #user *ngIf="loginService.isUser()">
+                                    <a [routerLink]="['#']" class="btn btn--mini-rounded">
+                                        <i class="zmdi zmdi-favorite-outline"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="page-single">
             <div class="container">
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <ul class="items-founded-pagination">               
-                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">more results</button></li>
+                            <li><button class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" (click)="moreInventoryFoundedItems()">more results</button></li>
                         </ul>
                     </div>                  
                 </div>
@@ -53,6 +87,7 @@
 			<p id="total-item"></p>
 		</div>
         <div class="columns is-mobile is-multiline" id="itemListing">
+            <!--items info-->
         </div>
         <div class="page-single">
             <div class="container">
@@ -68,7 +103,9 @@
         </div>
 
     </div>
-
+<!--pagination-->
+    
+<!--spinner-->    
     <div id="spinner-div" class="pt-5">
         <div class="spinner-border text-primary" role="status">
         </div>
@@ -81,8 +118,115 @@
             <li class="footer-bar-top-links">2024 Avenue Fashion</li>
         </div>
     </footer>
-    <script src="/js/main.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    
-</body>
-</html>-->
+
+<script>
+    var tam=12;
+    var tam1;
+
+    let ruta='//localhost:8444/inventory/items?size='+tam;
+
+    function loadInitItems(callback,tam){
+        $.ajax({
+            url:ruta
+        }).done(function (items){    
+            callback(items);
+        }) 
+    }
+
+    function showItemLoaded(item){
+        $('#itemListing').append(
+            '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
+            '</span><img src="/inventory/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' +
+            item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'//<button id="item-' + item.id +'"></button>'
+        )
+    }
+
+    function showItemFoundedLoaded(item){
+        $('#itemFoundedListing').append(
+            '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
+            '</span><img src="/inventory/items/' + item.id + 
+            '/image" alt="" width="200" height="200"><div class="card-simple-options"><a href="/items/' + item.id + '" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">EDIT</div></div></a><a href="/items/' +
+            item.id + '/delete" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">DELETE</div></div></a></div><div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="#" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+        )
+    }
+
+    $(document).ready(function() {
+        //first 10 items
+        loadInitItems(function(items, tam) {
+            $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
+            $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
+            if(items.size != 0){
+                for(var i=0; i<items.size; i++){
+                    showItemLoaded(items.content[i]);
+                }
+            }
+        });
+
+        //pagination
+        $('.pagination').click(function() {
+            tam+=12;
+
+            let ruta='https://localhost:8444/inventory/items?size='+tam;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam-12 < item.content.length){
+                    for(var i=tam-12; i<item.content.length; i++){
+                        showItemLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
+
+        //items founded
+        $('.submit').click(function() {
+            $('#total-item-founded').empty();
+            $('#itemFoundedListing').empty();
+            tam1=12;
+            let value = $('#name').val();
+            let ruta='https://localhost:8444/inventory/items/'+value+'?size='+tam1;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
+                if(item.size != 0){
+                    for(var i=0; i<item.size; i++){
+                        showItemFoundedLoaded(item.content[i]);
+                    }
+                }
+                
+            }) 
+        })
+
+        $('.items-founded-pagination').click(function() {
+            tam1+=12;
+            let value= $('#name').val();
+            let ruta='https://localhost:8444/inventory/items/'+value+'?size='+tam1;
+
+            $('#spinner-div').show();
+            $.ajax({
+                url:ruta
+            }).done(function(item){
+                $('#spinner-div').hide();
+                if(item.size != 0 && tam1-12 < item.numberOfElements){
+                    for(var i=tam1-12; i<item.numberOfElements; i++){
+                        showItemFoundedLoaded(item.content[i]);
+                    }
+                }
+            })
+        })
+
+    });
+
+</script>

@@ -27,7 +27,7 @@ export class HomeComponent {
   favouritesItems: Item[] = [];
   id: number = 39;
   
-  constructor(private router: Router, activatedRoute: ActivatedRoute, public loginService: LoginService, public itemService: ItemService){}
+  constructor(private router: Router, public loginService: LoginService, public itemService: ItemService){}
 
   ngOnInit(){
     this.itemService.getItems(this.tam).subscribe(
@@ -36,8 +36,7 @@ export class HomeComponent {
         this.items = items.content;
       },
       error => console.log(error)
-    );
-    
+    );   
   }
 
   registration(){
@@ -96,7 +95,7 @@ export class HomeComponent {
   }
 
   itemImage(id: number | undefined){
-    return  'https://localhost:8444/inventory/items/' + id + '/image';
+    return  this.itemService.getItemImage(id);
   }
 
   showMoreItems(){
