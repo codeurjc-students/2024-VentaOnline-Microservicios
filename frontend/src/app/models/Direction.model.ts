@@ -2,8 +2,8 @@ import { User } from "./User.model";
 
 export interface Direction{
     id?: number,
-    street: String,
+    street: string,
     number: string,
     zipCode: string,
-    city: String
+    city: string
 }

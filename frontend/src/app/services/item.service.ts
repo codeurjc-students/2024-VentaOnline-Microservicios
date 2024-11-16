@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
+import { Item } from "../models/Item.model";
 
 const ITEM_URL = '/api/items';
 const INVENTORY_URL = '/api/inventory/items';
@@ -34,6 +35,14 @@ export class ItemService{
         )as Observable<any>; 
     }
 
+    setItem(item: Item): Observable<any>{
+        return this.https.post(INVENTORY_URL, item).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        );
+    }
+
     getItem(id: number): Observable<any>{
         return this.https.get(INVENTORY_URL + '/' + id).pipe(
             catchError((error) => {
@@ -53,6 +62,14 @@ export class ItemService{
         return '/api/inventory/items/' + id + '/image';
     }
 
+    setItemImage(item: Item, formData: FormData): Observable<any>{
+        return this.https.post(INVENTORY_URL + item.id + '/image', formData).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        );
+    }
+
     /*updateItem(id: number): Observable<any>{
         return this.https.put(INVENTORY_URL + ).pipe(
             catchError((error) => {
@@ -63,6 +80,14 @@ export class ItemService{
 
     deleteItem(id: number | undefined): Observable<any>{
         return this.https.delete(INVENTORY_URL + '/' + id).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>;
+    }
+
+    putItem(item: Item): Observable<any>{
+        return this.https.put(INVENTORY_URL + '/' + item.id + '/update', item).pipe(
             catchError((error) => {
                 return this.handleError(error);
             })

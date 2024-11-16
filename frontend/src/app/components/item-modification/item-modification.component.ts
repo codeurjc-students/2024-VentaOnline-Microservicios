@@ -40,4 +40,14 @@ export class ItemModificationComponent {
   itemImage(id: number){
     this.itemService.getItemImage(id);
   }
+
+  updateItem(){
+    this.itemService.putItem(this.item).subscribe(
+      item => {
+        this.item = item.content;
+        this.router.navigate(['/items/' + this.item.id + '/page']);
+      },
+      error => console.log(error)
+    );    
+  }
 }

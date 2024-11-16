@@ -6,7 +6,6 @@ export interface Item {
     name: string,
     description: string,
     price: number,
-    image: Blob,
     gender: string,
     type: string,
     stock: number,

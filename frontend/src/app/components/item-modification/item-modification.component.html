@@ -81,10 +81,9 @@
                     <div class="column is-one-third">
                         <label for="size">Size</label>
                         <div class="form-control-field" id="size">
-                            <label><input type="checkbox" [(ngModel)]="item.sizes[0]" value="S"/> S</label>
-                            <label><input type="checkbox" [(ngModel)]="item.sizes[1]" value="M"/> M</label>
-                            <label><input type="checkbox" [(ngModel)]="item.sizes[2]" value="L"/> L</label>
-                            <label><input type="checkbox" [(ngModel)]="item.sizes[3]" value="XL"/> XL</label>
+                            <span *ngFor="let size of sizes">
+                                <label><input type="checkbox" [(ngModel)]="size.selected">{{size.value}}</label>
+                            </span>
                         </div>
                     </div>
                     <div class="column is-one-third">
@@ -123,7 +122,7 @@
                 </div>
                 <div class="columns is-multiline">
                     <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline">update item</button>
+                        <button class="btn btn-default btn-outline" (click)="updateItem()">update item</button>
                     </div>
                 </div>
         </div>
@@ -139,7 +138,7 @@
                             <div class="columns">
                                 <div class="column">
                                     <h2 class="is-size-4">Additional information</h2>
-                                    <textarea name="description" placeholder="description" class="form-control-field"></textarea>
+                                    <textarea [(ngModel)]="item.description" placeholder="description" class="form-control-field"></textarea>
                                 </div>
                             </div>
                         </div>
