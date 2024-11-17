@@ -17,6 +17,14 @@ export class ShoppingCartService {
         );
     }
 
+    deleteItem(id: number | undefined){
+        return this.https.delete(CART_URL + 'items/' + id + '/remove').pipe(
+            catchError((error) => {
+                return this.handleError(error)
+            })
+        );
+    }
+
     handleError(error: any){
         return throwError(() => "Server error (" + error.status + "): ") + error.text()
 ;    }

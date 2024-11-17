@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ShoppingCart } from '../../models/ShoppingCart.model';
 import { LoginService } from '../../services/login.service';
 import { ShoppingCartService } from '../../services/shoppingCart.service';
@@ -20,7 +20,7 @@ export class ShoppingcartComponent {
   itemsToBuy: [] = [];
   firstItem: ItemToBuy;
 
-  constructor(public loginService: LoginService, public shoppingCartService: ShoppingCartService, public itemService: ItemService){}
+  constructor(public router: Router, public loginService: LoginService, public shoppingCartService: ShoppingCartService, public itemService: ItemService){}
 
   ngOnInit(){
     this.shoppingCartService.getUserItems(this.loginService.getCurrentUser().username).subscribe(
@@ -41,6 +41,11 @@ export class ShoppingcartComponent {
     return this.itemService.getItemImage(id);
   }
   
-  deleteItem(){}
+  deleteItem(id: number | undefined){
+    return this.shoppingCartService.deleteItem(id).subscribe(
+      (_:any) => this.router.navigate(['/shoppingcart/page']),
+      (error: any) => console.log(error)
+    );
+  }
 
 }

@@ -37,7 +37,7 @@
                         <div class="card">
                             <img [src]="getItemImage(firstItem.item.id)" alt="camiseta" width="200" height="200"/>
                             <div class="card-simple-options">
-                                <a (click)="deleteItem()" class="btn btn--mini-rounded">
+                                <a (click)="deleteItem(firstItem.item.id)" class="btn btn--mini-rounded">
                     <div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
                     '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
                     '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
