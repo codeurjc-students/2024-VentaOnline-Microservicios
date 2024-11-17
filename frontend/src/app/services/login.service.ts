@@ -19,7 +19,7 @@ export class LoginService {
     
     //constructor
     constructor(private https: HttpClient){
-        this.reqIsLogged(); 
+        //this.reqIsLogged(); 
     }
 
     reqIsLogged() {

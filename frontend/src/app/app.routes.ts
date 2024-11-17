@@ -10,6 +10,7 @@ import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.co
 import { LogoutComponent } from './components/logout/logout.component';
 import { ItemAggregationComponent } from './components/item-aggregation/item-aggregation.component';
 import { ItemModificationComponent } from './components/item-modification/item-modification.component';
+import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LogoutComponent },
     { path: 'shoppingcart/page', component: ShoppingcartComponent},
+    { path: 'orders/new/users/:username', component: UserOrdersComponent},
     { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
