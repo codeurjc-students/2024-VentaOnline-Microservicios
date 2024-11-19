@@ -5,7 +5,7 @@ import { ShoppingCart } from "./ShoppingCart.model";
 export interface ItemToBuy {
     id?: number,
     item: Item,
-    sie: String,
+    size: String,
     count: number,
     order: Order,
     shoppingCart: ShoppingCart

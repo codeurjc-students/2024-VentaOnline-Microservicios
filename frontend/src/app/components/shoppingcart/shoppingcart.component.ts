@@ -16,24 +16,28 @@ import { ItemService } from '../../services/item.service';
 })
 export class ShoppingcartComponent {
 
-  newOrder: boolean;
+  newOrder: any;
   itemsToBuy: [] = [];
-  firstItem: ItemToBuy;
-
+  firstItem: ItemToBuy | undefined;
+  otherItems: ItemToBuy[] = [];
+  //stocks = [{size:'S', stock: 0},{size:'M', stock: 0},{size:'L', stock: 0},{size: 'XL', stock: 0}];
+  
   constructor(public router: Router, public loginService: LoginService, public shoppingCartService: ShoppingCartService, public itemService: ItemService){}
 
   ngOnInit(){
     this.shoppingCartService.getUserItems(this.loginService.getCurrentUser().username).subscribe(
-      items => {
+      (items:any) => {
         this.itemsToBuy = items.content;
         this.firstItem = items.content[0];
+        this.otherItems = items.content.pop(items.content[0]);
+        
         if(items.content.length > 0){
           this.newOrder = false;
         }else{
           this.newOrder = true;
         }
       },
-      error => console.log(error)
+      (error:any) => console.log(error)
     );
   }
 

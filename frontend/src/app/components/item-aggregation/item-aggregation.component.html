@@ -45,16 +45,16 @@
                         <div class="column is-one-third">
                             <label for="quality">Stock:</label>
                             <label *ngIf="sizes[0].selected">
-                            <input type="number" [(ngModel)]="item.stocks[0]" placeholder="stock for size S" class="form-control-field"/>
+                            <input type="number" [(ngModel)]="item.stocks[0].stock" placeholder="stock for size S" class="form-control-field"/>
                             </label>
                             <label *ngIf="sizes[1].selected">
-                            <input type="number" [(ngModel)]="item.stocks[1]" placeholder="stock for size M" class="form-control-field"/>
+                            <input type="number" [(ngModel)]="item.stocks[1].stock" placeholder="stock for size M" class="form-control-field"/>
                             </label> 
                             <label *ngIf="sizes[2].selected"> 
-                            <input type="number" [(ngModel)]="item.stocks[2]" placeholder="stock for size L" class="form-control-field"/> 
+                            <input type="number" [(ngModel)]="item.stocks[2].stock" placeholder="stock for size L" class="form-control-field"/> 
                             </label>  
                             <label *ngIf="sizes[3].selected">
-                            <input type="number" [(ngModel)]="item.stocks[3]" placeholder="stock for size XL" class="form-control-field"/> 
+                            <input type="number" [(ngModel)]="item.stocks[3].stock" placeholder="stock for size XL" class="form-control-field"/> 
                             </label>        
                         </div>
                     </div>

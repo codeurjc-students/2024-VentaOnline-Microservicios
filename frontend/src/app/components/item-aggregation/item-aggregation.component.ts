@@ -7,6 +7,7 @@ import { Direction } from 'readline';
 import { ShoppingCart } from '../../models/ShoppingCart.model';
 import { User } from '../../models/User.model';
 import { ItemService } from '../../services/item.service';
+import { Stock } from '../../models/Stock.model';
 
 @Component({
   selector: 'app-item-aggregation',
@@ -19,6 +20,7 @@ export class ItemAggregationComponent {
 
   item: Item;
   sizes = [{value: 'S', selected: false},{value: 'M', selected: false},{value: 'L', selected: false},{value: 'XL', selected: false}];
+  itemSizes: string[] = [];
   user: User;
   shoppingCart: ShoppingCart;
 
@@ -26,12 +28,11 @@ export class ItemAggregationComponent {
   imageFile: any;
 
   constructor(public itemService: ItemService, public router: Router) {
-    let stocks = [0,0,0,0];
 
     this.shoppingCart = {totalCost: 0, items: []};
     this.user = {username: '', name: '', email: '', password: '', passwordConfirmation: '', rol: 'USER', direction: {street: '', number: '', zipCode: '', city: ''}, favouritesItems: [], shoppingCart: this.shoppingCart, orders: []};
 
-    this.item = {name:'', description:'', price:0, gender:'', type:'', stock:0, sizes:[], stocks:stocks, favouritesUsers:[], itemsToBuy:[]}
+    this.item = {name:'', description:'', price:0, gender:'', type:'', stock:0, sizes:this.itemSizes, stocks:[{size: '', stock: 0}], favouritesUsers:[], itemsToBuy:[]}
   }
 
   addItem(){
@@ -43,6 +44,11 @@ export class ItemAggregationComponent {
       if(!image){
         alert("please insert a picture for the product");
       }else{
+        for(var i = 0; i < this.sizes.length; i++){
+          if(this.sizes[i].selected){
+            this.itemSizes.push(this.sizes[i].value);
+          }
+        }
         this.itemService.setItem(this.item).subscribe(
           (item:any) => this.addItemImage(item),
           (error:any) => console.log(error)

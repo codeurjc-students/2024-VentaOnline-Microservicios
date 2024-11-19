@@ -32,23 +32,77 @@
     <div class="container">
         <div class="columns">
             <div class="slider" id="slider">
+
                 <div *ngIf="firstItem" class="slider-img-container active" style="align: center">
                     <div class="column">
                         <div class="card">
                             <img [src]="getItemImage(firstItem.item.id)" alt="camiseta" width="200" height="200"/>
                             <div class="card-simple-options">
                                 <a (click)="deleteItem(firstItem.item.id)" class="btn btn--mini-rounded">
-                    <div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                    '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                    '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
-                    '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                    '</p>
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">REMOVE</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="is-size-4">{{firstItem.item.name}}</h3>
+                    <h2 class="price is-size-4">{{firstItem.item.price}}<sup>€</sup></h2>
+                    <div class="column">
+                        <span *ngFor="let stock of firstItem.item.stocks">
+                            <p *ngIf="stock.size == firstItem.size && stock.stock >= 5" class="has-text-grey"><strong>Availability:</strong> In stock</p>    
+                            <p *ngIf="stock.size == firstItem.size && stock.stock < 5" class="has-text-grey"><strong>Availability:</strong> Less than 5 items available</p>  
+                        </span>
+                        <p class="has-text-grey"><strong>Gender: </strong>{{firstItem.item.gender}}</p>
+                        <p *ngIf="firstItem.size == null" class="has-text-grey"><strong>Size: </strong>unique</p>
+                        <p *ngIf="firstItem.size != null" class="has-text-grey"><strong>Size: </strong>{{firstItem.size}}</p> 
+                        <p class="has-text-grey"><strong>Type: </strong>{{firstItem.item.type}}</p>
+                        <p class="has-text-grey"><strong>Amount: </strong>{{firstItem.count}}</p>
+                    </div>
+                    <p class="text-default">{{firstItem.item.description}}</p>
+                </div>
+
+                <div *ngFor="let otherItem of otherItems" class="slider-img-container" style="align: center">
+                    <div class="column">
+                        <div class="card">
+                            <img [src]="getItemImage(otherItem.item.id)" alt="camiseta" width="200" height="200"/>
+                            <div class="card-simple-options">
+                                <a (click)="deleteItem(otherItem.item.id)" class="btn btn--mini-rounded">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">REMOVE</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="is-size-4">{{otherItem.item.name}}</h3>
+                    <h2 class="price is-size-4">{{otherItem.item.price}}<sup>€</sup></h2>
+                    <div class="column">
+                        <span *ngFor="let stock of otherItem.item.stocks">
+                            <p *ngIf="stock.size == otherItem.size && stock.stock >= 5" class="has-text-grey"><strong>Availability:</strong> In stock</p>    
+                            <p *ngIf="stock.size == otherItem.size && stock.stock < 5" class="has-text-grey"><strong>Availability:</strong> Less than 5 items available</p>  
+                        </span>
+                        <p class="has-text-grey"><strong>Gender: </strong>{{otherItem.item.gender}}</p>
+                        <p *ngIf="otherItem.size == null" class="has-text-grey"><strong>Size: </strong>unique</p>
+                        <p *ngIf="otherItem.size != null" class="has-text-grey"><strong>Size: </strong>{{otherItem.size}}</p> 
+                        <p class="has-text-grey"><strong>Type: </strong>{{otherItem.item.type}}</p>
+                        <p class="has-text-grey"><strong>Amount: </strong>{{otherItem.count}}</p>
+                    </div>
+                    <p class="text-default">{{otherItem.item.description}}</p>
                 </div>
                 
-                <div class="button-left">    
+                <div class="button-left"> 
+                    <div class="slider-button-left slider-buttons" onclick="previus(' + n + ')">
+                        <i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i>
+                    </div>   
                 </div>
+
                 <div class="button-right">
+                    <div class="slider-button-right slider-buttons" onclick="next(' + n + ')">
+                        <i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -62,112 +116,3 @@
             </div>
         </div>
     </footer>
-
-<script>
-
-    let ruta='/api/shoppingcart/{{username}}/items';
-    let sizes = ['S','M','L','XL'];
-  
-
-    function loadInitItems(callback){
-        $.ajax({
-            url:ruta
-        }).done(function (items){
-            callback(items);
-        })
-    }
-
-    function showFirstItem(items){
-        if(items.item.sizes == null){
-            if(items.item.stock >= 5){              
-                    $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
-                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                        '</p></div>'
-                    )
-                } else{ 
-                    $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
-                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                        '</p></div>'
-                    )
-                }
-        } else {
-            for(var i=0; i<items.item.sizes.length; i++){
-                if(items.item.sizes[i] == items.size){
-                    if(items.item.stock >= 5){              
-                        $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                            '</p></div>'
-                        )
-                    } else{ 
-                        $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                            '</p></div>'
-                        )
-                    }
-                    break;
-                }
-            }
-        }
-    }
-
-    function showOtherItems(items){
-        $('.slider').append(
-            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-            '</p></div>'
-        )
-    }
-
-    function showPreviousButton(n){
-        $('.button-left').append(
-            '<div class="slider-button-left slider-buttons" onclick="previus(' + n + ')"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
-        )
-    }
-
-    function showNextButton(n){
-        $('.button-right').append(
-            '<div class="slider-button-right slider-buttons" onclick="next(' + n + ')"><i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i></div>'
-        )
-    }
-
-    $(document).ready(function() {
-
-        loadInitItems(function(items) {
-            if(items.size != 0){
-                showFirstItem(items[0]);
-                for(var i=1; i<items.length; i++){
-                    showOtherItems(items[i]);
-                }
-                showPreviousButton(items.length);
-                showNextButton(items.length);
-            } else {
-                console.log(null);
-            }
-        });
-
-    });
-</script>

@@ -24,10 +24,9 @@
                     </span>
                 </span>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
-                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size S: </strong></p>
-                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size M: </strong></p>
-                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size L: </strong></p>
-                <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size XL: </strong></p>
+                <span *ngFor="let size of sizes">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{size.value}}: </strong></p>
+                </span>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
 
             </div>
@@ -45,10 +44,10 @@
                 <p>{{item.sizes[2]}}</p>
                 <p>{{item.sizes[3]}}</p>-->
                 <p>{{item.type}}</p>
-                <p>{{item.stock[0]}}</p>
-                <p>{{item.stock[1]}}</p>
-                <p>{{item.stock[2]}}</p>
-                <p>{{item.stock[3]}}</p>
+                <span *ngFor="let stock of item.stocks">
+                    <p>{{item.stock}}</p>
+                </span>
+                
                 <p>{{item.description}}</p>  
             </div>
         </div>
