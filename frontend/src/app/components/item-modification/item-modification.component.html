@@ -18,14 +18,12 @@
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
-                <span *ngFor="let size of sizes">
-                    <span *ngIf="item.size.selected">
-                        <p class="has-text-grey-light"><strong class="has-text-grey-light">Size: </strong></p>
-                    </span>
+                <span *ngFor="let _ of item.stocks">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Size: </strong></p>
                 </span>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
-                <span *ngFor="let size of sizes">
-                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{size.value}}: </strong></p>
+                <span *ngFor="let stock of item.stocks">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{stock.size}}: </strong></p>
                 </span>
                 <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
 
@@ -34,18 +32,12 @@
                 <p>{{item.name}}</p>
                 <p>{{item.price}} €</p> 
                 <p>{{item.gender}}</p>
-                <span *ngFor="let size of sizes">
-                    <span *ngIf="item.size.selected">
-                        <p>{{item.size.value}}</p>
-                    </span>
+                <span *ngFor="let stock of item.stocks">
+                    <p>{{stock.size}}</p>
                 </span>
-                <!--<p>{{item.sizes[0]}}</p>
-                <p>{{item.sizes[1]}}</p>
-                <p>{{item.sizes[2]}}</p>
-                <p>{{item.sizes[3]}}</p>-->
                 <p>{{item.type}}</p>
                 <span *ngFor="let stock of item.stocks">
-                    <p>{{item.stock}}</p>
+                    <p>{{stock.stock}}</p>
                 </span>
                 
                 <p>{{item.description}}</p>  
@@ -65,6 +57,7 @@
             <input #imageFile type='file' name='imageFile' accept=".jpg, .jpeg, .png"/>
         </div>
         <div class="column">
+
             <h3 class="is-size-4">New item</h3>
             <div class="columns">
                 <div class="column">
@@ -75,55 +68,54 @@
                 </div>
             </div>
              
-        
-                <div class="columns is-multiline">
-                    <div class="column is-one-third">
-                        <label for="size">Size</label>
-                        <div class="form-control-field" id="size">
-                            <span *ngFor="let size of sizes">
-                                <label><input type="checkbox" [(ngModel)]="size.selected">{{size.value}}</label>
-                            </span>
-                        </div>
+            <div class="columns is-multiline">
+                <div class="column is-one-third">
+                    <label for="size">Size</label>
+                    <div class="form-control-field" id="size">
+                        <span *ngFor="let size of sizes">
+                            <label><input type="radio" [(ngModel)]="stock.size">{{size.name}}</label>
+                        </span>
                     </div>
-                    <div class="column is-one-third">
-                        <label for="quality">Stock:</label>
-                        <label *ngIf="item.size[0].selected">
-                        <input type="number" [(ngModel)]="item.stocks[0]" placeholder="stock for size S" class="form-control-field"/>
+                </div>
+                <div class="column is-one-third">
+                    <label for="quality">Stock:</label>
+                    <span *ngFor="let size of sizes">
+                        <label *ngIf="size.equals(stock.size)">
+                            <input type="number" [(ngModel)]="stock.stock" placeholder="enter stock" class="form-control-field"/>
                         </label>
-                        <label *ngIf="item.size[1].selected">
-                        <input type="number" [(ngModel)]="item.stocks[1]" placeholder="stock for size M" class="form-control-field"/>
-                        </label> 
-                        <label *ngIf="item.size[2].selected"> 
-                        <input type="number" [(ngModel)]="item.stocks[2]" placeholder="stock for size L" class="form-control-field"/> 
-                        </label>  
-                        <label *ngIf="item.size[3].selected">
-                        <input type="number" [(ngModel)]="item.stocks[3]" placeholder="stock for size XL" class="form-control-field"/> 
-                        </label>
-                    </div>    
+                    </span>       
                 </div>
-                <div class="columns is-multiline">
-                    <div class="column is-one-third">
-                        <label for="color">Gender</label>
-                        <div class="form-control-field" id="gender">
-                            <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="man"/> man</label>
-                            <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="woman"/> woman</label>
-                            <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="unisex"/> unisex</label>
-                        </div>
-                    </div>
-                    <div class="column is-one-third">
-                        <label for="size">Type</label>
-                        <div class="form-control-field" id="type">
-                            <label><input type="radio" [(ngModel)]="item.type" name="type" value="jeans"/> jeans</label>
-                            <label><input type="radio" [(ngModel)]="item.type" name="type" value="t-shirt"/> t_shirt</label>
-                            <label><input type="radio" [(ngModel)]="item.type" name="type" value="dress"/> dress</label>
-                        </div>
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-full is-marginless">
+                    <button class="btn btn-default btn-outline" (click)="addStock()">addStock</button>
+                </div>
+            </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-one-third">
+                    <label for="color">Gender</label>
+                    <div class="form-control-field" id="gender">
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="man"/> man</label>
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="woman"/> woman</label>
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="unisex"/> unisex</label>
                     </div>
                 </div>
-                <div class="columns is-multiline">
-                    <div class="column is-full is-marginless">
-                        <button class="btn btn-default btn-outline" (click)="updateItem()">update item</button>
+                <div class="column is-one-third">
+                    <label for="size">Type</label>
+                    <div class="form-control-field" id="type">
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="jeans"/> jeans</label>
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="t-shirt"/> t_shirt</label>
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="dress"/> dress</label>
                     </div>
                 </div>
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-full is-marginless">
+                    <button class="btn btn-default btn-outline" (click)="updateItem()">update item</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>

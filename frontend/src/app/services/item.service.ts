@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { Item } from "../models/Item.model";
+import { Stock } from "../models/Stock.model";
 
 const ITEM_URL = '/api/items';
 const INVENTORY_URL = '/api/inventory/items';
@@ -41,6 +42,14 @@ export class ItemService{
                 return this.handleError(error);
             })
         );
+    }
+
+    setStock(id: number, stock: Stock): Observable<any>{
+        return this.https.post(ITEM_URL + '/' + id + '/stock', stock).pipe(
+            catchError((error) => {
+                return this.handleError(error);
+            })
+        )as Observable<any>;
     }
 
     getItem(id: number): Observable<any>{

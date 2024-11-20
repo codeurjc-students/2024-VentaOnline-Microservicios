@@ -15,7 +15,9 @@ export class ItemModificationComponent {
 
   id: any;
   item: any;
-  sizes = [{value: 'S', selected: false},{value: 'M', selected: false},{value: 'L', selected: false},{value: 'XL', selected: false}];
+  sizes: any;
+  stock: any;
+  stocks: any;
 
   @ViewChild('imageFile')
   imageFile: any;
@@ -27,13 +29,16 @@ export class ItemModificationComponent {
     this.itemService.getItem(this.id).subscribe(
       item => {
         this.item = item.content;
-        for(var i=0; i<item.content.sizes.length; i++){
-          if(item.content.sizes[i] != null){
-            this.sizes[i].selected = true;
-          }
-        }
+        this.sizes = item.content.totalSizes;
       },
       error => console.log(error)     
+    );
+  }
+
+  addStock(){
+    this.itemService.setStock(this.item.id, this.stock).subscribe(
+      (_:any) => this.router.navigate(['/items/' + this.item.id + '/page']),
+      (error:any) => console.log(error)
     );
   }
 
@@ -50,4 +55,6 @@ export class ItemModificationComponent {
       error => console.log(error)
     );    
   }
+
+
 }

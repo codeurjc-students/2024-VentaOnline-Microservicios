@@ -23,6 +23,7 @@ export class ItemAggregationComponent {
   itemSizes: string[] = [];
   user: User;
   shoppingCart: ShoppingCart;
+  model: Stock;
 
   @ViewChild('imageFile')
   imageFile: any;
@@ -31,8 +32,8 @@ export class ItemAggregationComponent {
 
     this.shoppingCart = {totalCost: 0, items: []};
     this.user = {username: '', name: '', email: '', password: '', passwordConfirmation: '', rol: 'USER', direction: {street: '', number: '', zipCode: '', city: ''}, favouritesItems: [], shoppingCart: this.shoppingCart, orders: []};
-
-    this.item = {name:'', description:'', price:0, gender:'', type:'', stock:0, sizes:this.itemSizes, stocks:[{size: '', stock: 0}], favouritesUsers:[], itemsToBuy:[]}
+    this.model = {size: '', stock: 0};
+    this.item = {name:'', description:'', price:0, gender:'', type:'', stock:0, sizes:[], stocks:[], favouritesUsers:[], itemsToBuy:[]}
   }
 
   addItem(){
@@ -44,11 +45,6 @@ export class ItemAggregationComponent {
       if(!image){
         alert("please insert a picture for the product");
       }else{
-        for(var i = 0; i < this.sizes.length; i++){
-          if(this.sizes[i].selected){
-            this.itemSizes.push(this.sizes[i].value);
-          }
-        }
         this.itemService.setItem(this.item).subscribe(
           (item:any) => this.addItemImage(item),
           (error:any) => console.log(error)
