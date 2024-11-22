@@ -94,8 +94,8 @@ export class HomeComponent {
     return this.loginService.getAnonymousUserImage();
   }
 
-  itemImage(id: number | undefined){
-    return  this.itemService.getItemImage(id);
+  itemImage(item: Item){
+    return  this.itemService.getItemImage(item);
   }
 
   showMoreItems(){

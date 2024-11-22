@@ -6,6 +6,7 @@ import { LoginService } from '../../services/login.service';
 import { ShoppingCartService } from '../../services/shoppingCart.service';
 import { ItemToBuy } from '../../models/ItemToBuy.model';
 import { ItemService } from '../../services/item.service';
+import { Item } from '../../models/Item.model';
 
 @Component({
   selector: 'app-shoppingcart',
@@ -41,8 +42,8 @@ export class ShoppingcartComponent {
     );
   }
 
-  getItemImage(id: number | undefined){
-    return this.itemService.getItemImage(id);
+  getItemImage(item: Item){
+    return this.itemService.getItemImage(item);
   }
   
   deleteItem(id: number | undefined){

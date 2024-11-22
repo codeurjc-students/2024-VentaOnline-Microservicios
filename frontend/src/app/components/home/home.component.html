@@ -89,7 +89,7 @@
             <div *ngFor="let item of favouritesItems" class="column is-half-mobile is-one-quarter-desktop">
                 <div class="card">
                     <span class="price">{{item.price}}</span>
-                    <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                    <img [src]="itemImage(item)" alt="" width="200" height="200">
                     <div #user *ngIf="loginService.isUser()">
                         <div class="card-simple-options">
                             <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
@@ -139,7 +139,7 @@
             <div *ngFor="let item of data" class="column is-half-mobile is-one-quarter-desktop">
                 <div class="card">
                     <span class="price">{{item.price}}</span>
-                    <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                    <img [src]="itemImage(item)" alt="" width="200" height="200">
                     <div #user *ngIf="loginService.isUser()">
                         <div class="card-simple-options">
                             <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">
@@ -188,7 +188,7 @@
             <div *ngFor="let item of items" class="column is-half-mobile is-one-quarter-desktop">        
                 <div class="card">
                     <span class="price">{{item.price}}</span>
-                    <img [src]="itemImage(item.id)" alt="" width="200" height="200">
+                    <img [src]="itemImage(item)" alt="" width="200" height="200">
                     <div #user *ngIf="loginService.isUser()">
                         <div class="card-simple-options">
                             <a [routerLink]="['/items/' + item.id + '/page']" class="btn btn--mini-rounded">

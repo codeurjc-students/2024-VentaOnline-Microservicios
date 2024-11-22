@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ItemService } from '../../services/item.service';
 import { FormsModule } from '@angular/forms';
+import { Item } from '../../models/Item.model';
 
 @Component({
   selector: 'app-item-modification',
@@ -42,8 +43,8 @@ export class ItemModificationComponent {
     );
   }
 
-  itemImage(id: number){
-    this.itemService.getItemImage(id);
+  itemImage(item: Item){
+    this.itemService.getItemImage(item);
   }
 
   updateItem(){

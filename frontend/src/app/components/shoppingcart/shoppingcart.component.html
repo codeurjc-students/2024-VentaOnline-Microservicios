@@ -36,7 +36,7 @@
                 <div *ngIf="firstItem" class="slider-img-container active" style="align: center">
                     <div class="column">
                         <div class="card">
-                            <img [src]="getItemImage(firstItem.item.id)" alt="camiseta" width="200" height="200"/>
+                            <img [src]="getItemImage(firstItem.item)" alt="camiseta" width="200" height="200"/>
                             <div class="card-simple-options">
                                 <a (click)="deleteItem(firstItem.item.id)" class="btn btn--mini-rounded">
                                     <div class="columns is-multiline">
@@ -65,7 +65,7 @@
                 <div *ngFor="let otherItem of otherItems" class="slider-img-container" style="align: center">
                     <div class="column">
                         <div class="card">
-                            <img [src]="getItemImage(otherItem.item.id)" alt="camiseta" width="200" height="200"/>
+                            <img [src]="getItemImage(otherItem.item)" alt="camiseta" width="200" height="200"/>
                             <div class="card-simple-options">
                                 <a (click)="deleteItem(otherItem.item.id)" class="btn btn--mini-rounded">
                                     <div class="columns is-multiline">

@@ -67,8 +67,8 @@ export class ItemService{
         )as Observable<any>;
     }*/
 
-    getItemImage(id: number | undefined){
-        return '/api/inventory/items/' + id + '/image';
+    getItemImage(item: Item){
+        return INVENTORY_URL + '/' + item.id + '/image';
     }
 
     setItemImage(item: Item, formData: FormData): Observable<any>{

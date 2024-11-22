@@ -19,7 +19,6 @@ import { Stock } from '../../models/Stock.model';
 export class ItemAggregationComponent {
 
   item: Item;
-  sizes = [{value: 'S', selected: false},{value: 'M', selected: false},{value: 'L', selected: false},{value: 'XL', selected: false}];
   itemSizes: string[] = [];
   user: User;
   shoppingCart: ShoppingCart;
