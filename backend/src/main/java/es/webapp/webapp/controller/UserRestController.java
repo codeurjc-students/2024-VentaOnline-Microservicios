@@ -60,9 +60,9 @@ public class UserRestController {
         String username = auth.getName();
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } 
     }
 
