@@ -5,25 +5,25 @@
         "logLevel": "debug",
         "changeOrigin": true
     },
-    "/api/inventory*": {
+    "/api/inventory": {
         "target":"https://localhost:8444",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
     },
-    "/api/auth*": {
+    "/api/auth": {
         "target":"https://localhost:8443",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
     },
-    "/api/users*": {
+    "/api/users": {
         "target":"https://localhost:8443",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
     },
-    "/api/items*": {
+    "/api/items": {
         "target":"https://localhost:8443",
         "secure": false,
         "logLevel": "debug",

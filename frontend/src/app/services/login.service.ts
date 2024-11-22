@@ -19,7 +19,7 @@ export class LoginService {
     
     //constructor
     constructor(private https: HttpClient){
-        //this.reqIsLogged(); 
+        this.reqIsLogged(); 
     }
 
     reqIsLogged() {
@@ -50,14 +50,11 @@ export class LoginService {
     logout(){
         this.https.post('/api/auth/logout', {}, { withCredentials: true}).subscribe(
             (resp: any) => {
-                localStorage.removeItem('authToken');
                 this.logged = false;
                 this.user = undefined;
-                //console.log(resp);
-                //console.log(this.user);
-                //console.log(this.logged);
             }, (error) => {
-                alert("error logging out")}
+                console.log(error)
+            }
         );
     }
 

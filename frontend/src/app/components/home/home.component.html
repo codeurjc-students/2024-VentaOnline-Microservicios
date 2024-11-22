@@ -22,8 +22,8 @@
         </nav>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion</li>
-               
+                <li class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark">Avenue Fashion </li>
+              
                 <ul *ngIf="loginService.isLogged()">
                     <ul #user *ngIf="loginService.isUser()" class="nav-menu-ul">
                         <div class="user-img">
@@ -50,6 +50,14 @@
                     <li class="nav-menu-item"><a [routerLink]="['/signup']" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a [routerLink]="['/login']" class="nav-menu-link">Login</a></li>
                 </ul>
+
+                @if(loginService.isLogged()) {
+                    <div style="border: solid 10px red ">{{ loginService.getUserName() }}</div>
+                } @else {
+                    <div style="border: solid 10px blue;">No User</div>
+                }
+
+                <!-- clustersnake45@gmail.com-->
             
                 <!--search an item-->
                 <div>
