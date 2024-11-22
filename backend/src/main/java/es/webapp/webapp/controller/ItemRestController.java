@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.core.io.Resource;
@@ -19,9 +20,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import es.webapp.webapp.model.Item;
+import es.webapp.webapp.model.Stock;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 @RestController
@@ -57,6 +61,17 @@ public class ItemRestController {
         Page<Item> items = new PageImpl<>(user.get().getFavouritesItems(), page, user.get().getFavouritesItems().size());
         if(user.isPresent()){
             return new ResponseEntity<>(items,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/items/{id}/stock")
+    public ResponseEntity<Stock> postMethodName(@PathVariable Integer id, @RequestBody Stock stock) {
+        Optional<Item> item = itemService.findById(id);
+        if(item.isPresent()) {
+            stock.setItem(item.get());
+            return new ResponseEntity<>(stock, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

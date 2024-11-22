@@ -50,6 +50,11 @@ public class Item {
     private Integer[] stocks = new Integer[NUM];
 
     private Integer stock;
+
+    @Column(name = "itemStock")
+    @OneToMany(mappedBy="item")
+    private List<Stock> itemStocks;
+
     //private User user;
 
     @ManyToMany
@@ -86,6 +91,14 @@ public class Item {
     
     public Integer getStock(){
         return stock;
+    }
+
+    public void setItemStocks(List<Stock> stocks){
+        this.itemStocks = stocks;
+    }
+    
+    public List<Stock> getItemStocks(){
+        return itemStocks;
     }
 
     public void setStocks(Integer [] stock){
