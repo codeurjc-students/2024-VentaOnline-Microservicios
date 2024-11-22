@@ -1,0 +1,150 @@
+<header>
+    <nav class="navbar">
+        <nav class="nav-menu --nav-dark" id="mySidenav">
+            <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" [routerLink]="['/home']">Avenue Fashion</a>
+            <ul class="nav-menu-ul"></ul>
+        </nav>
+    </nav>
+</header>
+<!-- Banner -->
+<div *ngIf="item" class="banner banner-second">
+    <div class="banner-container">
+        <h1>Current item</h1>
+        <div class="columns">
+            <div class="column">
+                <img [src]="itemImage(item.id)" alt="" width="450" height="450"/>
+            </div>
+            <div class="column">
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Price: </strong></p>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Gender: </strong></p>
+                <span *ngFor="let _ of item.stocks">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Size: </strong></p>
+                </span>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Type: </strong></p>
+                <span *ngFor="let stock of item.stocks">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Stock for size {{stock.size}}: </strong></p>
+                </span>
+                <p class="has-text-grey-light"><strong class="has-text-grey-light">Description: </strong></p>
+
+            </div>
+            <div class="column">
+                <p>{{item.name}}</p>
+                <p>{{item.price}} €</p> 
+                <p>{{item.gender}}</p>
+                <span *ngFor="let stock of item.stocks">
+                    <p>{{stock.size}}</p>
+                </span>
+                <p>{{item.type}}</p>
+                <span *ngFor="let stock of item.stocks">
+                    <p>{{stock.stock}}</p>
+                </span>
+                
+                <p>{{item.description}}</p>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="columns">
+        <div class="column is-two-fifths-desktop">
+            <div class="slider" id="slider">
+                <div class="slider-img-container">
+                    <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                </div>
+            </div>
+            <input #imageFile type='file' name='imageFile' accept=".jpg, .jpeg, .png"/>
+        </div>
+        <div class="column">
+
+            <h3 class="is-size-4">New item</h3>
+            <div class="columns">
+                <div class="column">
+                    <input type="text" [(ngModel)]="item.name" placeholder="name" class="form-control-field"/>
+                </div>
+                <div class="column">
+                    <input type="number" [(ngModel)]="item.price" placeholder="price" class="form-control-field" min="0" step="0.01"/>
+                </div>
+            </div>
+             
+            <div class="columns is-multiline">
+                <div class="column is-one-third">
+                    <label for="size">Size</label>
+                    <div class="form-control-field" id="size">
+                        <span *ngFor="let size of sizes">
+                            <label><input type="radio" [(ngModel)]="stock.size">{{size.name}}</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <label for="quality">Stock:</label>
+                    <span *ngFor="let size of sizes">
+                        <label *ngIf="size.equals(stock.size)">
+                            <input type="number" [(ngModel)]="stock.stock" placeholder="enter stock" class="form-control-field"/>
+                        </label>
+                    </span>       
+                </div>
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-full is-marginless">
+                    <button class="btn btn-default btn-outline" (click)="addStock()">addStock</button>
+                </div>
+            </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-one-third">
+                    <label for="color">Gender</label>
+                    <div class="form-control-field" id="gender">
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="man"/> man</label>
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="woman"/> woman</label>
+                        <label><input type="radio" [(ngModel)]="item.gender" name="gender" value="unisex"/> unisex</label>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <label for="size">Type</label>
+                    <div class="form-control-field" id="type">
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="jeans"/> jeans</label>
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="t-shirt"/> t_shirt</label>
+                        <label><input type="radio" [(ngModel)]="item.type" name="type" value="dress"/> dress</label>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-full is-marginless">
+                    <button class="btn btn-default btn-outline" (click)="updateItem()">update item</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="columns is-tablet">
+        <div class="column">
+            <div class="tabs-container">                
+                <div class="tabs-panels">
+                    <div class="tab-panel active-panel">
+                        <div class="container">
+                            <div class="columns">
+                                <div class="column">
+                                    <h2 class="is-size-4">Additional information</h2>
+                                    <textarea [(ngModel)]="item.description" placeholder="description" class="form-control-field"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<footer class="footer">
+    <div class="footer-bar-top">
+        <div class="container">
+            <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+        </div>
+    </div>
+</footer>

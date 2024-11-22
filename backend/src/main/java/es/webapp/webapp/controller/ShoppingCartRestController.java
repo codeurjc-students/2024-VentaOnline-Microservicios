@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +20,7 @@ import es.webapp.webapp.service.ItemToBuyService;
 import es.webapp.webapp.service.UserService;
 
 @RestController
-@RequestMapping("/databases/shoppingcart")
+@RequestMapping("/api/shoppingcart")
 public class ShoppingCartRestController {
     
     @Autowired
@@ -26,16 +30,17 @@ public class ShoppingCartRestController {
     private UserService userService;
 
     @GetMapping("/{username}/items")
-    public List<ItemToBuy> getItemsToBuy(@PathVariable String username){
+    public ResponseEntity<List<ItemToBuy>> getItemsToBuy(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()) {
             ShoppingCart shoppingCart = user.get().getShoppingCart();
-            return itemToBuyService.findByShoppingCart(shoppingCart);
+            return new ResponseEntity<>(itemToBuyService.findByShoppingCart(shoppingCart), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return null;
     }
 
-    /*@DeleteMapping("/items/{id}")
+    @DeleteMapping("/items/{id}/remove")
     public ResponseEntity<ItemToBuy> deleteItemToBuyById(@PathVariable Integer id){
         Optional<ItemToBuy> item = itemToBuyService.findById(id);
         if(item.isPresent()){
@@ -44,5 +49,5 @@ public class ShoppingCartRestController {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }*/
+    }
 }

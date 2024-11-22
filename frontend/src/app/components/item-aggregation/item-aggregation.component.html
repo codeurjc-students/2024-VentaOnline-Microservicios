@@ -1,0 +1,90 @@
+    <header>
+        <nav class="navbar">
+            <nav class="nav-menu --nav-dark-light" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" [routerLink]="['/home']">Avenue Fashion</a>
+                <ul class="nav-menu-ul"></ul>
+            </nav>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-second">
+        <div class="banner-container ">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-two-fifths-desktop">
+                <div class="slider" id="slider">
+                    <div class="slider-img-container">
+                        <img src="/img/no_t-shirt.PNG" alt="camiseta" class="active slider-item">
+                    </div>
+                </div>
+                <input #imageFile type='file' name='imageFile' accept=".jpg, .jpeg, .png" required/>
+            </div>
+            <div class="column">
+                <h3 class="is-size-4">New item</h3>
+                <div class="columns">
+                    <div class="column">
+                        <input type="text" [(ngModel)]="item.name" placeholder="name" class="form-control-field" required/>
+                    </div>
+                    <div class="column">
+                        <input type="number" [(ngModel)]="item.price" placeholder="price" class="form-control-field" min="0" step="0.01" required/>
+                    </div>
+                </div>
+                 
+                <div class="columns is-multiline">
+                    <div class="column is-one-third">
+                        <label for="color">Gender</label>
+                        <div class="form-control-field" id="gender">
+                            <label><input type="radio" [(ngModel)]="item.gender" value="man" required/> man</label>
+                            <label><input type="radio" [(ngModel)]="item.gender" value="woman" required/> woman</label>
+                            <label><input type="radio" [(ngModel)]="item.gender" value="unisex" required/> unisex</label>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <label for="size">Type</label>
+                        <div class="form-control-field" id="type">
+                            <label><input type="radio" [(ngModel)]="item.type" value="jeans" required> jeans</label>
+                            <label><input type="radio" [(ngModel)]="item.type" value="t-shirt" required> t_shirt</label>
+                            <label><input type="radio" [(ngModel)]="item.type" value="dress" required> dress</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-full is-marginless">
+                        <button class="btn btn-default btn-outline" (click)="addItem()">create item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns is-tablet">
+            <div class="column">
+                <div class="tabs-container">                
+                    <div class="tabs-panels">
+                        <div class="tab-panel active-panel">
+                            <div class="container">
+                                <div class="columns">
+                                    <div class="column">
+                                        <h2 class="is-size-4">Additional information</h2>
+                                        <textarea [(ngModel)]="item.description" placeholder="description" class="form-control-field"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-bar-top">
+            <div class="container">
+                <a class="footer-bar-top-links" href="#">2024 Avenue Fashion</a>
+            </div>
+        </div>
+    </footer>

@@ -13,13 +13,13 @@ export class LoginComponent {
 
   constructor(private router: Router, public loginService: LoginService){}
 
-  login(event: any, user: string, pass: string){
-    if(!user || !pass){
+  login(event: any, username: string, password: string){
+    if(!username || !password){
       alert("some fields are incorrect");
     } else {
       event.preventDefault();
 
-      this.loginService.login(user,pass);
+      this.loginService.login(username,password);
       this.router.navigate(['/home']);
     }
   }

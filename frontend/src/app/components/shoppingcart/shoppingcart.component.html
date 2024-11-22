@@ -1,1 +1,118 @@
-<p>shoppingcart works!</p>
+    <header>
+        <nav class="navbar">
+            <nav class="nav-menu --nav-dark" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" [routerLink]="['/home']">Avenue Fashion</a>
+                <ul class="nav-menu-ul"></ul>
+            </nav>
+        </nav>
+        <nav class="navbar">
+            <header class="nabvar-mobile is-size-5-mobile">
+                <a class="navbar-mobile-link has-text-white" href="#" id="btn-mobile"><i class="zmdi zmdi-menu"></i></a>
+            </header>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-second">
+        <div class="banner-container ">
+            <h1>Shopping cart</h1>
+            <h2 class="zmdi zmdi-shopping-cart"></h2> 
+            <div *ngIf="newOrder">
+            <!--div class="has-text-light">{{order}}</div-->
+            <h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">CART EMPTY !!!</h1>
+            </div>
+            <div *ngIf="!newOrder">
+                <!--link to user orders-->
+            <a [routerLink]="['/orders/new/users/' + this.loginService.getCurrentUser()?.username]"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="columns">
+            <div class="slider" id="slider">
+
+                <div *ngIf="firstItem" class="slider-img-container active" style="align: center">
+                    <div class="column">
+                        <div class="card">
+                            <img [src]="getItemImage(firstItem.item)" alt="camiseta" width="200" height="200"/>
+                            <div class="card-simple-options">
+                                <a (click)="deleteItem(firstItem.item.id)" class="btn btn--mini-rounded">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">REMOVE</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="is-size-4">{{firstItem.item.name}}</h3>
+                    <h2 class="price is-size-4">{{firstItem.item.price}}<sup>€</sup></h2>
+                    <div class="column">
+                        <span *ngFor="let stock of firstItem.item.stocks">
+                            <p *ngIf="stock.size == firstItem.size && stock.stock >= 5" class="has-text-grey"><strong>Availability:</strong> In stock</p>    
+                            <p *ngIf="stock.size == firstItem.size && stock.stock < 5" class="has-text-grey"><strong>Availability:</strong> Less than 5 items available</p>  
+                        </span>
+                        <p class="has-text-grey"><strong>Gender: </strong>{{firstItem.item.gender}}</p>
+                        <p *ngIf="firstItem.size == null" class="has-text-grey"><strong>Size: </strong>unique</p>
+                        <p *ngIf="firstItem.size != null" class="has-text-grey"><strong>Size: </strong>{{firstItem.size}}</p> 
+                        <p class="has-text-grey"><strong>Type: </strong>{{firstItem.item.type}}</p>
+                        <p class="has-text-grey"><strong>Amount: </strong>{{firstItem.count}}</p>
+                    </div>
+                    <p class="text-default">{{firstItem.item.description}}</p>
+                </div>
+
+                <div *ngFor="let otherItem of otherItems" class="slider-img-container" style="align: center">
+                    <div class="column">
+                        <div class="card">
+                            <img [src]="getItemImage(otherItem.item)" alt="camiseta" width="200" height="200"/>
+                            <div class="card-simple-options">
+                                <a (click)="deleteItem(otherItem.item.id)" class="btn btn--mini-rounded">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-full is-marginless">REMOVE</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="is-size-4">{{otherItem.item.name}}</h3>
+                    <h2 class="price is-size-4">{{otherItem.item.price}}<sup>€</sup></h2>
+                    <div class="column">
+                        <span *ngFor="let stock of otherItem.item.stocks">
+                            <p *ngIf="stock.size == otherItem.size && stock.stock >= 5" class="has-text-grey"><strong>Availability:</strong> In stock</p>    
+                            <p *ngIf="stock.size == otherItem.size && stock.stock < 5" class="has-text-grey"><strong>Availability:</strong> Less than 5 items available</p>  
+                        </span>
+                        <p class="has-text-grey"><strong>Gender: </strong>{{otherItem.item.gender}}</p>
+                        <p *ngIf="otherItem.size == null" class="has-text-grey"><strong>Size: </strong>unique</p>
+                        <p *ngIf="otherItem.size != null" class="has-text-grey"><strong>Size: </strong>{{otherItem.size}}</p> 
+                        <p class="has-text-grey"><strong>Type: </strong>{{otherItem.item.type}}</p>
+                        <p class="has-text-grey"><strong>Amount: </strong>{{otherItem.count}}</p>
+                    </div>
+                    <p class="text-default">{{otherItem.item.description}}</p>
+                </div>
+                
+                <div class="button-left"> 
+                    <div class="slider-button-left slider-buttons" onclick="previus(' + n + ')">
+                        <i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i>
+                    </div>   
+                </div>
+
+                <div class="button-right">
+                    <div class="slider-button-right slider-buttons" onclick="next(' + n + ')">
+                        <i class="zmdi zmdi-chevron-right zmdi-hc-3x"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-bar-top">
+            <div class="container">
+                <a class="footer-bar-top-links">2024 Avenue Fashion</a>
+            </div>
+        </div>
+    </footer>

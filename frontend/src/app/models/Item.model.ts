@@ -1,4 +1,5 @@
 import { ItemToBuy } from "./ItemToBuy.model";
+import { Stock } from "./Stock.model";
 import { User } from "./User.model";
 
 export interface Item {
@@ -6,12 +7,11 @@ export interface Item {
     name: string,
     description: string,
     price: number,
-    image: Blob,
     gender: string,
     type: string,
     stock: number,
     sizes: string[],
-    stocks: number[],
+    stocks: Stock[],
     favouritesUsers: User[],
     itemsToBuy: ItemToBuy[]
 }

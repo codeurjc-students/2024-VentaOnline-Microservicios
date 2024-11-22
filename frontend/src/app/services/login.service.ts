@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { User } from '../models/User.model';
+import { AuthResponse } from '../models/Auth-Ressponse.model';
+import { error } from 'console';
 
 
 const AUTH_URL = '/api/auth';
@@ -12,17 +14,17 @@ const USER_URL = '/databases/users';
 export class LoginService {
 
     user: any;
-    admin:any;
+    admin: any;
     logged: boolean = false;
     
     //constructor
     constructor(private https: HttpClient){
-        this.reqIsLogged();
+        this.reqIsLogged(); 
     }
 
     reqIsLogged() {
-        this.https.get<User>('/api/users/current', {withCredentials: true}).subscribe(
-            (response:User) => {
+        this.https.get('/api/users/current', {withCredentials: true}).subscribe(
+            (response) => {
                 //console.log(response);
                 this.user = response as User;
                 this.logged = true;
@@ -34,24 +36,26 @@ export class LoginService {
         );
     }
 
-    login(user: string, pass: string) {
-        this.https.post(AUTH_URL + '/login', {username: user, password: pass}, {withCredentials: true}).subscribe(
-            response => {
-                this.reqIsLogged
-                //console.log(response),
-                //console.log(this.user),
-                //console.log(this.logged)
+    login(username: string, password: string) {
+        this.https.post<AuthResponse>('/api/auth/login', {username, password}, {withCredentials: true}).subscribe(
+            (response) => {
+                this.reqIsLogged();
+                //console.log(this.user);
+                //console.log(this.logged);
             },
             error => alert("wrong credentials")
         );
     }
 
     logout(){
-        this.https.post(AUTH_URL + '/logout', { withCredentials: true}).subscribe(
+        this.https.post('/api/auth/logout', {}, { withCredentials: true}).subscribe(
             (resp: any) => {
-            this.logged = false;
-            this.user = undefined;
-        });
+                this.logged = false;
+                this.user = undefined;
+            }, (error) => {
+                console.log(error)
+            }
+        );
     }
 
     isLogged(){
@@ -66,12 +70,8 @@ export class LoginService {
         return this.admin && this.admin.rol.indexOf('ADMIN') !== -1;
     }
 
-    getUserImage(): Observable<any>{
-        return this.https.get(USER_URL + '/' + this.user.username + '/image').pipe(
-            catchError((error) => {
-                return this.handleError(error);
-            })
-        )as Observable<any>; 
+    getUserImage(){
+        return '/api/users/' + this.user.id + '/image';      
     }
 
     getAnonymousUserImage(){

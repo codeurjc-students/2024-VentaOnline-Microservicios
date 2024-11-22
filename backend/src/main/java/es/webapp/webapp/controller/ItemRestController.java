@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @RestController
-@RequestMapping("/databases")
+@RequestMapping("/api")
 public class ItemRestController {
 
     @Autowired
@@ -65,6 +65,7 @@ public class ItemRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
 
     @PostMapping("/items/{id}/stock")
     public ResponseEntity<Stock> postMethodName(@PathVariable Integer id, @RequestBody Stock stock) {
