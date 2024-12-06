@@ -52,6 +52,9 @@ public class Item {
     private Integer stock;
     //private User user;
 
+    @OneToMany(mappedBy = "item")
+    private List<Stock> itemStocks;
+
     @ManyToMany
     private List<User> favouritesUsers;
 
@@ -86,6 +89,14 @@ public class Item {
     
     public Integer getStock(){
         return stock;
+    }
+
+    public void setItemStocks(List<Stock> items){
+        this.itemStocks = items;
+    }
+    
+    public List<Stock> getItemStocks(){
+        return itemStocks;
     }
 
     public void setStocks(Integer [] stock){

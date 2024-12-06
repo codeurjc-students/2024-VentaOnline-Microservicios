@@ -63,19 +63,4 @@ public class ItemRestController {
     }
     
 
-    /*@GetMapping("/items/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable Integer id) throws SQLException {
-
-        Optional<Item> item = itemService.findById(id);
-
-        if(item.isPresent() && item.get().getImageFile() != null){
-            Resource file = new InputStreamResource(item.get().getImageFile().getBinaryStream());
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .contentLength(item.get().getImageFile().length())
-                .body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
 }

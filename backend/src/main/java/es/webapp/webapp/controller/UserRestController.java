@@ -55,15 +55,19 @@ public class UserRestController {
     }
 
     @GetMapping("/api/users/current")
-    public ResponseEntity<User> getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Optional<User> user = userService.findByUsername(username);
-        if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+        
+            Principal principal = request.getUserPrincipal();
+        if(principal != null){
+            Optional<User> user = userService.findByUsername(principal.getName());
+            if(user.isPresent()){
+                return new ResponseEntity<>(user.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } 
         } else {
-            return ResponseEntity.notFound().build();
-        } 
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/databases/users/{id}")

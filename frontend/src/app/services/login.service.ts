@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { User } from '../models/User.model';
 import { AuthResponse } from '../models/Auth-Ressponse.model';
-import { error } from 'console';
+import { of } from 'rxjs';
 
 
 const AUTH_URL = '/api/auth';
@@ -25,7 +25,7 @@ export class LoginService {
     reqIsLogged() {
         this.https.get('/api/users/current', {withCredentials: true}).subscribe(
             (response) => {
-                //console.log(response);
+               // console.log(response);
                 this.user = response as User;
                 this.logged = true;
             }, (error) => {
@@ -37,13 +37,16 @@ export class LoginService {
     }
 
     login(username: string, password: string) {
-        this.https.post<AuthResponse>('/api/auth/login', {username, password}, {withCredentials: true}).subscribe(
-            (response) => {
-                this.reqIsLogged();
-                //console.log(this.user);
-                //console.log(this.logged);
-            },
-            error => alert("wrong credentials")
+        return this.https.post<AuthResponse>('/api/auth/login', { username, password }).pipe(
+            map((response) => {
+                // Realiza acciones adicionales si es necesario
+                this.reqIsLogged(); 
+                return true; // Devuelve true si el login es exitoso
+            }),
+            catchError((error) => {
+                alert("Credenciales incorrectas");
+                return of(false); // Devuelve false en caso de error
+            })
         );
     }
 

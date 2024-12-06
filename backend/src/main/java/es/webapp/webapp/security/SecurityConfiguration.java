@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
@@ -19,7 +20,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 public class SecurityConfiguration{
     
     @Autowired
-    UserDetailService userDetailsService;    
+    UserDetailService userDetailsService; 
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter(){
+        return new JWTAuthenticationFilter();
+    }
 
     @Bean
     public UserDetailService userDetailsService(){
@@ -60,18 +66,22 @@ public class SecurityConfiguration{
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
                 registry.antMatchers("/login").permitAll();
+                registry.antMatchers("/auth/login").permitAll();
                 registry.antMatchers("/loginerror").permitAll();
                 registry.antMatchers("/logout").permitAll();
                 registry.antMatchers("/signup").permitAll();
                 registry.antMatchers("/items/page").hasAnyRole("ADMIN");
+            
             })
 
             .logout(httpLogout -> {
                 httpLogout.logoutUrl("/logout").permitAll();
                 httpLogout.logoutSuccessUrl("/");
             })
-            
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .build();
+
+            
     }
 
     public void addCorsMapping(CorsRegistry registry){

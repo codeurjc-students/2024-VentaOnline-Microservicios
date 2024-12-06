@@ -11,4 +11,8 @@ public class AuthResponse {
         this.accessToken = accessToken;
     }
 
+    public AuthResponse(Status status, String msg){
+        
+    }
+
 }
