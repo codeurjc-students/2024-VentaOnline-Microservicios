@@ -18,7 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne 
     private User user;
 
     @Column(name="totalCost")

@@ -58,6 +58,7 @@ public class Item {
     public Item(){
     }
 
+
     public void setStock(Stock<?> stock){
         itemStocks.add(stock);
         stock.setItem(this);
