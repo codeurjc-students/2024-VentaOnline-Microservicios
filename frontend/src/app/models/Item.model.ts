@@ -9,8 +9,6 @@ export interface Item {
     price: number,
     gender: string,
     type: string,
-    stock: number,
-    sizes: string[],
     stocks: Stock[],
     favouritesUsers: User[],
     itemsToBuy: ItemToBuy[]

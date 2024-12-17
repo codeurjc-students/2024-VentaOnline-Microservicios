@@ -50,7 +50,7 @@ public class ItemRestController {
         return itemService.findByName(name, page);
     }
 
-    @GetMapping("/items/favourites/{username}")
+    /*@GetMapping("/items/favourites/{username}")
     public ResponseEntity<Page<Item>> getFavouritesItems(@PathVariable String username,Pageable page){
 
         Optional<User> user = userService.findByUsername(username);
@@ -60,7 +60,7 @@ public class ItemRestController {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
     
 
 }

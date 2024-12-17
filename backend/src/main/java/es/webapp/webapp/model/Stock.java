@@ -5,26 +5,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+/**
+ * conversión de la clase Stock en clase genérica para que cada subclase pueda definir su propia versión de Size
+ */
 @Entity
 @Table(name = "tbl_stock")
-public class Stock {
+public abstract class Stock<T> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 
-    private boolean selected;
+    private String code;
 
-    private String size;
-
+    //private boolean selected;
     private Integer stock;
 
     @ManyToOne
     private Item item;
+
+    public Stock(){}
 
     public void setId(Integer id){
         this.id = id;
@@ -34,21 +40,17 @@ public class Stock {
         return id;
     }
 
-    public void setSelected(boolean selected){
-        this.selected = selected;
+    public void setCode(String code){
+        this.code=code;
     }
 
-    public boolean getSelected(){
-        return selected;
+    public String getCode(){
+        return code;
     }
 
-    public void setSize(String size){
-        this.size = size;
-    }
+    public abstract void setSize(T size);
 
-    public String getSize(){
-        return size;
-    }
+    public abstract T getSize();
 
     public void setSotck(Integer stock){
         this.stock = stock;
@@ -56,5 +58,13 @@ public class Stock {
 
     public Integer getStock(){
         return stock;
+    }
+
+    public void setItem(Item item){
+        this.item = item;
+    }
+
+    public Item getItem(){
+        return item;
     }
 }

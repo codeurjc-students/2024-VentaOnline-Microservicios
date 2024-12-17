@@ -61,7 +61,7 @@ public class UserService {
         
     }
 
-    public void update(Integer id, User newUser){
+    /*public void update(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);
         if(newUser.getName() == null){
             newUser.setName(user.get().getName());
@@ -84,9 +84,9 @@ public class UserService {
         }
         newUser.setId(id);
         userRepo.save(newUser);
-    }
+    }*/
 
-    public void newItem(Integer id, Item newItem){
+    /*public void newItem(Integer id, Item newItem){
         User newUser = new User();
         Optional<User> user = userRepo.findById(id);
         newUser.setName(user.get().getName());
@@ -108,6 +108,6 @@ public class UserService {
         }
         newUser.setId(id);
         userRepo.save(newUser);
-    }
+    }*/
 
 }

@@ -62,7 +62,7 @@ public class ItemController {
         model.addAttribute("sizeByDefault",false);
     }
 
-    private void showSizes(Model model, Optional<Item> item){
+    /*private void showSizes(Model model, Optional<Item> item){
         if(item.get().getSizes() != null && item.get().getSizes()[0] != null){
             model.addAttribute("sizeS",true);
             model.addAttribute("size1",item.get().getSizes()[0]);   
@@ -114,7 +114,7 @@ public class ItemController {
         } else {
             model.addAttribute("stock4",0); 
         }
-    }
+    }*/
 
     @GetMapping("/{id}/page")
     public String itemPage(Model model, @PathVariable Integer id){   
@@ -126,8 +126,8 @@ public class ItemController {
             model.addAttribute("price",item.get().getPrice());
             model.addAttribute("gender",item.get().getGender());
             
-            showSizes(model,item);
-            showStocks(model, item);
+            //showSizes(model,item);
+            //showStocks(model, item);
   
             model.addAttribute("type",item.get().getType());
             model.addAttribute("description",item.get().getDescription());
@@ -164,8 +164,8 @@ public class ItemController {
                     model.addAttribute("price",product.get().getPrice());
                     model.addAttribute("gender",product.get().getGender());
                     
-                    showSizes(model,product);
-                    showStocks(model, product);
+                    //showSizes(model,product);
+                    //showStocks(model, product);
         
                     model.addAttribute("type",product.get().getType());
                     model.addAttribute("description",product.get().getDescription());
@@ -182,7 +182,7 @@ public class ItemController {
         return "error";
     }
 
-    @GetMapping("/{id}/favourites/{username}/new")
+    /*@GetMapping("/{id}/favourites/{username}/new")
     public String addFavourite(Model model, @PathVariable Integer id, @PathVariable String username)  {
         Optional<Item> item = itemService.findById(id);
         Optional<User> user = userService.findByUsername(username);
@@ -190,5 +190,5 @@ public class ItemController {
         userService.newItem(user.get().getId(),item.get());
         return "index";
 
-    }
+    }*/
 }

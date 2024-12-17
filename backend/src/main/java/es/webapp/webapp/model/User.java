@@ -48,21 +48,19 @@ public class User {
     @Column(name = "image")
     private Blob avatar;
 
-    @OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
-    //@JsonIgnore
+    @OneToOne(cascade=CascadeType.ALL)
     private Direction direction;
 
-    @ManyToMany
-    private List<Item> favouritesItems;
-
-    @OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToOne(cascade=CascadeType.ALL)
     private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy="users")
+    private List<Item> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
     public User(){
-        favouritesItems = new ArrayList<>();
     }
 
     public Direction getDirection(){
@@ -81,7 +79,7 @@ public class User {
         this.shoppingCart = shoppingCart;
     }
 
-   /* public void addOrder(Order order){
+    public void addOrder(Order order){
         orders.add(order);
         order.setUser(this);
     }
@@ -89,41 +87,19 @@ public class User {
     public void removeOrder(Order order){
         orders.remove(order);
         order.setUser(null);
-    }*/
-
-    public void setFavouritesItems (List<Item> favourites){
-        this.favouritesItems = favourites;
-    }
-
-    public List<Item> getFavouritesItems(){
-        return favouritesItems;
-    }
-
-    public void setOrders (List<Order> orders){
-        this.orders = orders;
     }
 
     public List<Order> getOrders(){
         return orders;
     }
 
-    /*public void setItem(Item item){
-        this.item = item;
+    public void setItems (List<Item> favourites){
+        this.items = favourites;
     }
 
-    public Item getItem(){
-        return item;
-    }*/
-
-    /*public void addFavouriteItem(Item favouriteItem){
-        favouritesItems.add(favouriteItem);
-        favouriteItem.setUser(this);
+    public List<Item> getItems(){
+        return items;
     }
-
-    public void removeFavouritesItems(Item favouriteItem){
-        favouritesItems.remove(favouriteItem);
-        favouriteItem.setUser(null);
-    }*/
 
     public void setId(Integer id){
         this.id = id;

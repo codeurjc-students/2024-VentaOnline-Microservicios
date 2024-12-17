@@ -1,5 +1,4 @@
 package es.webapp.webapp.model;
-
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -10,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "tbl_order")
 public class Order {
@@ -19,7 +19,6 @@ public class Order {
     private Integer id;
 
     @ManyToOne
-    
     private User user;
 
     @Column(name="totalCost")
@@ -30,6 +29,8 @@ public class Order {
 
     @Column(name="state")
     private State state;
+
+    private String auxState;
 
     public Order(){}
 
@@ -52,16 +53,6 @@ public class Order {
     public User getUser(){
         return user;
     }
-    
-    /*public void addItemToBuy(ItemToBuy itemToBuy){
-        itemsToBuy.add(itemToBuy);
-        itemToBuy.setOrder(this);
-    }
-
-    public void removeItemToBuy(ItemToBuy itemToBuy){
-        itemsToBuy.remove(itemToBuy);
-        itemToBuy.setOrder(null);
-    }*/
 
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
@@ -85,5 +76,13 @@ public class Order {
 
     public State getState(){
         return state;
+    }
+
+    public void setAuxState(String state){
+        this.auxState = state;
+    }
+
+    public String getAuxState(){
+        return auxState;
     }
 }

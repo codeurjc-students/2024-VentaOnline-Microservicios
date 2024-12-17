@@ -19,8 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "itemEntityManagerFactory", transactionManagerRef = "itemTransactionManager",
-basePackages = {"es.webapp.webapp.repository"})
+@EnableJpaRepositories(entityManagerFactoryRef = "itemEntityManagerFactory", transactionManagerRef = "itemTransactionManager", basePackages = {"es.webapp.webapp.repository"})
 public class MySQLConfig {
     
     @Autowired

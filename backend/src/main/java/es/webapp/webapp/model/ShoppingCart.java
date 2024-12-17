@@ -9,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tbl_cart")
 public class ShoppingCart {
 
     @Id
@@ -18,7 +20,7 @@ public class ShoppingCart {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy="shoppingCart")
     private User user;
     
     @Column(name = "totalCost")

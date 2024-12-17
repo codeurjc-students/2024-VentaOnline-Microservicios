@@ -6,8 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tbl_direction")
 public class Direction {
 
     @Id
@@ -27,7 +29,6 @@ public class Direction {
     private String city;
 
     @OneToOne(mappedBy = "direction")
-    //@JsonIgnore
     private User user;
 
     public Direction(){}

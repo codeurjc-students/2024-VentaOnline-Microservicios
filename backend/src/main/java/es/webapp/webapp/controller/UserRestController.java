@@ -70,7 +70,7 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/databases/users/{id}")
+    /*@PutMapping("/databases/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userUpdated, @PathVariable Integer id) throws IOException{
         Optional<User> user = userService.findById(id);
         if(user.isPresent()){
@@ -85,7 +85,7 @@ public class UserRestController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
     
     @GetMapping("/databases/users/{id}")
     public User getUserByUsername(@PathVariable Integer id){
@@ -107,7 +107,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/api/users/{id}/image")
+    /*@PostMapping("/api/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -125,7 +125,7 @@ public class UserRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 
 
 
