@@ -18,6 +18,8 @@ public class ItemToBuy {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+    private String code;
+
     @ManyToOne
     private Item item;
 
@@ -25,8 +27,8 @@ public class ItemToBuy {
 
     private Integer count;
 
-    @ManyToOne
-    private Order order;
+    //@ManyToOne
+    //private Order order;
 
     @ManyToOne
     private ShoppingCart shoppingCart;
@@ -39,6 +41,14 @@ public class ItemToBuy {
 
     public Integer getId(){
         return id;
+    }
+
+    public void setCode(String code){
+        this.code = code;
+    }
+
+    public String getCode(){
+        return code;
     }
 
     public String getSize(){
@@ -57,13 +67,13 @@ public class ItemToBuy {
         return item;
     }
 
-    public void setOrder(Order order){
+    /*public void setOrder(Order order){
         this.order=order;
     }
 
     public Order getOrder(){
         return order;
-    }
+    }*/
 
     public void setCount(Integer count){
         this.count=count;

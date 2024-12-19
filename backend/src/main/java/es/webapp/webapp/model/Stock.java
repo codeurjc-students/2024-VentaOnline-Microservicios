@@ -52,7 +52,7 @@ public abstract class Stock<T> {
 
     public abstract T getSize();
 
-    public void setSotck(Integer stock){
+    public void setStock(Integer stock){
         this.stock = stock;
     }
 

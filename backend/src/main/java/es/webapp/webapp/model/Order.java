@@ -18,6 +18,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String code;
+
     @ManyToOne 
     private User user;
 
@@ -25,12 +27,12 @@ public class Order {
     private Double totalCost;
 
     @Column(name="date")
-    private LocalDate creationDate;
+    private LocalDate creationDate;//AAAA-MM-DD
 
     @Column(name="state")
     private State state;
 
-    private String auxState;
+    //private String auxState;
 
     public Order(){}
 
@@ -44,6 +46,14 @@ public class Order {
 
     public Integer getId(){
         return id;
+    }
+
+    public void setCode(String code){
+        this.code = code;
+    }
+
+    public String getCode(){
+        return code;
     }
 
     public void setUser(User user){
@@ -78,11 +88,11 @@ public class Order {
         return state;
     }
 
-    public void setAuxState(String state){
+    /*public void setAuxState(String state){
         this.auxState = state;
     }
 
     public String getAuxState(){
         return auxState;
-    }
+    }*/
 }

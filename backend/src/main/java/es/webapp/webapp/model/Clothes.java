@@ -1,13 +1,16 @@
 package es.webapp.webapp.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
 public class Clothes extends Stock<Clothes.Size>{
 
     public enum Size{
         S, M, L, XL;
+
+        public String getSize(Size size){
+            return size.name();
+        }
     }
 
     private Size size;
