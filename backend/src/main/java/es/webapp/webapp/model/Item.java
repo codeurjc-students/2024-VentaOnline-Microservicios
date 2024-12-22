@@ -45,13 +45,13 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "item", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Stock<?>> itemStocks;
 
     @OneToMany(mappedBy="item", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<ItemToBuy> itemsToBuy;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<User> users = new ArrayList<>();
 
 
@@ -69,13 +69,10 @@ public class Item {
         stock.setItem(null);
     }
 
-    public List<Stock<?>> getstocks(){
+    public List<Stock<?>> getStocks(){
         return itemStocks;
     }
     
-    public List<Stock<?>> getItemStocks(){
-        return itemStocks;
-    }
 
     public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);

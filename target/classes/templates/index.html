@@ -48,7 +48,7 @@
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
-                        <img src="/api/users/39/image" alt="" width="50" height="50"></img>
+                        <img src="/api/users/59/image" alt="" width="50" height="50"></img>
                     </div>
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
@@ -59,7 +59,7 @@
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/api/users/39/image" alt="" width="50" height="50"></img>
+                        <img src="/api/users/59/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
@@ -168,14 +168,14 @@
     
 </body>
 <script>
-    var tam=10;
-    var tam1=10;
-    var tam2=10;
+    var size=10;
+    var size1=10;
+    var size2=10;
 
-    let ruta='//localhost:8443/api/items?size='+tam;
-    let ruta1='//localhost:8443/api/items/favourites/{{username}}?size='+tam2;
+    let ruta='//localhost:8443/api/items?size=' + size;
+    let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
 
-    function loadInitItems(callback,tam){
+    function loadInitItems(callback,size){
         $.ajax({
             url:ruta
         }).done(function (items){
@@ -183,7 +183,7 @@
         }) 
     }
 
-    function loadFavItems(callback,tam2){
+    function loadFavItems(callback,size2){
         $.ajax({
             url:ruta1
         }).done(function (items){
@@ -192,10 +192,9 @@
     }
 
     function showItemLoaded(item){
-
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8444/api/items/' + item.id + 
+            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 cl ss="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -206,19 +205,18 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8444/api/items/' + item.id + 
+            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + 
-            '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
     function showFavItemLoaded(item){
         $('#favouritesItems').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8444/api/items/' + item.id + 
+            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 cl ss="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -228,7 +226,7 @@
 
     $(document).ready(function() {
         //first 10 items
-        loadInitItems(function(items,tam) {
+        loadInitItems(function(items,size) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
             if(items.size != 0){
@@ -238,7 +236,7 @@
             }
         });
 
-        loadFavItems(function(items,tam2) {
+        loadFavItems(function(items,size2) {
             $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
             //console.log(items);
             if(items.size != 0){
@@ -250,17 +248,17 @@
 
         //pagination
         $('.pagination').click(function() {
-            tam+=10;
+            size+=10;
 
-            let ruta='https://localhost:8443/api/items?size='+tam;
+            let ruta='https://localhost:8443/api/items?size=' + size;
 
             $('#spinner-div').show();
             $.ajax({
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam-10 < item.content.length){
-                    for(var i=tam-10; i<item.content.length; i++){
+                if(item.size != 0 && size-10 < item.content.length){
+                    for(var i=size-10; i<item.content.length; i++){
                         showItemLoaded(item.content[i]);
                     }
                 }
@@ -271,9 +269,9 @@
         $('.submit').click(function() {
             $('#total-item-founded').empty();
             $('#itemFoundedListing').empty();
-            tam1=10;
+            size1=10;
             let value = $('#name').val();
-            let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/api/items/'+value+'?size='+size1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -291,17 +289,17 @@
         })
 
         $('.items-founded-pagination').click(function() {
-            tam1+=10;
+            size1+=10;
             let value= $('#name').val();
-            let ruta='https://localhost:8443/api/items/'+value+'?size='+tam1;
+            let ruta='https://localhost:8443/api/items/'+value+'?size='+size1;
 
             $('#spinner-div').show();
             $.ajax({
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam1-10 < item.content.length){
-                    for(var i=tam1-10; i<item.content.length; i++){
+                if(item.size != 0 && size1-10 < item.content.length){
+                    for(var i=size1-10; i<item.content.length; i++){
                         showItemFoundedLoaded(item.content[i]);
                     }
                 }
@@ -309,17 +307,17 @@
         })
 
         $('.fav-items-pagination').click(function() {
-            tam2+=10;
+            size2+=10;
 
-            let ruta='https://localhost:8443/api/items/favourites/{{username}}?size='+tam2;
+            let ruta='https://localhost:8443/api/items/favourites/{{username}}?size='+size2;
 
             $('#spinner-div').show();
             $.ajax({
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && tam2-10 < item.content.length){
-                    for(var i=tam2-10; i<item.content.length; i++){
+                if(item.size != 0 && size2-10 < item.content.length){
+                    for(var i=size2-10; i<item.content.length; i++){
                         showFavItemLoaded(item.content[i]);
                     }
                 }

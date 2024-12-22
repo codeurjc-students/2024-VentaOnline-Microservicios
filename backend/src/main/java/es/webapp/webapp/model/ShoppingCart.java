@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tbl_cart")
 public class ShoppingCart {
@@ -21,6 +23,7 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne(mappedBy="shoppingCart")
+    @JsonIgnore
     private User user;
     
     @Column(name = "totalCost")

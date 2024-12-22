@@ -36,25 +36,25 @@ import es.webapp.webapp.service.UserService;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
-//@RequestMapping("/databases")
+@RequestMapping("/api")
 public class UserRestController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/api/users/new")
+    @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
-    @GetMapping("/databases/users")
+    @GetMapping("/users")
     public List<User> getUsers(){
         return userService.findAll();
     }
 
-    @GetMapping("/api/users/current")
+    @GetMapping("/users/current")
     public ResponseEntity<User> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -83,17 +83,17 @@ public class UserRestController {
         }
     }*/
     
-    @GetMapping("/databases/users/{id}")
-    public User getUserByUsername(@PathVariable Integer id){
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable Integer id){
         Optional<User> user = userService.findById(id);
         if(user.isPresent()) {
-            return user.get();
+            return new ResponseEntity<>(user.get(),HttpStatus.OK); 
         } else {
-            return null;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/databases/api/users/{username}")
+    /*@GetMapping("/users/{username}")
     public ResponseEntity<User> getUserByUsernameAPI(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()) {
@@ -101,9 +101,9 @@ public class UserRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 
-    /*@PostMapping("/api/users/{id}/image")
+    @PostMapping("/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -113,19 +113,19 @@ public class UserRestController {
         user.get().setImageFile(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
 
         
-        userService.setPassword(id,user.get());
-        userService.update(id, user.get());
+        //userService.setPassword(id,user.get());
+        userService.update(user.get());
 
         if(user.isPresent()){
             return ResponseEntity.created(location).build();
         } else {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
 
 
 
-    @GetMapping("/api/users/{id}/image")
+    @GetMapping("/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
 
         Optional<User> user = userService.findById(id);

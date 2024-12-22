@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -68,7 +67,7 @@ public class DataBaseInitializer {
     @PostConstruct
     public void init() throws IOException, URISyntaxException {
 
-        //USERS, DIRECTIONS & SHOPPING CARTS
+    //USERS, DIRECTIONS & SHOPPING CARTS
         //1:1 bidirectional relationship
 
         User user1 = new User();

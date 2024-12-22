@@ -28,6 +28,10 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public void update(User user){
+        userRepo.save(user);
+    }
+
     public Optional<User> findById(Integer id){
         return userRepo.findById(id);
     }
@@ -60,6 +64,8 @@ public class UserService {
         newUser.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
         
     }
+
+    
 
     /*public void update(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);

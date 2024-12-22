@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * conversión de la clase Stock en clase genérica para que cada subclase pueda definir su propia versión de Size
  */
@@ -28,6 +30,7 @@ public abstract class Stock<T> {
     private Integer stock;
 
     @ManyToOne
+    @JsonIgnore
     private Item item;
 
     public Stock(){}

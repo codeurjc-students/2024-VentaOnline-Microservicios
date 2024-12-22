@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "tbl_itemToBuy")
@@ -21,6 +23,7 @@ public class ItemToBuy {
     private String code;
 
     @ManyToOne
+    @JsonIgnore
     private Item item;
 
     private String size;
