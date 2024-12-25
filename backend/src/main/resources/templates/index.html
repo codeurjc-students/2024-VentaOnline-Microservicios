@@ -173,8 +173,8 @@
     var size2=10;
 
     let ruta='//localhost:8443/api/items?size=' + size;
-    let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
 
+    
     function loadInitItems(callback,size){
         $.ajax({
             url:ruta
@@ -183,21 +183,23 @@
         }) 
     }
 
-    function loadFavItems(callback,size2){
-        $.ajax({
-            url:ruta1
-        }).done(function (items){
-            callback(items);
-        })
-    }
+        let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
+        function loadFavItems(callback,size2){
+            $.ajax({
+                url:ruta1
+            }).done(function (items){
+                callback(items);
+            })
+        }
+
 
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
+            '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
-            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 cl ss="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
@@ -205,7 +207,7 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
+            '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -216,7 +218,7 @@
     function showFavItemLoaded(item){
         $('#favouritesItems').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span> <a href="#"><img src="//localhost:8443/api/items/' + item.id + 
+            '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 cl ss="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -250,7 +252,7 @@
         $('.pagination').click(function() {
             size+=10;
 
-            let ruta='https://localhost:8443/api/items?size=' + size;
+            let ruta='https://localhost:8443/api/items?size='+size;
 
             $('#spinner-div').show();
             $.ajax({
@@ -306,6 +308,7 @@
             })
         })
 
+        //user fav items
         $('.fav-items-pagination').click(function() {
             size2+=10;
 
