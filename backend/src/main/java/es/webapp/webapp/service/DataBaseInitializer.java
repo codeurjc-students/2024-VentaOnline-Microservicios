@@ -176,6 +176,8 @@ public class DataBaseInitializer {
         item1.setType("jeans");
         setItemImage(item1, "/images/vaquero_mujer_1.PNG");
         
+        item1.getUsers().add(user2);
+
         Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
         if(!item01.isPresent())      
             itemRepo.save(item1);
@@ -627,6 +629,8 @@ public class DataBaseInitializer {
         item34.setType("camiseta");
         setItemImage(item34,"/images/camiseta_6.PNG");
 
+        item34.getUsers().add(user2);
+
         Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
         if(!item034.isPresent())      
             itemRepo.save(item34);
@@ -927,6 +931,9 @@ public class DataBaseInitializer {
         item53.setType("zapato");
         setItemImage(item53,"/images/zapato_13.PNG");
 
+  
+        item53.getUsers().add(user2);
+
         Optional<Item> item053 = itemRepo.findByCode(item53.getCode());
         if(!item053.isPresent())      
             itemRepo.save(item53);
@@ -940,9 +947,7 @@ public class DataBaseInitializer {
         //USERS <--> FAVOURITES ITEMS
         //M:N
         //an user can have several favourites items
-        item1.getUsers().add(user2);
-        item34.getUsers().add(user2);
-        item53.getUsers().add(user2);
+        
 
 
         //--> save item into the db

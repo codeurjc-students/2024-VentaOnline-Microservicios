@@ -34,14 +34,14 @@ public class Home {
             model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);
         } else {
-            model.addAttribute("username","");
+            model.addAttribute("username","anonymous");
             model.addAttribute("logged",false);
         }
         model.addAttribute("status","");
     }
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest request){
+    public String home(Model model){
         return "index";
     }
 

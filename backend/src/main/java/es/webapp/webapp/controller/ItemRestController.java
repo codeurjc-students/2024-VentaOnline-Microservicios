@@ -42,9 +42,9 @@ public class ItemRestController {
     
 
     @GetMapping("/items")
-    public Page<Item> getItems(Pageable page){
+    public ResponseEntity<Page<Item>> getItems(Pageable page){
         Page<Item> items = itemService.findAll(page);
-        return items;
+        return new ResponseEntity<>(items,HttpStatus.OK);
     }
 
     @GetMapping("/items/listing")
