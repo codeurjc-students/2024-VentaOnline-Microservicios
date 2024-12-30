@@ -30,6 +30,7 @@ public class Home {
             String name = principal.getName();
             Optional<User> user = userService.findByUsername(name);
             model.addAttribute("username",user.get().getUsername());
+            model.addAttribute("id",user.get().getId());
             model.addAttribute("admin", request.isUserInRole("ADMIN"));
             model.addAttribute("user", request.isUserInRole("USER"));
             model.addAttribute("logged",true);

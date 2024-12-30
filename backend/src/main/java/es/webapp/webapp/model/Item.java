@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tbl_item")   
 public class Item {
@@ -52,6 +54,7 @@ public class Item {
     private List<ItemToBuy> itemsToBuy;
 
     @ManyToMany
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
 
