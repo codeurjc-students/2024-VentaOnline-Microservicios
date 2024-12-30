@@ -45,11 +45,9 @@ public class UserController {
     @PostMapping("/new")
     public String newUser(Model model, User user, Direction address, MultipartFile imageField, @RequestParam String passwordConfirmation) throws IOException{
 
-        Optional<User> username = userService.findByUsername(user.getUsername());
-        Optional<User> email = userService.findByEmail(user.getEmail());
 
         if(imageField.isEmpty()){
-            Optional<User> anonymous = userService.findById(39);
+            Optional<User> anonymous = userService.findById(59);
             if(anonymous.isPresent()) {
                 user.setImageFile(anonymous.get().getImageFile());
             }
@@ -57,10 +55,8 @@ public class UserController {
             user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
         }    
 
-        if(user.getUsername() != null && user.getEmail() != null && user.getPassword() != null && 
-            user.getPassword().equals(passwordConfirmation) && address.getStreet() != null &&
-            address.getNumber() != null && address.getZipCode() != null && address.getCity() != null){
-            if(passwordConfirmation.length() < 6 && passwordConfirmation.length() > 10){
+        if(user.getPassword().equals(passwordConfirmation)){
+            if(passwordConfirmation.length() < 3 && passwordConfirmation.length() > 10){
                 model.addAttribute("size", "password must contains between 6 and 10 characters");
             } else {
                 model.addAttribute("size", "");
@@ -69,15 +65,12 @@ public class UserController {
                 model.addAttribute("zip_code", "zip code must contains 5 characters");
             } else {
                 model.addAttribute("zip_code", "");
-            } 
-            if(username.isPresent() || email.isPresent()){
-                model.addAttribute("state_reg", "there is already an user with this email or name");
-            } else {              
+            }              
                 user.setRol("USER");
                 user.setDirection(address);
                 userService.add(user);
                 model.addAttribute("state_reg", "user registered");
-            }
+         
         }else{
             model.addAttribute("state_reg", "some mnadatory fields are empty or incorrect");
         }

@@ -80,8 +80,6 @@ public class SecurityConfiguration{
             })
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .build();
-
-            
     }
 
     public void addCorsMapping(CorsRegistry registry){

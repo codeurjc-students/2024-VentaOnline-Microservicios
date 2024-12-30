@@ -13,17 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class RestSecurityConfiguration{
 
 
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        return http
-            .csrf().disable()
-            .antMatcher("/api/**")
-            .authorizeHttpRequests(registry -> {
-                registry.antMatchers("").hasAnyRole(null);
-                registry.anyRequest().permitAll();
-            
-            })
-            .build();
-    }
 
      
 }
