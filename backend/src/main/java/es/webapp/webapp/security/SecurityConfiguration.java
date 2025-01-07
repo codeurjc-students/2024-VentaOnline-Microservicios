@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
@@ -53,7 +54,7 @@ public class SecurityConfiguration{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        return http
+        http
             .csrf().disable()
             .formLogin(httpForm -> {
                 httpForm.loginPage("/login").permitAll();
@@ -78,8 +79,10 @@ public class SecurityConfiguration{
                 httpLogout.logoutUrl("/logout").permitAll();
                 httpLogout.logoutSuccessUrl("/");
             })
-            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .build();
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
+        return http.build();
     }
 
     public void addCorsMapping(CorsRegistry registry){

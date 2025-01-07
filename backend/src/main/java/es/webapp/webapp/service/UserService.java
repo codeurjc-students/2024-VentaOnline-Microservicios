@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.Item;
 import es.webapp.webapp.model.Order;
+import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.UserRepo;
 
@@ -22,10 +24,13 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User add(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
-        user.setRol("USER");
-        return userRepo.save(user);
+        if(user.getPassword().equals(user.getPasswordConfirmation())){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
+            user.setRol("USER");
+            return userRepo.save(user);
+        } else
+            return null;
     }
 
     public void update(User user){

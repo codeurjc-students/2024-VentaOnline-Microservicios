@@ -70,8 +70,8 @@
 </body>
 <script>
 
-    let ruta='/databases/shoppingcart/{{username}}/items';
-    let sizes = ['S','M','L','XL'];
+    let ruta='/api/shoppingcart/{{username}}/items';
+    //let sizes = ['S','M','L','XL'];
   
 
     function loadInitItems(callback){
@@ -82,57 +82,27 @@
         })
     }
 
+    
+
     function showFirstItem(items){
-        if(items.item.sizes == null){
+
+        /*for(Stock stock: items.itemStock){
+            if(stock.stock > 5)
+                console.log("in stock")
+            else
+                console.log("less than 5 avaiable");
+        }*/
             if(items.item.stock >= 5){              
                     $('.slider').append(
                         '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
                         '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
                         '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
+                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> {{#item}}{{In stock}}{{/item}}</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
                         '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
                         '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
                         '</p></div>'
                     )
-                } else{ 
-                    $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
-                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                        '</p></div>'
-                    )
-                }
-        } else {
-            for(var i=0; i<items.item.sizes.length; i++){
-                if(items.item.sizes[i] == items.size){
-                    if(items.item.stock >= 5){              
-                        $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                            '</p></div>'
-                        )
-                    } else{ 
-                        $('.slider').append(
-                            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> Less than 5 items in stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-                            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                            '</p></div>'
-                        )
-                    }
-                    break;
-                }
-            }
-        }
+                } 
     }
 
     function showOtherItems(items){

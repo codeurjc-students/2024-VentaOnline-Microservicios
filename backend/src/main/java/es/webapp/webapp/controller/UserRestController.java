@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.webapp.webapp.model.Direction;
+import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.UserService;
 
@@ -44,7 +46,9 @@ public class UserRestController {
 
     @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> addUser(@RequestBody User newUser){
+    public ResponseEntity<User> addUser(@RequestBody User newUser, @RequestBody Direction newAddress, @RequestBody ShoppingCart cart){
+        newUser.setDirection(newAddress);
+        newUser.setShoppingCart(cart);
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
