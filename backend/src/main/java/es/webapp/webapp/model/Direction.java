@@ -30,8 +30,9 @@ public class Direction {
     @Column(name = "city")
     private String city;
 
-    @OneToOne(mappedBy = "direction")
+    
     @JsonIgnore
+    @OneToOne(mappedBy = "direction")
     private User user;
 
     public Direction(){}

@@ -3,27 +3,19 @@ package es.webapp.webapp.model;
 import javax.persistence.Entity;
 
 @Entity
-public class Clothes extends Stock<Clothes.Size>{
+public class Clothes extends Stock<Size>{
 
-    public enum Size{
-        S, M, L, XL;
-
-        public String getSize(Size size){
-            return size.name();
-        }
-    }
-
-    private Size size;
+    //private String size;
 
     public Clothes(){}
 
-    @Override
+    /*@Override
     public void setSize(Size size){
-        this.size=size;
+        this.size=size.getLabel();
     }
 
     @Override
     public Size getSize(){
-        return size;
-    }
+        return new Size(size);
+    }*/
 }

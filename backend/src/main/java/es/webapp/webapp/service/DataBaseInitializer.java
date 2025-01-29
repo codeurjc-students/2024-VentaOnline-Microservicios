@@ -21,15 +21,15 @@ import es.webapp.webapp.model.ItemToBuy;
 import es.webapp.webapp.model.Order;
 import es.webapp.webapp.model.Order.State;
 import es.webapp.webapp.model.Shoe;
-import es.webapp.webapp.model.Shoe.Shoe_Size;
 import es.webapp.webapp.model.ShoppingCart;
+import es.webapp.webapp.model.Size;
 import es.webapp.webapp.model.User;
-import es.webapp.webapp.model.Clothes.Size;
 import es.webapp.webapp.repository.ItemRepo;
 import es.webapp.webapp.repository.ItemToBuyRepo;
 import es.webapp.webapp.repository.OrderRepo;
 import es.webapp.webapp.repository.ShoeRepo;
 import es.webapp.webapp.repository.ShoppingCartRepo;
+import es.webapp.webapp.repository.SizeRepo;
 import es.webapp.webapp.repository.ClothesRepo;
 import es.webapp.webapp.repository.DirectionRepo;
 import es.webapp.webapp.repository.UserRepo;
@@ -63,6 +63,9 @@ public class DataBaseInitializer {
 
     @Autowired
     OrderRepo orderRepo;
+
+    @Autowired
+    SizeRepo sizeRepo;
     
     @PostConstruct
     public void init() throws IOException, URISyntaxException {
@@ -100,62 +103,57 @@ public class DataBaseInitializer {
         if(!user02.isPresent())
             userRepo.save(user2);
 
+        User user3 = new User();
+        user3.setUsername("anonymous");
+        user3.setName("anonymous");
+        user3.setEmail("an@yahoo.es");
+        setUserImage(user3, "/images/user-img.png");
+
+        Optional<User> user03 = userRepo.findByUsername(user3.getUsername());
+        if(!user03.isPresent())
+            userRepo.save(user3);
+
         //ITEMS & STOCKS
         //1:N
 
         //new stock
         Clothes stock1 = new Clothes();
         stock1.setCode("F62A47C");
-        Size size1 = Clothes.Size.valueOf("M");
-        stock1.setSize(size1);
+    
+        //Size size1 = Clothes.Size.valueOf("M");
+        //stock1.setSize(size1);
         stock1.setStock(20);
 
         Clothes stock2 = new Clothes();
         stock2.setCode("738D936");
-        Size size2 = Clothes.Size.valueOf("S");
-        stock2.setSize(size2);
         stock2.setStock(20);
 
         Clothes stock3 = new Clothes();
         stock3.setCode("8783FC8");
-        Size size3 = Clothes.Size.valueOf("L");
-        stock3.setSize(size3);
         stock3.setStock(20);   
         
         Clothes stock4 = new Clothes();
-        stock4.setCode("B6A0353");
-        Size size4 = Clothes.Size.valueOf("XL");
-        stock4.setSize(size4);
+        stock4.setCode("B6A0353");;
         stock4.setStock(20);   
 
         Shoe stock5 = new Shoe(); 
-        stock5.setCode("F4ECB71");
-        Shoe_Size size5 = Shoe.Shoe_Size.valueOf("SIZE_37");
-        stock5.setSize(size5);
+        stock5.setCode("F4ECB71");;
         stock5.setStock(20);
 
         Shoe stock6 = new Shoe(); 
-        stock6.setCode("42FFD15");
-        Shoe_Size size6 = Shoe.Shoe_Size.valueOf("SIZE_39");
-        stock6.setSize(size6);
+        stock6.setCode("42FFD15");;
         stock6.setStock(20);
 
         Shoe stock7 = new Shoe(); 
-        stock7.setCode("13A4E8C");
-        Shoe_Size size7 = Shoe.Shoe_Size.valueOf("SIZE_40");
-        stock7.setSize(size7);
+        stock7.setCode("13A4E8C");;
         stock7.setStock(20);
 
         Shoe stock8 = new Shoe(); 
-        stock8.setCode("54C831B");
-        Shoe_Size size8 = Shoe.Shoe_Size.valueOf("SIZE_42");
-        stock8.setSize(size8);
+        stock8.setCode("54C831B");;
         stock8.setStock(20);
 
         Shoe stock9 = new Shoe(); 
-        stock9.setCode("CEF8EA3");
-        Shoe_Size size9 = Shoe.Shoe_Size.valueOf("SIZE_45");
-        stock9.setSize(size9);
+        stock9.setCode("CEF8EA3");;
         stock9.setStock(20);
 
         ItemToBuy itemBuy1 = new ItemToBuy();
@@ -176,7 +174,7 @@ public class DataBaseInitializer {
         item1.setType("jeans");
         setItemImage(item1, "/images/vaquero_mujer_1.PNG");
         
-        item1.getUsers().add(user2);
+        //item1.getUsers().add(user2);
 
         Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
         if(!item01.isPresent())      
@@ -197,13 +195,17 @@ public class DataBaseInitializer {
         if(!item02.isPresent())      
             itemRepo.save(item2);
 
-        stock1.setItem(item2);
-        stock2.setItem(item2);
-        stock3.setItem(item2);
-        stock4.setItem(item2);
+        //ITEMS TO BUY
+        //1:N
 
         itemBuy1.setItem(item2);
         itemBuy1.setShoppingCart(user2.getShoppingCart());
+        
+        Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
+        if(!itemBuy01.isPresent())
+            itemToBuyRepo.save(itemBuy1);
+
+        
         
 
         Item item3 = new Item();
@@ -219,11 +221,6 @@ public class DataBaseInitializer {
         if(!item03.isPresent())      
             itemRepo.save(item3);
 
-            stock1.setItem(item3);
-            stock2.setItem(item3);
-            stock3.setItem(item3);
-            stock4.setItem(item3);
-
         Item item4 = new Item();
         item4.setCode("VAQMUJ4");
         item4.setName("jeans ajustados");
@@ -236,11 +233,6 @@ public class DataBaseInitializer {
         Optional<Item> item04 = itemRepo.findByCode(item4.getCode());
         if(!item04.isPresent())      
             itemRepo.save(item4);
-
-            stock1.setItem(item4);
-            stock2.setItem(item4);
-            stock3.setItem(item4);
-            stock4.setItem(item4);
 
         Item item5 = new Item();
         item5.setCode("VAQMUJ5");
@@ -255,11 +247,6 @@ public class DataBaseInitializer {
         if(!item05.isPresent())      
             itemRepo.save(item5);
 
-            stock1.setItem(item5);
-            stock2.setItem(item5);
-            stock3.setItem(item5);
-            stock4.setItem(item5);
-
         Item item6 = new Item();
         item6.setCode("VAQMUJ6");
         item6.setName("vaquero regular L32");
@@ -272,11 +259,6 @@ public class DataBaseInitializer {
         Optional<Item> item06 = itemRepo.findByCode(item6.getCode());
         if(!item06.isPresent())      
             itemRepo.save(item6);
-
-            stock1.setItem(item6);
-            stock2.setItem(item6);
-            stock3.setItem(item6);
-            stock4.setItem(item6);
 
         Item item7 = new Item();
         item7.setCode("VAQMUJ7");
@@ -291,11 +273,6 @@ public class DataBaseInitializer {
         if(!item07.isPresent())      
             itemRepo.save(item7);
 
-            stock1.setItem(item7);
-            stock2.setItem(item7);
-            stock3.setItem(item7);
-            stock4.setItem(item7);
-
         Item item8 = new Item();
         item8.setCode("VAQMUJ8");
         item8.setName("jeans de corte muy entallado");
@@ -308,11 +285,6 @@ public class DataBaseInitializer {
         Optional<Item> item08 = itemRepo.findByCode(item8.getCode());
         if(!item08.isPresent())      
             itemRepo.save(item8);
-
-            stock1.setItem(item8);
-            stock2.setItem(item8);
-            stock3.setItem(item8);
-            stock4.setItem(item8);
 
         Item item11 = new Item();
         item11.setCode("VAQHOM1");
@@ -327,10 +299,7 @@ public class DataBaseInitializer {
         if(!item011.isPresent())      
             itemRepo.save(item11);
 
-            stock1.setItem(item11);
-            stock2.setItem(item11);
-            stock3.setItem(item11);
-            stock4.setItem(item11);
+        
 
         Item item12 = new Item();
         item12.setCode("VAQHOM2");
@@ -345,10 +314,7 @@ public class DataBaseInitializer {
         if(!item012.isPresent())      
             itemRepo.save(item12);
 
-            stock1.setItem(item12);
-            stock2.setItem(item12);
-            stock3.setItem(item12);
-            stock4.setItem(item12);
+        
 
         Item item13 = new Item();
         item13.setCode("VAQHOM3");
@@ -363,10 +329,7 @@ public class DataBaseInitializer {
         if(!item013.isPresent())      
             itemRepo.save(item13);
 
-            stock1.setItem(item13);
-            stock2.setItem(item13);
-            stock3.setItem(item13);
-            stock4.setItem(item13);
+        
 
         Item item14 = new Item();
         item14.setCode("VAQHOM4");
@@ -381,10 +344,7 @@ public class DataBaseInitializer {
         if(!item014.isPresent())      
             itemRepo.save(item14);
 
-            stock1.setItem(item14);
-            stock2.setItem(item14);
-            stock3.setItem(item14);
-            stock4.setItem(item14);
+        
 
         Item item15 = new Item();
         item15.setCode("VAQHOM5");
@@ -399,10 +359,7 @@ public class DataBaseInitializer {
         if(!item015.isPresent())      
             itemRepo.save(item15);
 
-            stock1.setItem(item15);
-            stock2.setItem(item15);
-            stock3.setItem(item15);
-            stock4.setItem(item15);
+        
 
         Item item16 = new Item();
         item16.setCode("VAQHOM6");
@@ -417,10 +374,7 @@ public class DataBaseInitializer {
         if(!item016.isPresent())      
             itemRepo.save(item16);
 
-            stock1.setItem(item16);
-            stock2.setItem(item16);
-            stock3.setItem(item16);
-            stock4.setItem(item16);
+        
 
         Item item17 = new Item();
         item17.setCode("VAQHOM7");
@@ -435,10 +389,7 @@ public class DataBaseInitializer {
         if(!item017.isPresent())      
             itemRepo.save(item17);
 
-            stock1.setItem(item17);
-            stock2.setItem(item17);
-            stock3.setItem(item17);
-            stock4.setItem(item17);
+        
 
         Item item21 = new Item();
         item21.setCode("CAM1");
@@ -453,10 +404,7 @@ public class DataBaseInitializer {
         if(!item021.isPresent())      
             itemRepo.save(item21);
 
-            stock1.setItem(item21);
-            stock2.setItem(item21);
-            stock3.setItem(item21);
-            stock4.setItem(item21);
+        
 
         Item item22 = new Item();
         item22.setCode("CAM2");
@@ -471,10 +419,7 @@ public class DataBaseInitializer {
         if(!item022.isPresent())      
             itemRepo.save(item22);
 
-            stock1.setItem(item22);
-            stock2.setItem(item22);
-            stock3.setItem(item22);
-            stock4.setItem(item22);
+        
 
         Item item23 = new Item();
         item23.setCode("CAM3");
@@ -489,10 +434,7 @@ public class DataBaseInitializer {
         if(!item023.isPresent())      
             itemRepo.save(item23);
 
-            stock1.setItem(item23);
-            stock2.setItem(item23);
-            stock3.setItem(item23);
-            stock4.setItem(item23);
+        
 
         Item item24 = new Item();
         item24.setCode("CAM4");
@@ -507,10 +449,7 @@ public class DataBaseInitializer {
         if(!item024.isPresent())      
             itemRepo.save(item24);
 
-            stock1.setItem(item24);
-            stock2.setItem(item24);
-            stock3.setItem(item24);
-            stock4.setItem(item24);
+        
 
         Item item25 = new Item();
         item25.setCode("CAM5");
@@ -525,10 +464,7 @@ public class DataBaseInitializer {
         if(!item025.isPresent())      
             itemRepo.save(item25);
 
-            stock1.setItem(item25);
-            stock2.setItem(item25);
-            stock3.setItem(item25);
-            stock4.setItem(item25);
+        
 
         Item item26 = new Item();
         item26.setCode("CAM6");
@@ -543,10 +479,7 @@ public class DataBaseInitializer {
         if(!item026.isPresent())      
             itemRepo.save(item26);
 
-            stock1.setItem(item26);
-            stock2.setItem(item26);
-            stock3.setItem(item26);
-            stock4.setItem(item26);
+        
 
         Item item27 = new Item();
         item27.setCode("CAM7");
@@ -561,10 +494,7 @@ public class DataBaseInitializer {
         if(!item027.isPresent())      
             itemRepo.save(item27);
 
-            stock1.setItem(item27);
-            stock2.setItem(item27);
-            stock3.setItem(item27);
-            stock4.setItem(item27);
+        
         
         Item item31 = new Item();
         item31.setCode("CAM8");
@@ -579,10 +509,7 @@ public class DataBaseInitializer {
         if(!item031.isPresent())      
             itemRepo.save(item31);
 
-            stock1.setItem(item31);
-            stock2.setItem(item31);
-            stock3.setItem(item31);
-            stock4.setItem(item31);
+        
 
         Item item32 = new Item();
         item32.setCode("CAM9");
@@ -597,10 +524,7 @@ public class DataBaseInitializer {
         if(!item032.isPresent())      
             itemRepo.save(item32);
 
-            stock1.setItem(item32);
-            stock2.setItem(item32);
-            stock3.setItem(item32);
-            stock4.setItem(item32);
+        
 
         Item item33 = new Item();
         item33.setCode("CAM10");
@@ -615,10 +539,7 @@ public class DataBaseInitializer {
         if(!item033.isPresent())      
             itemRepo.save(item33);
 
-            stock1.setItem(item33);
-            stock2.setItem(item33);
-            stock3.setItem(item33);
-            stock4.setItem(item33);
+        
 
         Item item34 = new Item();
         item34.setCode("CAM11");
@@ -629,16 +550,13 @@ public class DataBaseInitializer {
         item34.setType("camiseta");
         setItemImage(item34,"/images/camiseta_6.PNG");
 
-        item34.getUsers().add(user2);
+        //item34.getUsers().add(user2);
 
         Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
         if(!item034.isPresent())      
             itemRepo.save(item34);
 
-            stock1.setItem(item34);
-            stock2.setItem(item34);
-            stock3.setItem(item34);
-            stock4.setItem(item34);
+        
 
         Item item35 = new Item();
         item35.setCode("CAM12");
@@ -653,10 +571,7 @@ public class DataBaseInitializer {
         if(!item035.isPresent())      
             itemRepo.save(item35);
 
-            stock1.setItem(item35);
-            stock2.setItem(item35);
-            stock3.setItem(item35);
-            stock4.setItem(item35);
+        
 
         Item item36 = new Item();
         item36.setCode("CAM13");
@@ -671,10 +586,7 @@ public class DataBaseInitializer {
         if(!item036.isPresent())      
             itemRepo.save(item36);
 
-            stock1.setItem(item36);
-            stock2.setItem(item36);
-            stock3.setItem(item36);
-            stock4.setItem(item36);
+        
 
         Item item37 = new Item();
         item37.setCode("CAM14");
@@ -689,10 +601,7 @@ public class DataBaseInitializer {
         if(!item037.isPresent())      
             itemRepo.save(item37);
 
-            stock1.setItem(item37);
-            stock2.setItem(item37);
-            stock3.setItem(item37);
-            stock4.setItem(item37);
+        
 
         Item item41 = new Item();
         item41.setCode("ZAP1");
@@ -707,11 +616,6 @@ public class DataBaseInitializer {
         if(!item041.isPresent())      
             itemRepo.save(item41);
 
-            stock5.setItem(item41);
-            stock6.setItem(item41);
-            stock7.setItem(item41);
-            stock8.setItem(item41);
-            stock9.setItem(item41);
 
         Item item42 = new Item();
         item42.setCode("ZAP2");
@@ -726,11 +630,6 @@ public class DataBaseInitializer {
         if(!item042.isPresent())      
             itemRepo.save(item42);
 
-            stock5.setItem(item42);
-            stock6.setItem(item42);
-            stock7.setItem(item42);
-            stock8.setItem(item42);
-            stock9.setItem(item42);
 
         Item item43 = new Item();
         item43.setCode("ZAP3");
@@ -745,11 +644,6 @@ public class DataBaseInitializer {
         if(!item043.isPresent())      
             itemRepo.save(item43);
 
-            stock5.setItem(item43);
-            stock6.setItem(item43);
-            stock7.setItem(item43);
-            stock8.setItem(item43);
-            stock9.setItem(item43);
 
         Item item44 = new Item();
         item44.setCode("ZAP4");
@@ -764,11 +658,6 @@ public class DataBaseInitializer {
         if(!item044.isPresent())      
             itemRepo.save(item44);
 
-            stock5.setItem(item44);
-            stock6.setItem(item44);
-            stock7.setItem(item44);
-            stock8.setItem(item44);
-            stock9.setItem(item44);
 
         Item item45 = new Item();
         item45.setCode("ZAP5");
@@ -783,11 +672,6 @@ public class DataBaseInitializer {
         if(!item045.isPresent())      
             itemRepo.save(item45);
 
-            stock5.setItem(item45);
-            stock6.setItem(item45);
-            stock7.setItem(item45);
-            stock8.setItem(item45);
-            stock9.setItem(item45);
 
         Item item46 = new Item();
         item46.setCode("ZAP6");
@@ -802,11 +686,6 @@ public class DataBaseInitializer {
         if(!item046.isPresent())      
             itemRepo.save(item46);
 
-            stock5.setItem(item46);
-            stock6.setItem(item46);
-            stock7.setItem(item46);
-            stock8.setItem(item46);
-            stock9.setItem(item46);
 
         Item item47 = new Item();
         item47.setCode("ZAP7");
@@ -821,11 +700,6 @@ public class DataBaseInitializer {
         if(!item047.isPresent())      
             itemRepo.save(item47);
 
-            stock5.setItem(item47);
-            stock6.setItem(item47);
-            stock7.setItem(item47);
-            stock8.setItem(item47);
-            stock9.setItem(item47);
         
         Item item48 = new Item();
         item48.setCode("ZAP8");
@@ -840,11 +714,6 @@ public class DataBaseInitializer {
         if(!item048.isPresent())      
             itemRepo.save(item48);
 
-            stock5.setItem(item48);
-            stock6.setItem(item48);
-            stock7.setItem(item48);
-            stock8.setItem(item48);
-            stock9.setItem(item48);
 
         Item item49 = new Item();
         item49.setCode("ZAP9");
@@ -859,11 +728,6 @@ public class DataBaseInitializer {
         if(!item049.isPresent())      
             itemRepo.save(item49);
 
-            stock5.setItem(item49);
-            stock6.setItem(item49);
-            stock7.setItem(item49);
-            stock8.setItem(item49);
-            stock9.setItem(item49);
 
         Item item50 = new Item();
         item50.setCode("ZAP10");
@@ -878,11 +742,6 @@ public class DataBaseInitializer {
         if(!item050.isPresent())      
             itemRepo.save(item50);
 
-            stock5.setItem(item50);
-            stock6.setItem(item50);
-            stock7.setItem(item50);
-            stock8.setItem(item50);
-            stock9.setItem(item50);
 
         Item item51 = new Item();
         item51.setCode("ZAP11");
@@ -897,11 +756,6 @@ public class DataBaseInitializer {
         if(!item051.isPresent())      
             itemRepo.save(item51);
 
-            stock5.setItem(item51);
-            stock6.setItem(item51);
-            stock7.setItem(item51);
-            stock8.setItem(item51);
-            stock9.setItem(item51);
 
         Item item52 = new Item();
         item52.setCode("ZAP12");
@@ -916,11 +770,6 @@ public class DataBaseInitializer {
         if(!item052.isPresent())      
             itemRepo.save(item52);
 
-            stock5.setItem(item52);
-            stock6.setItem(item52);
-            stock7.setItem(item52);
-            stock8.setItem(item52);
-            stock9.setItem(item52);
 
         Item item53 = new Item();
         item53.setCode("ZAP13");
@@ -931,18 +780,11 @@ public class DataBaseInitializer {
         item53.setType("zapato");
         setItemImage(item53,"/images/zapato_13.PNG");
 
-  
-        item53.getUsers().add(user2);
 
         Optional<Item> item053 = itemRepo.findByCode(item53.getCode());
         if(!item053.isPresent())      
             itemRepo.save(item53);
 
-            stock5.setItem(item53);
-            stock6.setItem(item53);
-            stock7.setItem(item53);
-            stock8.setItem(item53);
-            stock9.setItem(item53);
 
         //USERS <--> FAVOURITES ITEMS
         //M:N
@@ -955,19 +797,55 @@ public class DataBaseInitializer {
         //if(!item01.isPresent())      
         //    itemRepo.save(item1);
 
+  
+
+        //1:1
+        //create a size, 1 stock - 1 sizes
+        Size size1 = new Size();
+        size1.setCode("SIZE1");
+        size1.setLabel("S");
+        stock1.setSize(size1);  
+        Optional<Size> size01 = sizeRepo.findByCode(size1.getCode());
+        if(!size01.isPresent()){
+            sizeRepo.save(size1);       
+        }
         
+        /** 1:N 
+         * 1º create and save object with OneToMany relationship into the db
+         * 2º relate object with ManyToOne relationship to the father
+         * 31 save object whit ManyToOne relationship into the db
+         */
         //--> establish relationship stock <--> item /an item can have several stocks
         stock1.setItem(item1);
-        
+
         //--> save stock into the db
         Optional<Clothes> stock01 = clothesRepo.findByCode(stock1.getCode());
         if(!stock01.isPresent()){
             clothesRepo.save(stock1);
         }
 
+
+
+        
+        //1:1
+        //create a size, 1 stock - 1 sizes
+        Size size2 = new Size();
+        size2.setCode("SIZE2");
+        size2.setLabel("M");
+        stock2.setSize(size2);  
+        Optional<Size> size02 = sizeRepo.findByCode(size2.getCode());
+        if(!size02.isPresent()){
+            sizeRepo.save(size2);           
+        }
+        
+        stock2.setItem(item34);
+
         Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
         if(!stock02.isPresent())
             clothesRepo.save(stock2);
+
+
+            
 
         Optional<Clothes> stock03 = clothesRepo.findByCode(stock3.getCode());
         if(!stock03.isPresent()){
@@ -1002,12 +880,7 @@ public class DataBaseInitializer {
         if(!stock09.isPresent()){
             shoeRepo.save(stock9);
         }
-        //ITEMS TO BUY
-        //1:N
-        
-        Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
-        if(!itemBuy01.isPresent())
-            itemToBuyRepo.save(itemBuy1);
+
 
         //ORDERS
         //1:N
@@ -1018,12 +891,12 @@ public class DataBaseInitializer {
         order.setCreationDate(LocalDate.of(2024,12,18));
         order.setState(State.PENDING);
 
-        order.setUser(user2);
-
         Optional<Order> order01 = orderRepo.findByCode(order.getCode());
         if(!order01.isPresent()) {
             orderRepo.save(order);
         }
+
+        order.setUser(user2);
 
         //USERS <--> FAVOURITES ITEMS
         //M:N
