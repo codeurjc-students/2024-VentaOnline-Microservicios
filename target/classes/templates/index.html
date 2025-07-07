@@ -48,7 +48,7 @@
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
-                        <img src="/api/users/70/image" alt="" width="50" height="50"></img>
+                        <img src="/api/users/6/image" alt="" width="50" height="50"></img>
                     </div>
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
@@ -59,7 +59,7 @@
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/api/users/70/image" alt="" width="50" height="50"></img>
+                        <img src="/api/users/6/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
@@ -174,7 +174,6 @@
 
     let ruta='//localhost:8443/api/items?size=' + size;
 
-    
     function loadInitItems(callback,size){
         $.ajax({
             url:ruta
@@ -183,14 +182,23 @@
         }) 
     }
 
-        let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
-        function loadFavItems(callback,size2){
-            $.ajax({
-                url:ruta1
-            }).done(function (items){
-                callback(items);
-            })
-        }
+    let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
+    function loadFavItems(callback,size2){
+        $.ajax({
+            url:ruta1
+        }).done(function (items){
+            callback(items);
+        })
+    }
+
+    let ruta2 = 'https://localhost:8443/api/users/current';
+    function getCurrentUser(callback){
+        $.ajax({
+            url: ruta2
+        }).done(function(user){
+            callback(user);
+        })
+    }
 
 
     function showItemLoaded(item){
@@ -238,15 +246,22 @@
             }
         });
 
-        loadFavItems(function(items,size2) {
-            $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
-            //console.log(items);
-            if(items.size != 0){
-                for(var i=0; i<items.size; i++){
-                    showFavItemLoaded(items.content[i]);
-                }
+        getCurrentUser(function(user) {
+            //console.log(!user);
+            if(user){
+                loadFavItems(function(items,size2) {
+                    if(!items.empty){
+                        $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
+                        //console.log(items);
+                        if(items.size != 0){
+                            for(var i=0; i<items.size; i++){
+                                showFavItemLoaded(items.content[i]);
+                            }
+                        }
+                    }
+                });
             }
-        });
+        })
 
         //pagination
         $('.pagination').click(function() {

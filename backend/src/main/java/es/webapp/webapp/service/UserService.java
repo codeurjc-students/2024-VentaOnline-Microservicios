@@ -8,10 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.webapp.webapp.model.Direction;
-import es.webapp.webapp.model.Item;
-import es.webapp.webapp.model.Order;
-import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.repository.DirectionRepo;
 import es.webapp.webapp.repository.UserRepo;
 
 @Service
@@ -19,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private DirectionRepo directionRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,7 +34,46 @@ public class UserService {
             return null;
     }
 
-    public void update(User user){
+    public void updateImage(User user){
+        userRepo.save(user);
+    }
+
+    public void update(User user, User newUser, Direction address){
+        if(newUser.getName() == null){
+            newUser.setName(user.getName());
+        }
+        if(newUser.getUsername() == null){
+            newUser.setUsername(user.getUsername());
+        }
+        if(newUser.getEmail() == null){
+            newUser.setEmail(user.getEmail());
+        }
+        if(newUser.getPassword() == null){
+            newUser.setPassword(user.getPassword());
+        }
+        if(newUser.getPasswordConfirmation() == null){
+            newUser.setPasswordConfirmation(user.getPasswordConfirmation());
+        }
+        if(newUser.getPassword() != null && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            newUser.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+        }
+        if(address.getNumber() == null){
+            address.setNumber(user.getDirection().getNumber());
+        }
+        if(address.getStreet() == null){
+            address.setStreet(user.getDirection().getStreet());
+        }
+        if(address.getZipCode() == null){
+            address.setZipCode(user.getDirection().getZipCode());
+        }
+        if(address.getCity() == null){
+            address.setCity(user.getDirection().getCity());
+        }
+        newUser.setShoppingCart(user.getShoppingCart());
+        newUser.setRol("USER");
+        newUser.setDirection(address);
+        //directionRepo.save(address);
         userRepo.save(user);
     }
 

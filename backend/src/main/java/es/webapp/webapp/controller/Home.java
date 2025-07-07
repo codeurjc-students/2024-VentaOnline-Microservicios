@@ -46,12 +46,15 @@ public class Home {
         return "index";
     }
 
+    @GetMapping("/my_profile")
+    public String getProfile(Model model){
+        model.addAttribute("state_reg", "");
+        return "my_profile";
+    }
+
     @GetMapping("/signup")
     public String signup(Model model){
         model.addAttribute("state_reg","");
-        model.addAttribute("state_log","");
-        model.addAttribute("size","");
-        model.addAttribute("zip_code","");
         return "signup";
     }
 

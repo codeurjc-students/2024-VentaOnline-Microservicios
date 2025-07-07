@@ -61,7 +61,7 @@ public class UserRestController {
         if(user.isPresent()){
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         } 
     }
 
@@ -113,7 +113,7 @@ public class UserRestController {
 
         
         //userService.setPassword(id,user.get());
-        userService.update(user.get());
+        userService.updateImage(user.get());
 
         if(user.isPresent()){
             return ResponseEntity.created(location).build();
@@ -122,7 +122,39 @@ public class UserRestController {
         }
     }
 
+    @PostMapping("/users/{id}/update")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User newUser, Direction address) throws IOException{
+        
+        Optional<User> user = userService.findById(id);
 
+        if(user.isPresent()){
+
+            newUser.setDirection(user.get().getDirection());
+            newUser.setId(user.get().getId());
+            userService.update(user.get(), newUser, address);
+
+            return new ResponseEntity<>(newUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("/users/{id}/update/address")
+    public ResponseEntity<User> updateUserAddresse(@PathVariable Integer id, @RequestBody Direction address) throws IOException{
+        
+        Optional<User> user = userService.findById(id);
+
+        if(user.isPresent()){
+
+            address.setId(user.get().getDirection().getId());
+            userService.update(user.get(), user.get(), address);
+
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/users/{id}/image")
     public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{

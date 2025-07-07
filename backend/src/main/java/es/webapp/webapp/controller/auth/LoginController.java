@@ -45,6 +45,7 @@ public class LoginController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
 
+		
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));

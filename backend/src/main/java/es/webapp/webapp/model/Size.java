@@ -45,10 +45,10 @@ public class Size implements SizeFactory{
         return label;
     }
 
-    @Override
-    public String toString() {
-        return label;
-    }
+    //@Override
+    //public String toString() {
+    //    return label;
+    //}
 
     public void setStock(Stock<?> stock){
         this.stock=stock;

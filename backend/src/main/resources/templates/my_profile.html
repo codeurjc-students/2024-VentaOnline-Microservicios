@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <nav class="nav-menu --nav-dark-light" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
+                <ul class="nav-menu-ul"></ul>
+            </nav>
+        </nav>
+    </header>
+    <!-- Banner -->
+    <div class="banner banner-second">
+        <div class="banner-container ">
+            {{#logged}}
+            <div class="user-img">
+                <img src="/api/users/{{id}}/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+            {{^logged}}
+            <div class="user-img">
+                <img src="/api/users/6/image" alt="" width="200" height="200"></img>
+            </div>
+            {{/logged}}
+            <div class="columns">
+                
+                <div class="column">
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Username: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Email: </strong></p> 
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Street: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Number: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">Zip code: </strong></p>
+                    <p class="has-text-grey-light"><strong class="has-text-grey-light">City: </strong></p>
+                </div>
+                <div class="column" id="userData">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <h2 class="is-size-4">Profile</h2>
+                <form action="{{id}}/update" method="post" class="form-control" enctype="multipart/form-data">
+
+                    <input type="text" name="username" placeholder="User name" class="form-control-field"></input>
+                    <input type="text" name="name" placeholder="Name" class="form-control-field"></input>
+                    <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
+                    <input type="password" name="password" placeholder="Password" class="form-control-field" minlength="5" maxlength="10"></input>
+                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field" minlength="5" maxlength="10"></input>
+                    <div class="user-img">
+                        <input type='file' name='imageField' accept=".jpg, .jpeg"></input>
+                    </div> 
+                    <h2 class="is-size-4">Address</h2>
+                    <div class="columns">
+                        <div class="column">
+                            <input type="text" name="street" placeholder="Street" class="form-control-field"></input>
+                            <input type="number" name="number" placeholder="Number" class="form-control-field"></input>
+                        </div>
+                        <div class="column">
+                            <input type="number" name="zipCode" placeholder="00000" class="form-control-field" minlength="5" maxlength="5"></input>
+                            <input type="text" name="city" placeholder="City" class="form-control-field"></input>
+                        </div>
+                    </div>
+                    <button class="btn btn-default btn-primary">Update account</button>
+                    <p></p>
+                    <p>{{state_reg}}</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="spinner-div" class="pt-5">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-bar-top">
+            <li class="footer-bar-top-links">2024 Avenue Fashion</li>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</body>
+<script>
+
+    let ruta = 'https://localhost:8443/api/users/current';
+    function loadData(callback){
+        $.ajax({
+            url:ruta
+        }).done(function(user){
+            callback(user);
+        })
+    }
+
+    function getCurrentUser(data){
+        $('#userData').append(
+            '<p>' + data.username + '</p><p>' + data.name + '</p><p>' + data.email + '</p><p>' 
+            + data.direction.street + '</p><p>' + data.direction.number + '</p><p>' + data.direction.zipCode + '</p><p>'+ data.direction.city + '</p>'
+        )
+    }
+
+    $(document).ready(function(){
+        loadData(function(user){
+            getCurrentUser(user);
+        })
+    });
+
+</script>
+</html>

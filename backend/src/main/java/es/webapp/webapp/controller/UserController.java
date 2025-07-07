@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,12 +46,13 @@ public class UserController {
     }
     
     @PostMapping("/new")
-    public String newUser(Model model, User user, Direction address, MultipartFile imageField, @RequestParam String passwordConfirmation) throws IOException{
+    public String user(Model model, User user, Direction address, MultipartFile imageField) throws IOException{
 
-        user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+        if(imageField != null)
+            user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
  
 
-        if(user.getPassword().equals(passwordConfirmation)){            
+        if(user.getPassword() != null && user.getPassword().equals(user.getPasswordConfirmation())){            
             user.setRol("USER");
             ShoppingCart cart = new ShoppingCart();
             user.setDirection(address);
@@ -60,9 +63,29 @@ public class UserController {
         }else{
             model.addAttribute("state_reg", "password is out of range [5-10] or not correspond with the confirmation");
         }
-        model.addAttribute("state_log", "");
 
         return "signup";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(Model model, @PathVariable Integer id, User user, Direction address, MultipartFile imageField) throws IOException{
+        Optional<User> oldUser = userService.findById(id);
+        if(oldUser.isPresent()){
+
+            if(imageField != null){
+                user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
+            }
+
+            user.setId(oldUser.get().getId());//user.setId(id())
+            address.setId(oldUser.get().getDirection().getId());
+            userService.update(oldUser.get(), user, address);
+            model.addAttribute("state_reg", "user updated");
+            return "my_profile";
+        }else{
+            return "error";
+        }
+    }
+
+    
 
 }
