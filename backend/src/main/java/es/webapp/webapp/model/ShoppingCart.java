@@ -27,7 +27,7 @@ public class ShoppingCart {
     private User user;
     
     @Column(name = "totalCost")
-    private Double totalCost;
+    private Double totalCost = 0.0;
 
     @OneToMany(mappedBy="shoppingCart")
     private List<ItemToBuy> items; 

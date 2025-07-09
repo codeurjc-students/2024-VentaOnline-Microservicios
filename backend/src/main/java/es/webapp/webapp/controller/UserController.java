@@ -3,7 +3,6 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,25 +65,19 @@ public class UserController {
         return "signup";
     }
 
-    @PostMapping("/{id}/update")
-    public String updateUser(Model model, @PathVariable Integer id, User user, Direction address, MultipartFile imageField) throws IOException{
-        Optional<User> oldUser = userService.findById(id);
-        if(oldUser.isPresent()){
+    @PostMapping("/update/{id}")
+    public String updateUser(Model model, @PathVariable Integer id, @RequestParam String name){
 
-            if(imageField != null){
-                user.setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-            }
+            User user = new User();
+            user.setName(name);
 
-            user.setId(oldUser.get().getId());//user.setId(id())
-            address.setId(oldUser.get().getDirection().getId());
-            userService.update(oldUser.get(), user, address);
-            model.addAttribute("state_reg", "user updated");
-            return "my_profile";
-        }else{
-            return "error";
-        }
+        
+            Direction address = new Direction();
+        
+            userService.updateById(id, user, address);
+
+            model.addAttribute("state_reg", "updated");
+
+        return "my_profile";
     }
-
-    
-
 }

@@ -129,8 +129,8 @@ public class UserRestController {
 
         if(user.isPresent()){
 
-            newUser.setDirection(user.get().getDirection());
-            newUser.setId(user.get().getId());
+            //newUser.setDirection(user.get().getDirection());
+            //newUser.setId(user.get().getId());
             userService.update(user.get(), newUser, address);
 
             return new ResponseEntity<>(newUser, HttpStatus.OK);
@@ -147,7 +147,7 @@ public class UserRestController {
 
         if(user.isPresent()){
 
-            address.setId(user.get().getDirection().getId());
+            //address.setId(user.get().getDirection().getId());
             userService.update(user.get(), user.get(), address);
 
             return new ResponseEntity<>(user.get(), HttpStatus.OK);

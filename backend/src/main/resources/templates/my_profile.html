@@ -53,10 +53,10 @@
         <div class="columns">
             <div class="column">
                 <h2 class="is-size-4">Profile</h2>
-                <form action="{{id}}/update" method="post" class="form-control" enctype="multipart/form-data">
+                <form action="/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
 
-                    <input type="text" name="username" placeholder="User name" class="form-control-field"></input>
-                    <input type="text" name="name" placeholder="Name" class="form-control-field"></input>
+                    <input type="text" name="username" placeholder="User name" class="form-control-field"/>
+                    <input type="text" name="name" placeholder="Name" class="form-control-field"/>
                     <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
                     <input type="password" name="password" placeholder="Password" class="form-control-field" minlength="5" maxlength="10"></input>
                     <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field" minlength="5" maxlength="10"></input>
@@ -95,7 +95,7 @@
     </footer>
 
     <script src="/js/main.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
 <script>
 
@@ -103,21 +103,24 @@
     function loadData(callback){
         $.ajax({
             url:ruta
-        }).done(function(user){
-            callback(user);
+        }).done(function(value){
+            callback(value);
         })
     }
 
     function getCurrentUser(data){
         $('#userData').append(
-            '<p>' + data.username + '</p><p>' + data.name + '</p><p>' + data.email + '</p><p>' 
-            + data.direction.street + '</p><p>' + data.direction.number + '</p><p>' + data.direction.zipCode + '</p><p>'+ data.direction.city + '</p>'
+            '<p>' + data.username + '</p><p>' + data.name + '</p><p>' + data.email + '</p><p>' + data.direction.street + 
+            '</p><p>' + data.direction.number + '</p><p>' + data.direction.zipCode + '</p><p>'+ data.direction.city + '</p>'
         )
     }
 
     $(document).ready(function(){
-        loadData(function(user){
-            getCurrentUser(user);
+        loadData(function(value){
+            console.log(value);
+            console.log(value.direction);
+            console.log(value.direction.street);
+            getCurrentUser(value);
         })
     });
 

@@ -48,6 +48,7 @@ public class Home {
 
     @GetMapping("/my_profile")
     public String getProfile(Model model){
+        System.out.println("paso0");
         model.addAttribute("state_reg", "");
         return "my_profile";
     }

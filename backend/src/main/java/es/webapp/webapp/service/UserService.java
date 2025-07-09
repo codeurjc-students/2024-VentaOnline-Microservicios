@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.User;
-import es.webapp.webapp.repository.DirectionRepo;
 import es.webapp.webapp.repository.UserRepo;
 
 @Service
@@ -17,9 +16,6 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
-
-    @Autowired
-    private DirectionRepo directionRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,42 +35,63 @@ public class UserService {
     }
 
     public void update(User user, User newUser, Direction address){
-        if(newUser.getName() == null){
-            newUser.setName(user.getName());
+        if(newUser != null && newUser.getName() != null){
+            user.setName(newUser.getName());
         }
-        if(newUser.getUsername() == null){
-            newUser.setUsername(user.getUsername());
+        if(newUser != null && newUser.getUsername() != null){
+            user.setUsername(newUser.getUsername());
         }
-        if(newUser.getEmail() == null){
-            newUser.setEmail(user.getEmail());
+        if(newUser != null && newUser.getEmail() != null){
+            user.setEmail(newUser.getEmail());
         }
-        if(newUser.getPassword() == null){
-            newUser.setPassword(user.getPassword());
+        if(newUser != null && newUser.getPassword() != null && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            user.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
         }
-        if(newUser.getPasswordConfirmation() == null){
-            newUser.setPasswordConfirmation(user.getPasswordConfirmation());
+        if(address != null && address.getNumber() != null){
+            user.getDirection().setNumber(address.getNumber());
         }
-        if(newUser.getPassword() != null && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            newUser.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+        if(address != null && address.getStreet() != null){
+            user.getDirection().setStreet(address.getStreet());
         }
-        if(address.getNumber() == null){
-            address.setNumber(user.getDirection().getNumber());
+        if(address != null && address.getZipCode() != null){
+            user.getDirection().setZipCode(address.getZipCode());
         }
-        if(address.getStreet() == null){
-            address.setStreet(user.getDirection().getStreet());
+        if(address != null && address.getCity() != null){
+            user.getDirection().setCity(address.getCity());
         }
-        if(address.getZipCode() == null){
-            address.setZipCode(user.getDirection().getZipCode());
-        }
-        if(address.getCity() == null){
-            address.setCity(user.getDirection().getCity());
-        }
-        newUser.setShoppingCart(user.getShoppingCart());
-        newUser.setRol("USER");
-        newUser.setDirection(address);
-        //directionRepo.save(address);
+        user.setId(user.getId());
         userRepo.save(user);
+    }
+
+    public void updateById(Integer id, User newUser, Direction address){
+        Optional<User> user = userRepo.findById(id);
+        
+        user.get().setName(newUser.getName());
+        if(newUser != null && !newUser.getUsername().isEmpty()){
+            user.get().setUsername(newUser.getUsername());
+        }
+        if(newUser != null && !newUser.getEmail().isEmpty()){
+            user.get().setEmail(newUser.getEmail());
+        }
+        if(newUser != null && !newUser.getPassword().isEmpty() && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+            user.get().setPassword(passwordEncoder.encode(newUser.getPassword()));
+            user.get().setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+        }
+        if(address != null && address.getNumber() != null){
+            user.get().getDirection().setNumber(address.getNumber());
+        }
+        if(address != null && !address.getStreet().isEmpty()){
+            user.get().getDirection().setStreet(address.getStreet());
+        }
+        if(address != null && address.getZipCode() != null){
+            user.get().getDirection().setZipCode(address.getZipCode());
+        }
+        if(address != null && !address.getCity().isEmpty()){
+            user.get().getDirection().setCity(address.getCity());
+        }
+        user.get().setId(id);
+        userRepo.save(user.get());
     }
 
     public Optional<User> findById(Integer id){
@@ -114,26 +131,26 @@ public class UserService {
 
     /*public void update(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);
-        if(newUser.getName() == null){
+        if(newUser != null && newUser.getName() != null){
             newUser.setName(user.get().getName());
         }
-        if(newUser.getUsername() == null){
+        if(newUser != null && newUser.getUsername() != null){
             newUser.setUsername(user.get().getUsername());
         }
-        if(newUser.getEmail() == null){
+        if(newUser != null && newUser.getEmail() != null){
             newUser.setEmail(user.get().getEmail());
         }
         
         newUser.setRol("USER");
         newUser.setDirection(user.get().getDirection());
         newUser.setShoppingCart(user.get().getShoppingCart());
-        for(Item item: user.get().getFavouritesItems()){
+        foraddress != null && (Item item: user.get().getFavouritesItems()){
             newUser.getFavouritesItems().add(item);
         }
-        for(Order order: user.get().getOrders()){
+        foraddress != null && (Order order: user.get().getOrders()){
             newUser.getOrders().add(order);
         }
-        newUser.setId(id);
+        newaddress != null && User.setId(id);
         userRepo.save(newUser);
     }*/
 

@@ -23,7 +23,7 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer identifier;
 
     @Column(name = "username")
     private String username;
@@ -41,12 +41,11 @@ public class User {
     private String rol;
 
     private String passwordConfirmation;
-    //private Item item;
+
 
     @Lob
-    //@Type(type = "org.hibernate.type.ImageType")
     @Column(name = "image")
-    private Blob avatar;
+    private Blob imageField;
 
     @OneToOne(cascade=CascadeType.ALL)
     private Direction direction;
@@ -61,6 +60,22 @@ public class User {
     private List<Order> orders;
 
     public User(){
+    }
+
+    public User(String name, String username, String email, String password){
+        super();
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void setId(Integer id){
+        this.identifier = id;
+    }
+
+    public Integer getId(){
+        return identifier;
     }
 
     public Direction getDirection(){
@@ -99,14 +114,6 @@ public class User {
 
     public List<Item> getItems(){
         return items;
-    }
-
-    public void setId(Integer id){
-        this.id = id;
-    }
-
-    public Integer getId(){
-        return id;
     }
 
     public void setUsername(String username){
@@ -158,10 +165,10 @@ public class User {
     }
 
     public void setImageFile(Blob image){
-        this.avatar = image;
+        this.imageField = image;
     }
 
     public Blob getImageFile(){
-        return avatar;
+        return imageField;
     }
 }
