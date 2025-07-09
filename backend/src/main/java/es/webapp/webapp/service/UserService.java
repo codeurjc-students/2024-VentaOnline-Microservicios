@@ -64,34 +64,60 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void updateById(Integer id, User newUser, Direction address){
+    public void updateById(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);
-        
-        user.get().setName(newUser.getName());
-        if(newUser != null && !newUser.getUsername().isEmpty()){
-            user.get().setUsername(newUser.getUsername());
+        if(user.isPresent()){
+            if(!newUser.getName().isEmpty()){
+                user.get().setName(newUser.getName());
+            }else{
+                user.get().setName(user.get().getName());
+            }
+            if(!newUser.getUsername().isEmpty()){
+                user.get().setUsername(newUser.getUsername());
+            }else{
+                user.get().setUsername(user.get().getUsername());
+            }
+            if(!newUser.getEmail().isEmpty()){
+                user.get().setEmail(newUser.getEmail());
+            }else{
+                user.get().setEmail(user.get().getEmail());
+            }
+            if(!newUser.getPassword().isEmpty() && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+                user.get().setPassword(passwordEncoder.encode(newUser.getPassword()));
+                user.get().setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+            }else{
+                user.get().setPassword(user.get().getPassword());
+                user.get().setPasswordConfirmation(user.get().getPasswordConfirmation());
+            }
+            user.get().setId(id);
+            userRepo.save(user.get());
         }
-        if(newUser != null && !newUser.getEmail().isEmpty()){
-            user.get().setEmail(newUser.getEmail());
+    }
+
+    public void updateAddressById(Integer id, Direction address){
+        Optional<User> user = userRepo.findById(id);
+        if(user.isPresent()){
+            if(address.getNumber() != null){
+                user.get().getDirection().setNumber(address.getNumber());
+            }
+
+            if(!address.getStreet().isEmpty()){
+                user.get().getDirection().setStreet(address.getStreet());
+            }else{
+                user.get().setDirection(user.get().getDirection());
+            }
+
+            if( address.getZipCode() != null){
+                user.get().getDirection().setZipCode(address.getZipCode());
+            }
+            if(!address.getCity().isEmpty()){
+                user.get().getDirection().setCity(address.getCity());
+            } else {
+                user.get().getDirection().setCity(user.get().getDirection().getCity());
+            }
+            user.get().setId(id);
+            userRepo.save(user.get());
         }
-        if(newUser != null && !newUser.getPassword().isEmpty() && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
-            user.get().setPassword(passwordEncoder.encode(newUser.getPassword()));
-            user.get().setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
-        }
-        if(address != null && address.getNumber() != null){
-            user.get().getDirection().setNumber(address.getNumber());
-        }
-        if(address != null && !address.getStreet().isEmpty()){
-            user.get().getDirection().setStreet(address.getStreet());
-        }
-        if(address != null && address.getZipCode() != null){
-            user.get().getDirection().setZipCode(address.getZipCode());
-        }
-        if(address != null && !address.getCity().isEmpty()){
-            user.get().getDirection().setCity(address.getCity());
-        }
-        user.get().setId(id);
-        userRepo.save(user.get());
     }
 
     public Optional<User> findById(Integer id){
