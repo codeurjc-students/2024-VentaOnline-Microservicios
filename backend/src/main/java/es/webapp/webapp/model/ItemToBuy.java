@@ -1,15 +1,19 @@
 package es.webapp.webapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 @Table(name = "tbl_itemToBuy")
@@ -22,18 +26,19 @@ public class ItemToBuy {
 
     private String code;
 
-    @ManyToOne
-    @JsonIgnore
-    private Item item;
+    @ManyToMany
+    private List<Item> items = new ArrayList<>();
 
     private String size;
 
     private Integer count;
 
-    //@ManyToOne
-    //private Order order;
+    @ManyToOne
+    @JsonIgnore
+    private Order order;
 
     @ManyToOne
+    @JsonIgnore
     private ShoppingCart shoppingCart;
 
     public ItemToBuy() {}
@@ -62,21 +67,17 @@ public class ItemToBuy {
         this.size = size;
     }
 
-    public void setItem(Item item){
-        this.item=item;
+    public List<Item> getItems(){
+        return items;
     }
 
-    public Item getItem(){
-        return item;
-    }
-
-    /*public void setOrder(Order order){
+    public void setOrder(Order order){
         this.order=order;
     }
 
     public Order getOrder(){
         return order;
-    }*/
+    }
 
     public void setCount(Integer count){
         this.count=count;

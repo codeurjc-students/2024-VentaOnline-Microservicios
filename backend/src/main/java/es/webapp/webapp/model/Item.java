@@ -50,8 +50,9 @@ public class Item {
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Stock<?>> itemStocks;
 
-    @OneToMany(mappedBy="item", cascade=CascadeType.ALL, orphanRemoval=true)
-    private List<ItemToBuy> itemsToBuy;
+    @ManyToMany
+    @JsonIgnore
+    private List<ItemToBuy> itemsToBuy = new ArrayList<>();
 
     @ManyToMany
     @JsonIgnore
@@ -77,7 +78,7 @@ public class Item {
     }
     
 
-    public void addItemToBuy(ItemToBuy itemToBuy){
+    /*public void addItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.add(itemToBuy);
         itemToBuy.setItem(this);
     }
@@ -85,9 +86,9 @@ public class Item {
     public void removeItemToBuy(ItemToBuy itemToBuy){
         itemsToBuy.remove(itemToBuy);
         itemToBuy.setItem(null);
-    }
+    }*/
 
-    public List<ItemToBuy> getITeItemsToBuy(){
+    public List<ItemToBuy> getItemsToBuy(){
         return itemsToBuy;
     }
 

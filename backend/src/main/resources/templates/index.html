@@ -44,7 +44,7 @@
                         <a href="/login"><img src=/api/users/{{id}}/image alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{username}}" class="nav-menu-link">Orders</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{id}}" class="nav-menu-link">Orders</a></li>
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
@@ -164,7 +164,7 @@
         </div>
     </footer>
     <script src="/js/main.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
 </body>
 <script>
@@ -229,7 +229,7 @@
             '</span><img src="//localhost:8443/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
-            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 cl ss="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
+            item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
             ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.id + '/favourites/{{username}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
@@ -239,6 +239,7 @@
         loadInitItems(function(items,size) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
+            //console.log(items);
             if(items.size != 0){
                 for(var i=0; i<items.size; i++){
                     showItemLoaded(items.content[i]);
@@ -254,7 +255,7 @@
                         $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
                         //console.log(items);
                         if(items.size != 0){
-                            for(var i=0; i<items.size; i++){
+                            for(var i=0; i<items.numberOfElements; i++){
                                 showFavItemLoaded(items.content[i]);
                             }
                         }
