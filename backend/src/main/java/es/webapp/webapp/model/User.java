@@ -50,7 +50,7 @@ public class User {
     @OneToOne(cascade=CascadeType.ALL)
     private Direction direction;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne
     private ShoppingCart shoppingCart;
 
     @ManyToMany(mappedBy="users")

@@ -28,6 +28,18 @@ public class ShoppingCartRestController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/{username}")
+    public ResponseEntity<ShoppingCart> getShoppingCart(@PathVariable String username){
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()) {
+            ShoppingCart shoppingCart = user.get().getShoppingCart();
+            return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @GetMapping("/{username}/items")
     public ResponseEntity<List<ItemToBuy>> getItemsToBuy(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
@@ -39,7 +51,7 @@ public class ShoppingCartRestController {
         }
     }
 
-    @DeleteMapping("/items/{id}/remove")
+    @DeleteMapping("/{id}/remove")
     public ResponseEntity<ItemToBuy> deleteItemToBuyById(@PathVariable Integer id){
         Optional<ItemToBuy> item = itemToBuyService.findById(id);
         if(item.isPresent()){

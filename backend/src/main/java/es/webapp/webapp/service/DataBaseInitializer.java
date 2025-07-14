@@ -86,6 +86,10 @@ public class DataBaseInitializer {
         if(!user01.isPresent())
             userRepo.save(user1);
 
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setTotalCost(23.26);
+        shoppingCartRepo.save(shoppingCart);
+
         User user2 = new User();
         user2.setUsername("carlos");
         user2.setName("carlos");
@@ -97,11 +101,11 @@ public class DataBaseInitializer {
 
         Direction address2 = new Direction("Calle de la constitución",1,28933,"Madrid");
         user2.setDirection(address2);
-        ShoppingCart shoppingCart = new ShoppingCart();
         user2.setShoppingCart(shoppingCart);
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
         if(!user02.isPresent())
             userRepo.save(user2);
+
 
         User user3 = new User();
         user3.setUsername("anonymous");
@@ -150,9 +154,27 @@ public class DataBaseInitializer {
         stock4.setCode("B6A0353");;
         stock4.setStock(20);   
 
+
+
+
         Shoe stock5 = new Shoe(); 
         stock5.setCode("F4ECB71");;
-        stock5.setStock(20);
+        stock5.setStock(22);
+
+        //1:1
+        //create a size, 1 stock - 1 sizes
+        Size size3 = new Size();
+        size3.setCode("SIZE3");
+        size3.setLabel("40");
+
+        Optional<Size> size03 = sizeRepo.findByCode("SIZE3");
+        if (!size03.isPresent()) {
+            sizeRepo.save(size3);
+            stock5.setSize(size3);
+        }  
+
+
+
 
         Shoe stock6 = new Shoe(); 
         stock6.setCode("42FFD15");;
@@ -175,6 +197,7 @@ public class DataBaseInitializer {
         itemBuy1.setSize("S");
         itemBuy1.setCount(2);
         
+
         // --> GENERAR Nº ALEATORIO, un articulo y su stock tienen cada uno una tira de caracteres aleatorias que se generan automáticamente 
         //System.out.println(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
 
@@ -200,9 +223,6 @@ public class DataBaseInitializer {
 
         stock1.setItem(item1);
         
-        
-        
-        
 
          /** 1:N 
          * 1º create and save object with OneToMany relationship into the db
@@ -217,10 +237,7 @@ public class DataBaseInitializer {
         if(!stock01.isPresent()){
             clothesRepo.save(stock1);
         }
-
-        
-        
-        
+     
 
         Item item2 = new Item();
         item2.setCode("VAQMUJ2");
@@ -254,16 +271,13 @@ public class DataBaseInitializer {
 
         itemBuy1.setOrder(order);
         //M:N
+        //to control the stock of items bought
         itemBuy1.getItems().add(item1);  
         
         
         Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
         if(!itemBuy01.isPresent())
             itemToBuyRepo.save(itemBuy1);
-
-        //ITEMS TO BUY
-        //1:N
-        itemBuy1.setShoppingCart(user2.getShoppingCart());
         
 
         Item item3 = new Item();
@@ -674,6 +688,43 @@ public class DataBaseInitializer {
         if(!item041.isPresent())      
             itemRepo.save(item41);
 
+        stock5.setItem(item41);
+        
+         /** 1:N 
+         * 1º create and save object with OneToMany relationship into the db
+         * 2º relate object with ManyToOne relationship to the father
+         * 31 save object whit ManyToOne relationship into the db
+         */
+        //--> establish relationship stock <--> item /an item can have several stocks
+
+
+        //--> save stock into the db
+        Optional<Shoe> stock05 = shoeRepo.findByCode(stock5.getCode());
+        if(!stock05.isPresent()){
+            shoeRepo.save(stock5);
+        }
+
+        ItemToBuy itemBuy2 = new ItemToBuy();
+        itemBuy2.setCode("GFD7643");
+        itemBuy2.setSize("40");
+        itemBuy2.setCount(1);
+
+    
+            
+        //ITEMS TO BUY
+        //1:N
+        itemBuy2.setShoppingCart(user2.getShoppingCart());
+        //var cost = shoppingCart.getTotalCost();
+        //cost += (itemBuy2.getItems().get(0).getPrice()*itemBuy2.getCount());
+        //shoppingCart.setTotalCost(cost);
+        itemBuy2.getItems().add(item41); 
+
+        Optional<ItemToBuy> itemBuy02 = itemToBuyRepo.findByCode(itemBuy2.getCode());
+        if(!itemBuy02.isPresent())
+            itemToBuyRepo.save(itemBuy2);
+
+
+
 
         Item item42 = new Item();
         item42.setCode("ZAP2");
@@ -883,11 +934,6 @@ public class DataBaseInitializer {
         Optional<Clothes> stock04 = clothesRepo.findByCode(stock4.getCode());
         if(!stock04.isPresent())
             clothesRepo.save(stock4);
-
-        Optional<Shoe> stock05 = shoeRepo.findByCode(stock5.getCode());
-        if(!stock05.isPresent()){
-            shoeRepo.save(stock5);
-        }
 
         Optional<Shoe> stock06 = shoeRepo.findByCode(stock6.getCode());
         if(!stock06.isPresent()){

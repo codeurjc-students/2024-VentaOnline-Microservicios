@@ -32,12 +32,12 @@
             <h1>Shopping cart</h1>
             <h2 class="zmdi zmdi-shopping-cart"></h2> 
             {{#neworder}}
-            <div class="has-text-light">{{order}}</div>
+            <div class="has-text-light"></div>
             <h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">CART EMPTY !!!</h1>
             {{/neworder}}
             {{^neworder}}
-            <a href="//localhost:8445/orders/new/users/{{username}}"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
-            
+            <div class="has-text-light" id="cart"></div>
+            <a href="/orders/new/users/{{username}}"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
             {{/neworder}}
         </div>
     </div>
@@ -71,8 +71,10 @@
 <script>
 
     let ruta='/api/shoppingcart/{{username}}/items';
-    //let sizes = ['S','M','L','XL'];
+    let ruta1='/api/shoppingcart/{{username}}';
   
+    var stock = "";
+    
 
     function loadInitItems(callback){
         $.ajax({
@@ -82,38 +84,45 @@
         })
     }
 
-    
-
-    function showFirstItem(items){
-
-        /*for(Stock stock: items.itemStock){
-            if(stock.stock > 5)
-                console.log("in stock")
-            else
-                console.log("less than 5 avaiable");
-        }*/
-            if(items.item.stock >= 5){              
-                    $('.slider').append(
-                        '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-                        '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-                        '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-                        '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> {{#item}}{{In stock}}{{/item}}</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-                        '</p><p class="has-text-grey"><strong>Size: </strong>unique</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + 
-                        '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-                        '</p></div>'
-                    )
-                } 
+    function loadShoppingCart(callback){
+        $.ajax({
+            url:ruta1
+        }).done(function(cart){
+            callback(cart);
+        })
     }
 
-    function showOtherItems(items){
+    function showFirstItem(item){
+        if(item.items[0].stocks[0].stock >= 5){
+            stock = "In stock";
+        }else{
+            stock = "less than 5 articles avaialables";
+        }
         $('.slider').append(
-            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/api/items/' + items.item.id + 
-            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/items/' + items.id + 
-            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + items.item.name +
-            '</h3><h2 class="price is-size-4">' + items.item.price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability:</strong> In stock</p><p class="has-text-grey"><strong>Gender: </strong>' + items.item.gender + 
-            '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-            '</p><p class="has-text-grey"><strong>Type: </strong>' + items.item.type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + '</p></div><p class="text-default">' + items.item.description + 
-            '</p></div>'
+            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/api/items/' + item.items[0].id + 
+            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/' + item.id + 
+            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
+            '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
+            '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + item.size + 
+            '</p><p class="has-text-grey"><strong>Type: </strong>' + item.items[0].type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + item.count + 
+            '</p><p class="has-text-grey"><strong>price per unit: </strong>' + item.items[0].price + '€</p></div><p class="text-default">' + item.items[0].description + '</p></div>'
+        )
+    }
+
+    function showOtherItems(item){
+        if(item.items[0].stocks[0].stock >= 5){
+            stock = "In stock";
+        }else{
+            stock = "less than 5 articles avaialables";
+        }
+        $('.slider').append(
+            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/api/items/' + item.items[0].id + 
+            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/' + item.id + 
+            '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
+            '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
+            '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
+            '</p><p class="has-text-grey"><strong>Type: </strong>' + item.items[0].type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + 
+            '</p><p class="has-text-grey"><strong>price per unit: </strong>' + item.items[0].price + '€</p></div><p class="text-default">' + item.items[0].description + '</p></div>'
         )
     }
 
@@ -129,13 +138,19 @@
         )
     }
 
+    function showSoppingCart(cart){
+        $('#cart').append('<h1 class="has-text-weight-bold has-text-grey-light">' + cart.totalCost + ' €</h1>')
+    }
+
     $(document).ready(function() {
 
         loadInitItems(function(items) {
-            if(items.size != 0){
+            if(items.length != 0){
                 showFirstItem(items[0]);
-                for(var i=1; i<items.length; i++){
-                    showOtherItems(items[i]);
+                if(items.length > 1){
+                    for(var i=0; i<items.length; i++){
+                        showOtherItems(items[i]);
+                    }
                 }
                 showPreviousButton(items.length);
                 showNextButton(items.length);
@@ -143,6 +158,10 @@
                 console.log(null);
             }
         });
+
+        loadShoppingCart(function(cart) {
+            showSoppingCart(cart);
+        })
 
     });
 </script>

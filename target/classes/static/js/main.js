@@ -58,7 +58,7 @@ function newOrder(){
 
 function next(n) {
     activeImg++
-    if (activeImg > n) {
+    if (activeImg >= n) {
         activeImg = 0
     }
     slider(activeImg)
@@ -67,7 +67,7 @@ function next(n) {
 function previus(n) {
     activeImg--
     if (activeImg < 0) {
-        activeImg = n
+        activeImg = 0
     }
     slider(activeImg)
 }

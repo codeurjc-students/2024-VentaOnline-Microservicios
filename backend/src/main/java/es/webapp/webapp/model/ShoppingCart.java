@@ -1,4 +1,5 @@
 package es.webapp.webapp.model;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ public class ShoppingCart {
     private Double totalCost = 0.0;
 
     @OneToMany(mappedBy="shoppingCart")
-    private List<ItemToBuy> items; 
+    private List<ItemToBuy> items = new ArrayList<>(); 
 
     public ShoppingCart() {}
 
