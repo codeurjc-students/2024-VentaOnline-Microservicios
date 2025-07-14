@@ -124,6 +124,20 @@ public class DataBaseInitializer {
         //stock1.setSize(size1);
         stock1.setStock(20);
 
+        //1:1
+        //create a size, 1 stock - 1 sizes
+        Size size1 = new Size();
+        size1.setCode("SIZE1");
+        size1.setLabel("S");
+
+        Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
+        if (!size01.isPresent()) {
+            sizeRepo.save(size1);
+            stock1.setSize(size1);
+        }  
+
+
+
         Clothes stock2 = new Clothes();
         stock2.setCode("738D936");
         stock2.setStock(20);
@@ -173,13 +187,39 @@ public class DataBaseInitializer {
         item1.setGender("woman");
         item1.setType("jeans");
         setItemImage(item1, "/images/vaquero_mujer_1.PNG");
-        
-        //item1.getUsers().add(user2);
+       
+        //USERS <--> FAVOURITES ITEMS
+        //M:N
+        //an user can have several favourites items
+        item1.getUsers().add(user2);
+         
 
         Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
         if(!item01.isPresent())      
             itemRepo.save(item1);
 
+        stock1.setItem(item1);
+        
+        
+        
+        
+
+         /** 1:N 
+         * 1º create and save object with OneToMany relationship into the db
+         * 2º relate object with ManyToOne relationship to the father
+         * 31 save object whit ManyToOne relationship into the db
+         */
+        //--> establish relationship stock <--> item /an item can have several stocks
+
+
+        //--> save stock into the db
+        Optional<Clothes> stock01 = clothesRepo.findByCode(stock1.getCode());
+        if(!stock01.isPresent()){
+            clothesRepo.save(stock1);
+        }
+
+        
+        
         
 
         Item item2 = new Item();
@@ -195,17 +235,35 @@ public class DataBaseInitializer {
         if(!item02.isPresent())      
             itemRepo.save(item2);
 
-        //ITEMS TO BUY
+        //ORDERS
         //1:N
 
-        itemBuy1.setItem(item2);
-        itemBuy1.setShoppingCart(user2.getShoppingCart());
+        Order order = new Order();
+        order.setCode("1D591DB");
+        order.setTotalCost(83.47);
+        order.setCreationDate(LocalDate.of(2024,12,18));
+        order.setState(State.PENDING);
+
+        order.setUser(user2);
+
+        
+        Optional<Order> order01 = orderRepo.findByCode(order.getCode());
+        if(!order01.isPresent()) {
+            orderRepo.save(order);
+        }
+
+        itemBuy1.setOrder(order);
+        //M:N
+        itemBuy1.getItems().add(item1);  
+        
         
         Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
         if(!itemBuy01.isPresent())
             itemToBuyRepo.save(itemBuy1);
 
-        
+        //ITEMS TO BUY
+        //1:N
+        itemBuy1.setShoppingCart(user2.getShoppingCart());
         
 
         Item item3 = new Item();
@@ -786,43 +844,13 @@ public class DataBaseInitializer {
             itemRepo.save(item53);
 
 
-        //USERS <--> FAVOURITES ITEMS
-        //M:N
-        //an user can have several favourites items
-        
+     
 
 
         //--> save item into the db
         //Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
         //if(!item01.isPresent())      
         //    itemRepo.save(item1);
-
-  
-
-        //1:1
-        //create a size, 1 stock - 1 sizes
-        Size size1 = new Size();
-        size1.setCode("SIZE1");
-        size1.setLabel("S");
-        stock1.setSize(size1);  
-        Optional<Size> size01 = sizeRepo.findByCode(size1.getCode());
-        if(!size01.isPresent()){
-            sizeRepo.save(size1);       
-        }
-        
-        /** 1:N 
-         * 1º create and save object with OneToMany relationship into the db
-         * 2º relate object with ManyToOne relationship to the father
-         * 31 save object whit ManyToOne relationship into the db
-         */
-        //--> establish relationship stock <--> item /an item can have several stocks
-        stock1.setItem(item1);
-
-        //--> save stock into the db
-        Optional<Clothes> stock01 = clothesRepo.findByCode(stock1.getCode());
-        if(!stock01.isPresent()){
-            clothesRepo.save(stock1);
-        }
 
 
 
@@ -881,22 +909,7 @@ public class DataBaseInitializer {
             shoeRepo.save(stock9);
         }
 
-
-        //ORDERS
-        //1:N
-
-        Order order = new Order();
-        order.setCode("1D591DB");
-        order.setTotalCost(83.47);
-        order.setCreationDate(LocalDate.of(2024,12,18));
-        order.setState(State.PENDING);
-
-        Optional<Order> order01 = orderRepo.findByCode(order.getCode());
-        if(!order01.isPresent()) {
-            orderRepo.save(order);
-        }
-
-        order.setUser(user2);
+        
 
         //USERS <--> FAVOURITES ITEMS
         //M:N

@@ -1,5 +1,7 @@
 package es.webapp.webapp.model;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +30,10 @@ public class Order {
     @ManyToOne 
     @JsonIgnore
     private User user;
+
+    @OneToMany(mappedBy = "order")
+    private List<ItemToBuy> itemToBuy = new ArrayList<>();
+
 
     @Column(name="totalCost")
     private Double totalCost;
@@ -69,6 +76,20 @@ public class Order {
         return user;
     }
 
+    public void addItemToBuy(ItemToBuy item){
+        itemToBuy.add(item);
+        item.setOrder(this);
+    }
+
+    public void removeItemToBuy(ItemToBuy item){
+        itemToBuy.remove(item);
+        item.setOrder(null);
+    }
+
+    public List<ItemToBuy> getItemToBuys(){
+        return itemToBuy;
+    }
+
     public void setTotalCost(Double totalCost){
         this.totalCost = totalCost;
     }
@@ -92,12 +113,4 @@ public class Order {
     public State getState(){
         return state;
     }
-
-    /*public void setAuxState(String state){
-        this.auxState = state;
-    }
-
-    public String getAuxState(){
-        return auxState;
-    }*/
 }

@@ -155,7 +155,7 @@ public class ItemController {
                     }
                     shoppingCartService.save(user.get().getShoppingCart());
 
-                    itemToBuy.setItem(product.get());
+                    itemToBuy.getItems().add(product.get());
                     itemToBuy.setShoppingCart(user.get().getShoppingCart());
 
                     itemToBuyService.save(itemToBuy);

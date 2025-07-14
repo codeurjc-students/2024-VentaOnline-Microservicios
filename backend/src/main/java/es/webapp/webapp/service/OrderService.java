@@ -1,5 +1,7 @@
 package es.webapp.webapp.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +27,9 @@ public class OrderService {
     
     public Page<Order> findByUser(User user, Pageable page){
         return orderRepo.findByUser(user, page);
+    }
+
+    public Optional<Order> findById(Integer id) {
+        return orderRepo.findById(id);
     }
 }

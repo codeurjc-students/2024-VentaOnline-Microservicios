@@ -1,5 +1,4 @@
 package es.webapp.webapp.model;
-
 import java.util.List;
 
 import javax.persistence.Column;
@@ -66,5 +65,9 @@ public class ShoppingCart {
 
     public Double getTotalCost(){
         return totalCost;
+    }
+
+    public List<ItemToBuy> getItems() {
+        return items;
     }
 }

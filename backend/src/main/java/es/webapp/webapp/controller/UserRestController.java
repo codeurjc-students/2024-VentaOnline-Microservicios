@@ -157,7 +157,7 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{id}/image")
-    public ResponseEntity<Object> getUserImage(@PathVariable Integer id) throws SQLException{
+    public ResponseEntity<Object> getUserImageById(@PathVariable Integer id) throws SQLException{
 
         Optional<User> user = userService.findById(id);
 
@@ -170,5 +170,5 @@ public class UserRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }    
+    }   
 }
