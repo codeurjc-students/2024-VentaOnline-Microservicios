@@ -1,4 +1,5 @@
 package es.webapp.webapp.model;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class ShoppingCart {
     
     @Column(name = "totalCost")
     private Double totalCost = 0.0;
+
+     @Column(name="time")
+    private LocalTime buyTime;
 
     @OneToMany(mappedBy="shoppingCart")
     private List<ItemToBuy> items = new ArrayList<>(); 
@@ -65,10 +69,18 @@ public class ShoppingCart {
     }
 
     public Double getTotalCost(){
-        return totalCost;
+        return ((double)Math.round(totalCost * 100d) / 100d);
     }
 
     public List<ItemToBuy> getItems() {
         return items;
+    }
+
+    public void setBuyTime(LocalTime time){
+        this.buyTime = time;
+    }
+
+    public LocalTime getBuyTime(){
+        return buyTime;
     }
 }

@@ -48,6 +48,17 @@ public class ItemRestController {
         return ResponseEntity.ok(items);
     }
 
+    @GetMapping("/items/{id}/info")
+    public ResponseEntity<Item> getParticularItem(@PathVariable Integer id){
+        Optional<Item> item = itemService.findById(id);
+
+        if(item.isPresent()){
+            return new ResponseEntity<>(item.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/items/{name}")
     public ResponseEntity<Page<Item>> getItemsByName(@PathVariable String name, Pageable page){
         return new ResponseEntity<>(itemService.findByName(name, page),HttpStatus.OK);

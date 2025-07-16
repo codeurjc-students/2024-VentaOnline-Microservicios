@@ -2,6 +2,8 @@ package es.webapp.webapp.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import es.webapp.webapp.model.Item;
 import es.webapp.webapp.model.ItemToBuy;
 import es.webapp.webapp.model.ShoppingCart;
+import es.webapp.webapp.model.Stock;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.ItemToBuyService;
@@ -62,60 +65,6 @@ public class ItemController {
         model.addAttribute("sizeByDefault",false);
     }
 
-    /*private void showSizes(Model model, Optional<Item> item){
-        if(item.get().getSizes() != null && item.get().getSizes()[0] != null){
-            model.addAttribute("sizeS",true);
-            model.addAttribute("size1",item.get().getSizes()[0]);   
-        } else {
-            model.addAttribute("size1",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[1] != null){
-            model.addAttribute("sizeM",true);
-            model.addAttribute("size2",item.get().getSizes()[1]);   
-        } else {
-            model.addAttribute("size2",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[2] != null){
-            model.addAttribute("sizeL",true);
-            model.addAttribute("size3",item.get().getSizes()[2]);   
-        } else {
-            model.addAttribute("size3",""); 
-        }
-        if(item.get().getSizes() != null && item.get().getSizes()[3] != null){
-            model.addAttribute("sizeXL",true);
-            model.addAttribute("size4",item.get().getSizes()[3]);   
-        } else {
-            model.addAttribute("size4",""); 
-        } 
-        if(item.get().getSizes() == null){
-            model.addAttribute("sizeByDefault",true);
-            model.addAttribute("size1","unique"); 
-        }
-    }
-
-    private void showStocks(Model model, Optional<Item> item){
-        if(item.get().getStocks() != null && item.get().getStocks()[0] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock1","(Avaiable)");}else{model.addAttribute("stock1","(Less than 5 items avaiable)");}  
-        } else {
-            model.addAttribute("stock1",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[1] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock2","(Avaiable)");}else{model.addAttribute("stock2","(Less than 5 items avaiable)");}  
-        } else {
-            model.addAttribute("stock2",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[2] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock3","(Avaiable)");}else{model.addAttribute("stock3","(Less than 5 items avaiable)");}    
-        } else {
-            model.addAttribute("stock3",0); 
-        }
-        if(item.get().getStocks() != null && item.get().getStocks()[3] != null){
-            if(item.get().getStocks()[0] >= 5){model.addAttribute("stock4","(Avaiable)");}else{model.addAttribute("stock4","(Less than 5 items avaiable)");}  
-        } else {
-            model.addAttribute("stock4",0); 
-        }
-    }*/
-
     @GetMapping("/{id}/page")
     public String itemPage(Model model, @PathVariable Integer id){   
             
@@ -138,7 +87,7 @@ public class ItemController {
     }
 
     @PostMapping("/{id}/purchase")
-    public String itemBuy(Model model, Item item, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
+    public String itemBuy(Model model, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
 
         Optional<Item> product = itemService.findById(id);
         if(product.isPresent()) {
@@ -149,30 +98,36 @@ public class ItemController {
                 String name = principal.getName();
                 Optional<User> user = userService.findByUsername(name);
                 if(user.isPresent()) {
-                    if(user.get().getShoppingCart() == null){
-                        ShoppingCart cart = new ShoppingCart();
-                        user.get().setShoppingCart(cart);
-                    }
-                    shoppingCartService.save(user.get().getShoppingCart());
 
                     itemToBuy.getItems().add(product.get());
+                    if(user.get().getShoppingCart().getItems().isEmpty())
+                        user.get().getShoppingCart().setBuyTime(LocalTime.now());
+                    
                     itemToBuy.setShoppingCart(user.get().getShoppingCart());
+
+                
+                    //decrement stock of the item purchased
+                    for(Stock<?> stock: product.get().getStocks()){
+                        if(stock.getSize().getLabel().equals(itemToBuy.getSize()) && itemToBuy.getCount() <= stock.getStock()){
+                            int count = itemToBuy.getCount();
+                            stock.setStock(stock.getStock() - count);
+                            
+                        }else if(itemToBuy.getCount() > stock.getStock()){
+                            model.addAttribute("status","there is not enough items to buy");
+                            return "product";
+                        }
+                    }
+
+                    //update cost of the shopping cart
+                    double cost = (itemToBuy.getCount() * product.get().getPrice());
+                    ShoppingCart shoppingCart = user.get().getShoppingCart();
+                    user.get().getShoppingCart().setTotalCost(shoppingCart.getTotalCost() + cost);
 
                     itemToBuyService.save(itemToBuy);
 
-                    model.addAttribute("name",product.get().getName());
-                    model.addAttribute("price",product.get().getPrice());
-                    model.addAttribute("gender",product.get().getGender());
-                    
-                    //showSizes(model,product);
-                    //showStocks(model, product);
-        
-                    model.addAttribute("type",product.get().getType());
-                    model.addAttribute("description",product.get().getDescription());
-
                     model.addAttribute("status","item successfully added to the cart");
                     return "product";
-                } else {
+                }else {
                     return "error";
                 }
             }

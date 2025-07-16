@@ -119,9 +119,9 @@
             '<div class="slider-img-container"><div class="column"><div class="card"><img src="/api/items/' + item.items[0].id + 
             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/shoppingcart/' + item.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
-            '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '<sup>€</sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
-            '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + items.size + 
-            '</p><p class="has-text-grey"><strong>Type: </strong>' + item.items[0].type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + items.count + 
+            '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
+            '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + item.size + 
+            '</p><p class="has-text-grey"><strong>Type: </strong>' + item.items[0].type + '</p><p class="has-text-grey"><strong>Amount: </strong>' + item.count + 
             '</p><p class="has-text-grey"><strong>price per unit: </strong>' + item.items[0].price + '€</p></div><p class="text-default">' + item.items[0].description + '</p></div>'
         )
     }
@@ -148,7 +148,7 @@
             if(items.length != 0){
                 showFirstItem(items[0]);
                 if(items.length > 1){
-                    for(var i=0; i<items.length; i++){
+                    for(var i=1; i<items.length; i++){
                         showOtherItems(items[i]);
                     }
                 }

@@ -297,10 +297,13 @@
             }).done(function(item){
                 $('#spinner-div').hide();
                 $('#total-item-founded').append('Found <span>' + item.totalElements + ' items </span>');
-                if(item.size != 0){
-                    for(var i=0; i<item.size; i++){
+              
+                if(item.numberOfElements != 0){
+                    for(var i=0; i<item.numberOfElements; i++){
                         showItemFoundedLoaded(item.content[i]);
                     }
+                }else{
+                    console.log(null);
                 }
                 
             }) 

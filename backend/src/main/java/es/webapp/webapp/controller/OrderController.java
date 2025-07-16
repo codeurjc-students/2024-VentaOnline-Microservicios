@@ -77,6 +77,8 @@ public class OrderController {
                 item.setShoppingCart(null);
             }
 
+            user.get().getShoppingCart().setTotalCost(0.0);
+
             order.setTotalCost(cost);
             order.setCode("AS33O4S");
             order.setState(State.PENDING);
