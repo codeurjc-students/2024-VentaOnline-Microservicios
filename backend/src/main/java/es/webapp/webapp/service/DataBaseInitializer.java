@@ -3,6 +3,7 @@ package es.webapp.webapp.service;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -88,6 +89,7 @@ public class DataBaseInitializer {
 
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setTotalCost(23.26);
+        shoppingCart.setBuyTime(LocalTime.now());
         shoppingCartRepo.save(shoppingCart);
 
         User user2 = new User();
@@ -148,7 +150,7 @@ public class DataBaseInitializer {
 
         Clothes stock3 = new Clothes();
         stock3.setCode("8783FC8");
-        stock3.setStock(20);   
+        stock3.setStock(15);   
         
         Clothes stock4 = new Clothes();
         stock4.setCode("B6A0353");;
@@ -916,20 +918,29 @@ public class DataBaseInitializer {
         if(!size02.isPresent()){
             sizeRepo.save(size2);           
         }
+
+        Size size4 = new Size();
+        size4.setCode("SIZE4");
+        size4.setLabel("36");
+        stock3.setSize(size4);
+        Optional<Size> size04 = sizeRepo.findByCode(size4.getCode());
+        if(!size04.isPresent())
+            sizeRepo.save(size4);
         
         stock2.setItem(item34);
+        
+        stock3.setItem(item34);
 
         Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
         if(!stock02.isPresent())
             clothesRepo.save(stock2);
 
-
-            
-
         Optional<Clothes> stock03 = clothesRepo.findByCode(stock3.getCode());
         if(!stock03.isPresent()){
             clothesRepo.save(stock3);
         }
+
+
 
         Optional<Clothes> stock04 = clothesRepo.findByCode(stock4.getCode());
         if(!stock04.isPresent())

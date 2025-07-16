@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.webapp.webapp.model.Item;
 import es.webapp.webapp.model.ItemToBuy;
+import es.webapp.webapp.model.ShoppingCart;
+import es.webapp.webapp.model.Stock;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemToBuyService;
+import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -28,6 +32,9 @@ public class ShoppingCartController {
 
     @Autowired
     private ItemToBuyService itemToBuyService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -77,14 +84,42 @@ public class ShoppingCartController {
     @GetMapping("/{id}/remove")
     public String removeItemToBuy(Model model, @PathVariable Integer id){
 
-        Optional<ItemToBuy> item = itemToBuyService.findById(id);
+        Optional<ItemToBuy> itemToBuy = itemToBuyService.findById(id);
 
-        if(item.isPresent()) {
+        User user = itemToBuy.get().getShoppingCart().getUser();
+        Item product = itemToBuy.get().getItems().get(0);
+        int count = itemToBuy.get().getCount();
+
+        if(itemToBuy.isPresent()) {
             itemToBuyService.deleteById(id);
-            model.addAttribute("order","");
-            return "shoppingCart";
         }
-        return "error";
+    
+        //remove item from shopping cart
+        user.getShoppingCart().getItems().remove(itemToBuy.get());
+
+        //increase the stock
+        for(Stock<?> stock: product.getStocks()){
+            if(stock.getSize().getLabel().equals(itemToBuy.get().getSize())){
+                stock.setStock(stock.getStock() + count);
+                
+            }
+        }
+
+        //update cost of the shopping cart
+        double cost = (count * product.getPrice());
+        double totalCost = (user.getShoppingCart().getTotalCost() - cost);
+        user.getShoppingCart().setTotalCost(totalCost);
+
+        shoppingCartService.save(user.getShoppingCart());
+
+
+        List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.getShoppingCart());
+        if(itemsToBuy.size() > 0){
+            model.addAttribute("neworder",false);
+        } else {
+            model.addAttribute("neworder",true);
+        }
+        return "shoppingCart";
     }
     
 }
