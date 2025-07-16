@@ -37,7 +37,7 @@ public class ItemService {
         return itemRepo.findByName(name, page);
     }
 
-    /*public Page<Item> findByUser(User user, Pageable page){
-        return itemRepo.findByUser(user, page);
-    }*/
+    public Optional<Item> findByCode(String code){
+        return itemRepo.findByCode(code);
+    }
 }

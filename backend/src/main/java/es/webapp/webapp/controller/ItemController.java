@@ -137,13 +137,15 @@ public class ItemController {
         return "error";
     }
 
-    /*@GetMapping("/{id}/favourites/{username}/new")
-    public String addFavourite(Model model, @PathVariable Integer id, @PathVariable String username)  {
-        Optional<Item> item = itemService.findById(id);
-        Optional<User> user = userService.findByUsername(username);
+    @GetMapping("/{code}/favourites/{id}/new")
+    public String addFavourite(Model model, @PathVariable String code, @PathVariable Integer id)  {
+        Optional<Item> item = itemService.findByCode(code);
+        Optional<User> user = userService.findById(id);
         
-        userService.newItem(user.get().getId(),item.get());
+        item.get().getUsers().add(user.get());
+        itemService.save(item.get());
+        model.addAttribute("username",user.get().getUsername());
         return "index";
 
-    }*/
+    }
 }
