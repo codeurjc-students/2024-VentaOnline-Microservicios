@@ -3,7 +3,6 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,6 @@ import es.webapp.webapp.model.Stock;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.ItemToBuyService;
-import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -39,9 +37,6 @@ public class ItemController {
 
     @Autowired
     private ItemToBuyService itemToBuyService;
-
-    @Autowired
-    private ShoppingCartService shoppingCartService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
