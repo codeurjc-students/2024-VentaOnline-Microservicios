@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -260,7 +261,7 @@ public class DataBaseInitializer {
         Order order = new Order();
         order.setCode("1D591DB");
         order.setTotalCost(83.47);
-        order.setCreationDate(LocalDate.of(2024,12,18));
+        order.setCreationDate("2024-12-18");
         order.setState(State.PENDING);
 
         order.setUser(user2);

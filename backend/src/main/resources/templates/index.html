@@ -44,7 +44,7 @@
                         <a href="/login"><img src=/api/users/{{id}}/image alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/user/{{id}}" class="nav-menu-link">Orders</a></li>
+                    <li class="nav-menu-item"><a href="//localhost:8445/orders/users/{{id}}" class="nav-menu-link">Orders</a></li>
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
@@ -191,10 +191,10 @@
         })
     }
 
-    let ruta2 = 'https://localhost:8443/api/users/current';
+    let ruta2='//localhost:8443/api/users/current';
     function getCurrentUser(callback){
         $.ajax({
-            url: ruta2
+            url:ruta2
         }).done(function(user){
             callback(user);
         })
@@ -208,7 +208,7 @@
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.code -+ '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
@@ -239,9 +239,9 @@
         loadInitItems(function(items,size) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
-            //console.log(items);
-            if(items.size != 0){
-                for(var i=0; i<items.size; i++){
+            console.log(items);
+            if(items.numberOfElements != 0){
+                for(var i=0; i<items.numberOfElements; i++){
                     showItemLoaded(items.content[i]);
                 }
             }
@@ -254,7 +254,7 @@
                     if(!items.empty){
                         $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
                         //console.log(items);
-                        if(items.size != 0){
+                        if(items.numberOfElements != 0){
                             for(var i=0; i<items.numberOfElements; i++){
                                 showFavItemLoaded(items.content[i], user.id);
                             }
@@ -275,7 +275,7 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && size-10 < item.content.length){
+                if(item.numberOfElements != 0 && size-10 < item.content.length){
                     for(var i=size-10; i<item.content.length; i++){
                         showItemLoaded(item.content[i]);
                     }
@@ -319,7 +319,7 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && size1-10 < item.content.length){
+                if(item.numberOfElements != 0 && size1-10 < item.content.length){
                     for(var i=size1-10; i<item.content.length; i++){
                         showItemFoundedLoaded(item.content[i]);
                     }
@@ -338,7 +338,7 @@
                 url:ruta
             }).done(function(item){
                 $('#spinner-div').hide();
-                if(item.size != 0 && size2-10 < item.content.length){
+                if(item.numberOfElements != 0 && size2-10 < item.content.length){
                     for(var i=size2-10; i<item.content.length; i++){
                         showFavItemLoaded(item.content[i]);
                     }

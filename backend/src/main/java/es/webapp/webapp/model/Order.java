@@ -1,5 +1,4 @@
 package es.webapp.webapp.model;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class Order {
     private Double totalCost;
 
     @Column(name="date")
-    private LocalDate creationDate;//AAAA-MM-DD
+    private String creationDate;//AAAA-MM-DD
 
     @Column(name="state")
     private State state;
@@ -98,11 +97,11 @@ public class Order {
         return totalCost;
     }
 
-    public void setCreationDate(LocalDate creationDate){
+    public void setCreationDate(String creationDate){
         this.creationDate = creationDate;
     }
 
-    public LocalDate getCreationDate(){
+    public String getCreationDate(){
         return creationDate;
     }
 

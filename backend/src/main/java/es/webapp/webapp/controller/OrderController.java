@@ -3,6 +3,8 @@ package es.webapp.webapp.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -82,7 +84,8 @@ public class OrderController {
             order.setTotalCost(cost);
             order.setCode("AS33O4S");
             order.setState(State.PENDING);
-            order.setCreationDate(LocalDate.now());
+            String date = LocalDate.now().toString();
+            order.setCreationDate(date);
             order.setUser(user.get());
             orderService.save(order);
 
