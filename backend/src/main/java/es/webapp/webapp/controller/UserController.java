@@ -67,8 +67,8 @@ public class UserController {
 
     @PostMapping("/update/{id}")
     public String updateUser(Model model, @PathVariable Integer id, @RequestParam(required=false) String name, @RequestParam(required=false) String username,
-                             @RequestParam(required=false) String email, @RequestParam(required=false) String password, @RequestParam(required=false) String street,
-                             @RequestParam(required=false) Integer number, @RequestParam(required=false) Integer zipCode, @RequestParam(required=false) String city){
+                    @RequestParam(required=false) String email, @RequestParam(required=false) String password, @RequestParam(required=false) String street,
+                    @RequestParam(required=false) Integer number, @RequestParam(required=false) Integer zipCode, @RequestParam(required=false) String city){
 
             User user = new User();
             user.setName(name);
