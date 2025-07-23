@@ -67,14 +67,22 @@ public class SecurityConfiguration{
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
                 registry.antMatchers("/login").permitAll();
-                registry.antMatchers("/auth/login").permitAll();
                 registry.antMatchers("/loginerror").permitAll();
-                registry.antMatchers("/logout").permitAll();
                 registry.antMatchers("/signup").permitAll();
-                registry.antMatchers("/items/page").hasAnyRole("ADMIN");
-            
-            })
+                registry.antMatchers("/new").permitAll();
 
+                registry.antMatchers("/logout").hasAnyRole("ADMIN", "USER");
+
+                registry.antMatchers("/my_profile").hasAnyRole("USER");
+                registry.antMatchers("/items/{id}/page").hasAnyRole("USER");
+                registry.antMatchers("/items/{id}/purchase").hasAnyRole("USER");
+                registry.antMatchers("/items/{code}/favourites/{id}/new").hasAnyRole("USER");
+                registry.antMatchers("/orders/new/users/{username}").hasAnyRole("USER");
+                registry.antMatchers("/shoppingcart/page").hasAnyRole("USER");
+                registry.antMatchers("/shoppingcart/{id}/remove").hasAnyRole("USER");
+                registry.antMatchers("/update/{id}").hasAnyRole("USER");
+            })
+            
             .logout(httpLogout -> {
                 httpLogout.logoutUrl("/logout").permitAll();
                 httpLogout.logoutSuccessUrl("/");
