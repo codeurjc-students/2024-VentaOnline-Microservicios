@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -53,6 +57,7 @@ public class UserController {
         if(user.getPassword() != null && user.getPassword().equals(user.getPasswordConfirmation())){            
             user.setRol("USER");
             ShoppingCart cart = new ShoppingCart();
+            shoppingCartService.save(cart);
             user.setDirection(address);
             user.setShoppingCart(cart);
             userService.add(user);
@@ -76,7 +81,6 @@ public class UserController {
             user.setEmail(email);
             user.setPassword(password);
 
-            userService.updateById(id, user);
 
             Direction address = new Direction();
             address.setStreet(street);
@@ -84,7 +88,7 @@ public class UserController {
             address.setZipCode(zipCode);
             address.setCity(city);
         
-            userService.updateAddressById(id, address);
+            userService.update(id, user, address);
 
             model.addAttribute("state_reg", "updated");
 

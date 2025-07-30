@@ -191,10 +191,9 @@
         })
     }
 
-    let ruta2='//localhost:8443/api/users/current';
     function getCurrentUser(callback){
         $.ajax({
-            url:ruta2
+            url:'//localhost:8443/api/users/current'
         }).done(function(user){
             callback(user);
         })
@@ -239,7 +238,7 @@
         loadInitItems(function(items,size) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
-            console.log(items);
+            //console.log(items);
             if(items.numberOfElements != 0){
                 for(var i=0; i<items.numberOfElements; i++){
                     showItemLoaded(items.content[i]);
@@ -253,7 +252,7 @@
                 loadFavItems(function(items,size2) {
                     if(!items.empty){
                         $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
-                        //console.log(items);
+                        console.log(items);
                         if(items.numberOfElements != 0){
                             for(var i=0; i<items.numberOfElements; i++){
                                 showFavItemLoaded(items.content[i], user.id);

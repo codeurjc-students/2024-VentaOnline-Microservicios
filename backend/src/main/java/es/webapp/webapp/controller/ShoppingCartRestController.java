@@ -52,11 +52,11 @@ public class ShoppingCartRestController {
     }
 
     @DeleteMapping("/{id}/remove")
-    public ResponseEntity<ItemToBuy> deleteItemToBuyById(@PathVariable Integer id){
+    public ResponseEntity<String> deleteItemToBuyById(@PathVariable Integer id){
         Optional<ItemToBuy> item = itemToBuyService.findById(id);
         if(item.isPresent()){
             itemToBuyService.deleteById(id);
-            return new ResponseEntity<>(item.get(), HttpStatus.OK);
+            return new ResponseEntity<>("done",HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

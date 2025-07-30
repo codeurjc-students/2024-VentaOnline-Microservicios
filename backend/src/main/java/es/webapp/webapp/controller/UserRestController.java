@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
@@ -39,10 +41,16 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+
     @PostMapping("/users/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> addUser(@RequestBody User newUser, @RequestBody Direction newAddress, @RequestBody ShoppingCart cart){
+    public ResponseEntity<User> addUser(@RequestBody User newUser){
+        Direction newAddress = new Direction();
         newUser.setDirection(newAddress);
+        ShoppingCart cart = new ShoppingCart();
+        shoppingCartService.save(cart);
         newUser.setShoppingCart(cart);
         User user = userService.add(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -122,7 +130,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/users/{id}/update")
+    @PutMapping("/users/{id}/update")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User newUser, Direction address) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -131,16 +139,16 @@ public class UserRestController {
 
             //newUser.setDirection(user.get().getDirection());
             //newUser.setId(user.get().getId());
-            userService.update(user.get(), newUser, address);
+            userService.update(id, newUser, address);
 
-            return new ResponseEntity<>(newUser, HttpStatus.OK);
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
 
-    @PostMapping("/users/{id}/update/address")
+    @PutMapping("/users/{id}/update/address")
     public ResponseEntity<User> updateUserAddresse(@PathVariable Integer id, @RequestBody Direction address) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -148,7 +156,7 @@ public class UserRestController {
         if(user.isPresent()){
 
             //address.setId(user.get().getDirection().getId());
-            userService.update(user.get(), user.get(), address);
+            userService.update(id, user.get(), address);
 
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
