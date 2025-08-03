@@ -53,9 +53,9 @@
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
                     {{/admin}}
-                    <form action="/logout" method="post">
-                        <button class="nav-menu-link" type="submit">Log out</button>						
-                    </form>
+                    
+                        <li class="nav-menu-item"><a href="/signout" class="nav-menu-link">Log out</a></li>						
+                    
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
@@ -239,7 +239,7 @@
         loadInitItems(function(items,size) {
             $('#total-item-founded').append('Found <span>' + 0 + ' items </span>');
             $('#total-item').append('<span>' + items.totalElements + ' items</span> in total')
-            console.log(items);
+            //console.log(items);
             if(items.numberOfElements != 0){
                 for(var i=0; i<items.numberOfElements; i++){
                     showItemLoaded(items.content[i]);
@@ -253,7 +253,7 @@
                 loadFavItems(function(items,size2) {
                     if(!items.empty){
                         $('#total-fav-item').append('<span>' + items.totalElements + ' favourites items</span> in total')
-                        //console.log(items);
+                        console.log(items);
                         if(items.numberOfElements != 0){
                             for(var i=0; i<items.numberOfElements; i++){
                                 showFavItemLoaded(items.content[i], user.id);

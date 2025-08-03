@@ -19,9 +19,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import es.webapp.webapp.model.Item;
+import es.webapp.webapp.model.ItemToBuy;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
 import es.webapp.webapp.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -34,6 +38,14 @@ public class ItemRestController {
 
     @Autowired
     private UserService userService;
+    
+    @PostMapping("/add/cart/users/{name}/items/{id}")
+    public ResponseEntity<Boolean> addToCart(@PathVariable String name,@PathVariable Integer id, @RequestBody ItemToBuy itemToBuy) {
+        if(itemService.addToCart(name, id, itemToBuy))
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    }
     
 
     @GetMapping("/items")

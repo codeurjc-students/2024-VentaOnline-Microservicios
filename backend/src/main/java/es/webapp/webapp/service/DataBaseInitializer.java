@@ -2,9 +2,7 @@ package es.webapp.webapp.service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +11,7 @@ import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,13 @@ public class DataBaseInitializer {
 
     @Autowired
     SizeRepo sizeRepo;
+
+     private final RedisTemplate<String, User> redisTemplate;
+
+    public DataBaseInitializer(RedisTemplate<String, User> redisTemplate, PasswordEncoder passwordEncoder) {
+        this.redisTemplate = redisTemplate;
+        this.passwordEncoder = passwordEncoder;
+    }
     
     @PostConstruct
     public void init() throws IOException, URISyntaxException {
@@ -84,6 +90,7 @@ public class DataBaseInitializer {
 
         Direction address = new Direction("Calle Roma",2,85503,"Almería");
         user1.setDirection(address);
+        redisTemplate.opsForValue().set("user:administrator", user1);
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
         if(!user01.isPresent())
             userRepo.save(user1);
@@ -106,6 +113,7 @@ public class DataBaseInitializer {
         user2.setDirection(address2);
         user2.setShoppingCart(shoppingCart);
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
+        redisTemplate.opsForValue().set("user:carlos", user2);
         if(!user02.isPresent())
             userRepo.save(user2);
 
@@ -117,6 +125,7 @@ public class DataBaseInitializer {
         setUserImage(user3, "/images/user-img.png");
 
         Optional<User> user03 = userRepo.findByUsername(user3.getUsername());
+        redisTemplate.opsForValue().set("user:anonymous", user3);
         if(!user03.isPresent())
             userRepo.save(user3);
 

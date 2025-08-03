@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,27 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final RedisTemplate<String, User> redisTemplate;
+
+    public UserService(RedisTemplate<String, User> redisTemplate, PasswordEncoder passwordEncoder) {
+        this.redisTemplate = redisTemplate;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User authenticate(String username, String rawPassword) {
+        User user = redisTemplate.opsForValue().get("user:" + username);
+        if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
+
     public User add(User user){
         if(user.getPassword().equals(user.getPasswordConfirmation())){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
             user.setRol("USER");
+            redisTemplate.opsForValue().set("user:" + user.getUsername(), user);
             return userRepo.save(user);
         } else
             return null;
@@ -34,37 +51,41 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void update(User user, User newUser, Direction address){
-        if(newUser != null && newUser.getName() != null){
-            user.setName(newUser.getName());
+    public void update(Integer id, User newUser, Direction address){
+        Optional<User> user = userRepo.findById(id);
+        if(user.isPresent()){
+            if(newUser != null && newUser.getName() != null){
+                user.get().setName(newUser.getName());
+            }
+            if(newUser != null && newUser.getUsername() != null){
+                user.get().setUsername(newUser.getUsername());
+            }
+            if(newUser != null && newUser.getEmail() != null){
+                user.get().setEmail(newUser.getEmail());
+            }
+            if(newUser != null && newUser.getPassword() != null && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+                user.get().setPassword(passwordEncoder.encode(newUser.getPassword()));
+                user.get().setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+            }
+            if(address != null && address.getNumber() != null){
+                user.get().getDirection().setNumber(address.getNumber());
+            }
+            if(address != null && address.getStreet() != null){
+                user.get().getDirection().setStreet(address.getStreet());
+            }
+            if(address != null && address.getZipCode() != null){
+                user.get().getDirection().setZipCode(address.getZipCode());
+            }
+            if(address != null && address.getCity() != null){
+                user.get().getDirection().setCity(address.getCity());
+            }
+            user.get().setId(user.get().getId());
+            redisTemplate.opsForValue().set("user:" + user.get().getUsername(), user.get());
+            userRepo.save(user.get());
         }
-        if(newUser != null && newUser.getUsername() != null){
-            user.setUsername(newUser.getUsername());
-        }
-        if(newUser != null && newUser.getEmail() != null){
-            user.setEmail(newUser.getEmail());
-        }
-        if(newUser != null && newUser.getPassword() != null && newUser.getPassword().equals(newUser.getPasswordConfirmation())){
-            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            user.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
-        }
-        if(address != null && address.getNumber() != null){
-            user.getDirection().setNumber(address.getNumber());
-        }
-        if(address != null && address.getStreet() != null){
-            user.getDirection().setStreet(address.getStreet());
-        }
-        if(address != null && address.getZipCode() != null){
-            user.getDirection().setZipCode(address.getZipCode());
-        }
-        if(address != null && address.getCity() != null){
-            user.getDirection().setCity(address.getCity());
-        }
-        user.setId(user.getId());
-        userRepo.save(user);
     }
 
-    public void updateById(Integer id, User newUser){
+    /*public void updateById(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);
         if(user.isPresent()){
             if(!newUser.getName().isEmpty()){
@@ -118,7 +139,7 @@ public class UserService {
             user.get().setId(id);
             userRepo.save(user.get());
         }
-    }
+    }*/
 
     public Optional<User> findById(Integer id){
         return userRepo.findById(id);

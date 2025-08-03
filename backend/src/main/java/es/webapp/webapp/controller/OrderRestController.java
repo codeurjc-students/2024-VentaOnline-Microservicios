@@ -22,6 +22,7 @@ import es.webapp.webapp.service.UserService;
 
 
 
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderRestController {
@@ -34,6 +35,15 @@ public class OrderRestController {
 
     @Autowired
     private ItemToBuyService itemToBuyService;
+
+    @GetMapping("/users/{username}")
+    public ResponseEntity<Boolean> buy(@PathVariable String username) {
+        if(orderService.buy(username))
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    }
+    
     
     @GetMapping("/orders")
     public Page<Order> getOrders(Pageable page) {

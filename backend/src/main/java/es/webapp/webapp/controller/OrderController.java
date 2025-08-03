@@ -2,8 +2,6 @@ package es.webapp.webapp.controller;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDate;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.webapp.webapp.model.ItemToBuy;
-import es.webapp.webapp.model.Order;
-import es.webapp.webapp.model.Order.State;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemToBuyService;
 import es.webapp.webapp.service.OrderService;
@@ -64,33 +60,11 @@ public class OrderController {
 
     @GetMapping("/new/users/{username}")
     public String generate(Model model, @PathVariable String username) throws IOException {
-        Order order = new Order();
 
-        Optional<User> user = userService.findByUsername(username);
-
-        if(user.isPresent()) {
-            List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.get().getShoppingCart());
-       
-            double cost=0.0;
-            for(ItemToBuy item: itemsToBuy){
-                cost += (item.getCount()*item.getItems().get(0).getPrice());
-                item.setOrder(order);
-                item.setShoppingCart(null);
-            }
-
-            user.get().getShoppingCart().setTotalCost(0.0);
-
-            order.setTotalCost(cost);
-            order.setCode("AS33O4S");
-            order.setState(State.PENDING);
-            String date = LocalDate.now().toString();
-            order.setCreationDate(date);
-            order.setUser(user.get());
-            orderService.save(order);
-
+        if(orderService.buy(username))
             return "index";
-        } 
-        return "error";
+        else 
+            return "error";
     }
 
 }

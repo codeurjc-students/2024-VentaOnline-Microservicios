@@ -30,7 +30,7 @@ public class UserDetailService implements UserDetailsService{
 		Optional<User> user = userRepository.findByUsername(username);
 
 		if(!user.isPresent()){
-			new UsernameNotFoundException("brand.html");
+			throw new UsernameNotFoundException("error.html");
 		}
     
 		List<GrantedAuthority> roles = new ArrayList<>();

@@ -2,7 +2,6 @@ package es.webapp.webapp.controller;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.webapp.webapp.model.Item;
 import es.webapp.webapp.model.ItemToBuy;
-import es.webapp.webapp.model.ShoppingCart;
-import es.webapp.webapp.model.Stock;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemService;
-import es.webapp.webapp.service.ItemToBuyService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -34,9 +30,6 @@ public class ItemController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ItemToBuyService itemToBuyService;
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -83,51 +76,19 @@ public class ItemController {
 
     @PostMapping("/{id}/purchase")
     public String itemBuy(Model model, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
+      
 
-        Optional<Item> product = itemService.findById(id);
-        if(product.isPresent()) {
+        Principal principal = request.getUserPrincipal();
 
-            Principal principal = request.getUserPrincipal();
-
-            if(principal != null){
-                String name = principal.getName();
-                Optional<User> user = userService.findByUsername(name);
-                if(user.isPresent()) {
-
-                    itemToBuy.getItems().add(product.get());
-                    if(user.get().getShoppingCart().getItems().isEmpty())
-                        user.get().getShoppingCart().setBuyTime(LocalTime.now());
-                    
-                    itemToBuy.setShoppingCart(user.get().getShoppingCart());
-
-                
-                    //decrement stock of the item purchased
-                    for(Stock<?> stock: product.get().getStocks()){
-                        if(stock.getSize().getLabel().equals(itemToBuy.getSize()) && itemToBuy.getCount() <= stock.getStock()){
-                            int count = itemToBuy.getCount();
-                            stock.setStock(stock.getStock() - count);
-                            
-                        }else if(itemToBuy.getCount() > stock.getStock()){
-                            model.addAttribute("status","there is not enough items to buy");
-                            return "product";
-                        }
-                    }
-
-                    //update cost of the shopping cart
-                    double cost = (itemToBuy.getCount() * product.get().getPrice());
-                    ShoppingCart shoppingCart = user.get().getShoppingCart();
-                    user.get().getShoppingCart().setTotalCost(shoppingCart.getTotalCost() + cost);
-
-                    itemToBuyService.save(itemToBuy);
-
-                    model.addAttribute("status","item successfully added to the cart");
-                    return "product";
-                }else {
-                    return "error";
-                }
+        if(principal != null){
+            String name = principal.getName();
+            if(itemService.addToCart(name, id, itemToBuy)){
+                model.addAttribute("status","item successfully added to the cart");
+                return "product";
+            }else{
+                model.addAttribute("status","failed to add the item to the cart");
+                return "error";
             }
-            return "error";
-
         }
         return "error";
     }
