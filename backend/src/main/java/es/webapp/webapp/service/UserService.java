@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,27 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final RedisTemplate<String, User> redisTemplate;
+
+    public UserService(RedisTemplate<String, User> redisTemplate, PasswordEncoder passwordEncoder) {
+        this.redisTemplate = redisTemplate;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User authenticate(String username, String rawPassword) {
+        User user = redisTemplate.opsForValue().get("user:" + username);
+        if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
+
     public User add(User user){
         if(user.getPassword().equals(user.getPasswordConfirmation())){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
             user.setRol("USER");
+            redisTemplate.opsForValue().set("user:" + user.getUsername(), user);
             return userRepo.save(user);
         } else
             return null;
@@ -63,6 +80,7 @@ public class UserService {
                 user.get().getDirection().setCity(address.getCity());
             }
             user.get().setId(user.get().getId());
+            redisTemplate.opsForValue().set("user:" + user.get().getUsername(), user.get());
             userRepo.save(user.get());
         }
     }

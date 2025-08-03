@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.webapp.webapp.data.AuthResponse;
-import es.webapp.webapp.data.Status;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.UserRepo;
 import es.webapp.webapp.security.JWTGenerator;
@@ -39,17 +40,18 @@ public class LoginController {
 	@Autowired
 	private TokenBlacklistService tokenBlacklistService;
 
+    @Autowired
+	private UserDetailsService userDetailsService;
+
 	public LoginController(AuthenticationManager authenticationManager, UserRepo userRepo,
 						PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator){
 		this.authenticationManager = authenticationManager;	
 		this.jwtGenerator = jwtGenerator;				
 	}
 
-	private SecurityContextRepository securityContextRepository =
-        new HttpSessionSecurityContextRepository(); 
+	private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository(); 
 
-
-		
+	
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
 
@@ -61,7 +63,10 @@ public class LoginController {
 		SecurityContext securitycontext = SecurityContextHolder.getContext();
 		securitycontext.setAuthentication(authentication);
 
-		String token = jwtGenerator.generateToken(authentication);
+        String username = user.getUsername();
+		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+
+		String token = jwtGenerator.generateToken(userDetail);
 
 		securityContextRepository.saveContext(securitycontext, request, response);
 		
@@ -71,34 +76,34 @@ public class LoginController {
 
 
 	@PostMapping("/logout")
-public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestHeader(value = "Authorization", required = false) String authHeader) {
+    public ResponseEntity<AuthResponse> logout(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
-    // Limpiar contexto y sesión para usuarios web
-    SecurityContextHolder.clearContext();
-    HttpSession session = request.getSession(false);
-    if (session != null) {
-        session.invalidate();
-    }
-
-    // Borrar cookies
-    if (request.getCookies() != null) {
-        for (Cookie cookie : request.getCookies()) {
-            cookie.setMaxAge(0);
-            cookie.setValue("");
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+        // Limpiar contexto y sesión para usuarios web
+        SecurityContextHolder.clearContext();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
         }
-    }
 
-    // Si viene con JWT, blacklist en Redis
-    if (authHeader != null && authHeader.startsWith("Bearer ")) {
-        String token = authHeader.substring(7);
-        long expiration = jwtGenerator.getExpirationMillis(token);
-        tokenBlacklistService.blacklistToken(token, expiration); // Redis
-    }
+        // Borrar cookies
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                cookie.setMaxAge(0);
+                cookie.setValue("");
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
 
-    return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, "logout successfully"));
-}
+        // Si viene con JWT, blacklist en Redis
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            long expiration = jwtGenerator.getExpirationMillis(token);
+            tokenBlacklistService.blacklistToken(token, expiration); // Redis
+        }
+
+        return new ResponseEntity<>(new AuthResponse("logout successfully"),HttpStatus.OK);
+    }
 }

@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import es.webapp.webapp.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,18 +19,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JWTGenerator {
 
-    public String generateToken(Authentication authentication){
-        String username = authentication.getName();
+    public String generateToken(UserDetails user){
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         List<String> roles = authorities.stream()
                                     .map(GrantedAuthority::getAuthority)
                                     .collect(Collectors.toList());
 
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
                 .claim("roles",roles)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)

@@ -53,9 +53,9 @@
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
                     {{/admin}}
-                    <form action="/logout" method="post">
-                        <button class="nav-menu-link" type="submit">Log out</button>						
-                    </form>
+                    
+                        <li class="nav-menu-item"><a href="/signout" class="nav-menu-link">Log out</a></li>						
+                    
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
@@ -191,9 +191,10 @@
         })
     }
 
+    let ruta2='//localhost:8443/api/users/current';
     function getCurrentUser(callback){
         $.ajax({
-            url:'//localhost:8443/api/users/current'
+            url:ruta2
         }).done(function(user){
             callback(user);
         })

@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tbl_user")
 public class User {
@@ -23,7 +25,7 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer identifier;
+    private Integer id;
 
     @Column(name = "username")
     private String username;
@@ -43,9 +45,8 @@ public class User {
     private String passwordConfirmation;
 
 
-    @Lob
-    @Column(name = "image")
-    private Blob imageField;
+    @JsonIgnore
+    private Blob imageFile;
 
     @OneToOne(cascade=CascadeType.ALL)
     private Direction direction;
@@ -71,11 +72,11 @@ public class User {
     }
 
     public void setId(Integer id){
-        this.identifier = id;
+        this.id = id;
     }
 
     public Integer getId(){
-        return identifier;
+        return id;
     }
 
     public Direction getDirection(){
@@ -165,10 +166,10 @@ public class User {
     }
 
     public void setImageFile(Blob image){
-        this.imageField = image;
+        this.imageFile = image;
     }
 
     public Blob getImageFile(){
-        return imageField;
+        return imageFile;
     }
 }

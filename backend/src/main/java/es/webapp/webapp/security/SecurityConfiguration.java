@@ -20,59 +20,19 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @EnableWebSecurity
 public class SecurityConfiguration{
 
-    @Autowired
-    UserDetailService userDetailsService; 
-
-    @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter(){
-        return new JWTAuthenticationFilter();
-    }
-
-    @Bean
-    public UserDetailService userDetailsService(){
-        return userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-    
-    @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration) throws Exception{
-            return authenticationConfiguration.getAuthenticationManager();
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-            .formLogin(httpForm -> {
-                httpForm.loginPage("/login");
-                httpForm.defaultSuccessUrl("/");
-                httpForm.usernameParameter("username");
-                httpForm.passwordParameter("password"); 
-                httpForm.failureUrl("/error");
-            })
 
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
                 registry.antMatchers("/login").permitAll();
+                //registry.antMatchers("/api/login").permitAll();
                 registry.antMatchers("/loginerror").permitAll();
                 registry.antMatchers("/signup").permitAll();
                 registry.antMatchers("/new").permitAll();
-
-                registry.antMatchers("/logout").hasAnyRole("ADMIN", "USER");
-
+                registry.antMatchers("/signout").permitAll();
                 registry.antMatchers("/my_profile").hasAnyRole("USER");
                 registry.antMatchers("/items/{id}/page").hasAnyRole("USER");
                 registry.antMatchers("/items/{id}/purchase").hasAnyRole("USER");
@@ -81,14 +41,7 @@ public class SecurityConfiguration{
                 registry.antMatchers("/shoppingcart/page").hasAnyRole("USER");
                 registry.antMatchers("/shoppingcart/{id}/remove").hasAnyRole("USER");
                 registry.antMatchers("/update/{id}").hasAnyRole("USER");
-            })
-            
-            .logout(httpLogout -> {
-                httpLogout.logoutUrl("/logout");
-                httpLogout.logoutSuccessUrl("/");
-            })
-            
-            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            });
 
         http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
         return http.build();
