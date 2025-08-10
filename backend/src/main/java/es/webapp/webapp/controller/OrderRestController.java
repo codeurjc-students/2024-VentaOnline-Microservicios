@@ -38,9 +38,13 @@ public class OrderRestController {
 
     @GetMapping("/users/{username}")
     public ResponseEntity<Boolean> buy(@PathVariable String username) {
-        if(orderService.buy(username))
+        
+        Optional<User> user = userService.findByUsername(username);
+
+        if(user.isPresent()) {
+            orderService.buy(username);
             return new ResponseEntity<>(true, HttpStatus.OK);
-        else
+        } else
             return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
     

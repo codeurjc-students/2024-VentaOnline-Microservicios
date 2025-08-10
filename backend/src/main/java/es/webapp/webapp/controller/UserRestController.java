@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,6 @@ import es.webapp.webapp.service.UserService;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
-@RequestMapping("/api")
 public class UserRestController {
 
     @Autowired
@@ -44,7 +44,21 @@ public class UserRestController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
-    @PostMapping("/users/new")
+    //LOGGED WITH REDDIS
+
+    @GetMapping("/users/session")
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+        String username = (String) request.getSession().getAttribute("user");
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()){
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    //LOGGED WITH JWT
+
+    @PostMapping("/api/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         Direction newAddress = new Direction();
@@ -56,12 +70,12 @@ public class UserRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public List<User> getUsers(){
         return userService.findAll();
     }
 
-    @GetMapping("/users/current")
+    @GetMapping("/api/users/current")
     public ResponseEntity<User> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -90,7 +104,7 @@ public class UserRestController {
         }
     }*/
     
-    @GetMapping("/users/{id}")
+    @GetMapping("/api/users/{id}")
     public ResponseEntity<User> getUserByUsername(@PathVariable Integer id){
         Optional<User> user = userService.findById(id);
         if(user.isPresent()) {
@@ -110,7 +124,7 @@ public class UserRestController {
         }
     }*/
 
-    @PostMapping("/users/{id}/image")
+    @PostMapping("/api/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -130,7 +144,7 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/users/{id}/update")
+    @PutMapping("/api/users/{id}/update")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User newUser, Direction address) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -139,7 +153,7 @@ public class UserRestController {
 
             //newUser.setDirection(user.get().getDirection());
             //newUser.setId(user.get().getId());
-            userService.update(id, newUser, address);
+            userService.update(id, newUser, address, null);
 
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
@@ -148,7 +162,7 @@ public class UserRestController {
     }
 
 
-    @PutMapping("/users/{id}/update/address")
+    @PutMapping("/api/users/{id}/update/address")
     public ResponseEntity<User> updateUserAddresse(@PathVariable Integer id, @RequestBody Direction address) throws IOException{
         
         Optional<User> user = userService.findById(id);
@@ -156,7 +170,7 @@ public class UserRestController {
         if(user.isPresent()){
 
             //address.setId(user.get().getDirection().getId());
-            userService.update(id, user.get(), address);
+            userService.update(id, user.get(), address, null);
 
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
@@ -164,7 +178,7 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/users/{id}/image")
+    @GetMapping("/api/users/{id}/image")
     public ResponseEntity<Object> getUserImageById(@PathVariable Integer id) throws SQLException{
 
         Optional<User> user = userService.findById(id);

@@ -20,15 +20,25 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @EnableWebSecurity
 public class SecurityConfiguration{
 
+    @Autowired
+    private JWTAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
+            .formLogin(httpForm -> {
+                httpForm.loginPage("/login");
+                httpForm.defaultSuccessUrl("/");
+                httpForm.usernameParameter("username");
+                httpForm.passwordParameter("password"); 
+                httpForm.failureUrl("/error");
+            })
 
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
                 registry.antMatchers("/login").permitAll();
-                //registry.antMatchers("/api/login").permitAll();
+                registry.antMatchers("/users/session").permitAll();
                 registry.antMatchers("/loginerror").permitAll();
                 registry.antMatchers("/signup").permitAll();
                 registry.antMatchers("/new").permitAll();
@@ -41,9 +51,20 @@ public class SecurityConfiguration{
                 registry.antMatchers("/shoppingcart/page").hasAnyRole("USER");
                 registry.antMatchers("/shoppingcart/{id}/remove").hasAnyRole("USER");
                 registry.antMatchers("/update/{id}").hasAnyRole("USER");
-            });
+            })
 
-        http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
+            .logout(httpLogout -> {
+                httpLogout.logoutUrl("/signout");
+                httpLogout.logoutSuccessUrl("/");
+                httpLogout.invalidateHttpSession(true);
+                httpLogout.deleteCookies("JSESSIONID");
+            })
+
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.headers(header -> 
+        header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "https://localhost:8443")));
+        http.cors();
         return http.build();
     }
 

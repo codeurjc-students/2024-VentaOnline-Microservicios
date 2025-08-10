@@ -37,7 +37,7 @@
             {{/neworder}}
             {{^neworder}}
             <div class="has-text-light" id="cart"></div>
-            <a href="/orders/new/users/{{username}}"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            <a href="/orders/new/user"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
             {{/neworder}}
         </div>
     </div>
@@ -70,8 +70,8 @@
 </body>
 <script>
 
-    let ruta='/api/shoppingcart/{{username}}/items';
-    let ruta1='/api/shoppingcart/{{username}}';
+    let ruta='/shoppingcart/user/items';
+    let ruta1='/shoppingcart/user';
   
     var stock = "";
     

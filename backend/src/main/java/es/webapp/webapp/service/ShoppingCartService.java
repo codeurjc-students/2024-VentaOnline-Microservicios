@@ -22,5 +22,8 @@ public class ShoppingCartService {
     public Optional<ShoppingCart> findByUser(User user){
         return shoppingCartRepo.findByUser(user);
     }
-    
+
+    public Optional<ShoppingCart> findByCode(String code){
+        return shoppingCartRepo.findByCode(code);
+    }
 }

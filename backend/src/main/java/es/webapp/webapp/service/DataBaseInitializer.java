@@ -96,9 +96,12 @@ public class DataBaseInitializer {
             userRepo.save(user1);
 
         ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
         shoppingCart.setBuyTime(LocalTime.now());
-        shoppingCartRepo.save(shoppingCart);
+        Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
+        if (!cart01.isPresent())
+            shoppingCartRepo.save(shoppingCart);
 
         User user2 = new User();
         user2.setUsername("carlos");
@@ -111,12 +114,12 @@ public class DataBaseInitializer {
 
         Direction address2 = new Direction("Calle de la constitución",1,28933,"Madrid");
         user2.setDirection(address2);
-        user2.setShoppingCart(shoppingCart);
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
         redisTemplate.opsForValue().set("user:carlos", user2);
-        if(!user02.isPresent())
+        if(!user02.isPresent()){
+            user2.setShoppingCart(shoppingCart);
             userRepo.save(user2);
-
+        }
 
         User user3 = new User();
         user3.setUsername("anonymous");

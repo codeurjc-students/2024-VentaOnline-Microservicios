@@ -53,9 +53,7 @@
                     <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
                     {{/admin}}
-                    
                         <li class="nav-menu-item"><a href="/signout" class="nav-menu-link">Log out</a></li>						
-                    
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
@@ -182,7 +180,7 @@
         }) 
     }
 
-    let ruta1='//localhost:8443/api/items/favourites/{{username}}?size=' + size2;
+    let ruta1='//localhost:8443/items/favourites/user?size=' + size2;
     function loadFavItems(callback,size2){
         $.ajax({
             url:ruta1
@@ -191,7 +189,7 @@
         })
     }
 
-    let ruta2='//localhost:8443/api/users/current';
+    let ruta2='//localhost:8443/users/session';
     function getCurrentUser(callback){
         $.ajax({
             url:ruta2
@@ -305,33 +303,34 @@
                 }else{
                     console.log(null);
                 }
-                
             }) 
         })
 
         $('.items-founded-pagination').click(function() {
-            size1+=10;
             let value= $('#name').val();
-            let ruta='https://localhost:8443/api/items/'+value+'?size='+size1;
+            if(value != ""){
+                size1+=10;
+                let ruta='https://localhost:8443/api/items/'+value+'?size='+size1;
 
-            $('#spinner-div').show();
-            $.ajax({
-                url:ruta
-            }).done(function(item){
-                $('#spinner-div').hide();
-                if(item.numberOfElements != 0 && size1-10 < item.content.length){
-                    for(var i=size1-10; i<item.content.length; i++){
-                        showItemFoundedLoaded(item.content[i]);
+                $('#spinner-div').show();
+                $.ajax({
+                    url:ruta
+                }).done(function(item){
+                    $('#spinner-div').hide();
+                    if(item.numberOfElements != 0 && size1-10 < item.content.length){
+                        for(var i=size1 - 10; i<item.content.length; i++){
+                            showItemFoundedLoaded(item.content[i]);
+                        }
                     }
-                }
-            })
+                })
+            }
         })
 
         //user fav items
         $('.fav-items-pagination').click(function() {
             size2+=10;
 
-            let ruta='https://localhost:8443/api/items/favourites/{{username}}?size='+size2;
+            let ruta='https://localhost:8443/items/favourites/user?size='+size2;
 
             $('#spinner-div').show();
             $.ajax({
