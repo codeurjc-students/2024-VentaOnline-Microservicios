@@ -25,7 +25,7 @@
                 <li class="navbar-top-item">
                     {{#logged}}
                     {{#user}}
-                    <a href="/shoppingcart/page" class="navbar-top-links">
+                    <a href="/store/shoppingcart/page" class="navbar-top-links">
                         <i class="zmdi zmdi-shopping-cart"></i> Shopping cart
                         <!-- <i class="zmdi zmdi-chevron-down"></i> -->
                     </a>
@@ -41,26 +41,26 @@
                     {{#logged}}
                     {{#user}}
                     <div class="user-img">
-                        <a href="/login"><img src=/api/users/{{id}}/image alt="" width="50" height="50"></img></a>
+                        <a href="/store/login"><img src=//localhost:8443/api/users/{{id}}/image alt="" width="50" height="50"></img></a>
                     </div>
-                    <li class="nav-menu-item"><a href="/my_profile" class="nav-menu-link">My profile</a></li>
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/users/{{id}}" class="nav-menu-link">Orders</a></li>
+                    <li class="nav-menu-item"><a href="/store/my_profile" class="nav-menu-link">My profile</a></li>
+                    <li class="nav-menu-item"><a href="/order/orders/users/{{id}}" class="nav-menu-link">Orders</a></li>
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
-                        <img src="/api/users/6/image" alt="" width="50" height="50"></img>
+                        <img src="//localhost:8443/api/users/6/image" alt="" width="50" height="50"></img>
                     </div>
-                    <li class="nav-menu-item"><a href="//localhost:8444/items" class="nav-menu-link">Inventory</a></li>
-                    <li class="nav-menu-item"><a href="//localhost:8445/orders/admin" class="nav-menu-link">Orders</a></li>        
+                    <li class="nav-menu-item"><a href="/inventory/items/" class="nav-menu-link">Inventory</a></li>
+                    <li class="nav-menu-item"><a href="/order/orders/admin" class="nav-menu-link">Orders</a></li>        
                     {{/admin}}
-                        <li class="nav-menu-item"><a href="/signout" class="nav-menu-link">Log out</a></li>						
+                        <li class="nav-menu-item"><a href="/store/signout" class="nav-menu-link">Log out</a></li>						
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="/api/users/6/image" alt="" width="50" height="50"></img>
+                        <img src="//localhost:8443/api/users/6/image" alt="" width="50" height="50"></img>
                     </div>   
-                    <li class="nav-menu-item"><a href="/signup" class="nav-menu-link">Registration</a></li>
-                    <li class="nav-menu-item"><a href="/login" class="nav-menu-link">Login</a></li>
+                    <li class="nav-menu-item"><a href="/store/signup" class="nav-menu-link">Registration</a></li>
+                    <li class="nav-menu-item"><a href="/store/login" class="nav-menu-link">Login</a></li>
                     {{/logged}}
                 </ul>
                 <form>
@@ -180,7 +180,7 @@
         }) 
     }
 
-    let ruta1='//localhost:8443/items/favourites/user?size=' + size2;
+    let ruta1='/store/items/favourites/user?size=' + size2;
     function loadFavItems(callback,size2){
         $.ajax({
             url:ruta1
@@ -189,7 +189,7 @@
         })
     }
 
-    let ruta2='//localhost:8443/users/session';
+    let ruta2='/store/users/session';
     function getCurrentUser(callback){
         $.ajax({
             url:ruta2
@@ -203,10 +203,10 @@
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span><img src="//localhost:8443/api/items/' + item.id + 
-            '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
-            item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200">{{#logged}}{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
+            item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}{{/logged}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/store/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
@@ -214,10 +214,10 @@
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span><img src="//localhost:8443/api/items/' + item.id + 
-            '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
-            item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
+            '/image" alt="" width="200" height="200">{{#logged}}{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
+            item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}{{/logged}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/store/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 
@@ -225,10 +225,10 @@
         $('#favouritesItems').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
             '</span><img src="//localhost:8443/api/items/' + item.id + 
-            '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/items/' + 
+            '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
-            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
+            ' €</h4></p><div class="card-buttons">{{#logged}}{{#user}}<a href="/store/items/' + item.code + '/favourites/{{id}}/new" class="btn btn--mini-rounded"><i class="zmdi zmdi-favorite-outline"></i></a>{{/user}}{{/logged}}</div></div></div></div>'
         )
     }
 

@@ -32,6 +32,7 @@ public class RestSecurityConfiguration{
     @Autowired
     UserDetailService userDetailsService; 
 
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -63,7 +64,7 @@ public class RestSecurityConfiguration{
                 registry.antMatchers(HttpMethod.GET,"/api/users/current").hasAnyRole("ADMIN","USER"); 
                 registry.antMatchers(HttpMethod.POST,"/api/users/{id}/update").hasRole("USER");  
                 registry.antMatchers(HttpMethod.POST,"/api/users/{id}/update/address").hasRole("USER");  
-                registry.antMatchers(HttpMethod.GET,"/api/orders/orders").hasRole("ADMIN"); 
+                registry.antMatchers(HttpMethod.GET,"/api/orders").hasRole("ADMIN"); 
                 registry.antMatchers(HttpMethod.GET,"/api/orders/user/{id}").hasRole("USER"); 
                 registry.antMatchers(HttpMethod.GET,"/api/orders/{id}/items").hasAnyRole("USER","ADMIN"); 
                 registry.antMatchers(HttpMethod.GET,"/api/orders/{ident}").hasAnyRole("USER","ADMIN"); 
@@ -79,6 +80,7 @@ public class RestSecurityConfiguration{
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.headers(header -> header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
+        http.cors();
         return http.build();
     }
 

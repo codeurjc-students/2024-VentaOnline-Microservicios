@@ -55,7 +55,7 @@ public class OrderController {
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()){
             orderService.buy(username);
-            return "redirect:/";
+            return "redirect://localhost:8442/store";
         }
         return "error";
     }

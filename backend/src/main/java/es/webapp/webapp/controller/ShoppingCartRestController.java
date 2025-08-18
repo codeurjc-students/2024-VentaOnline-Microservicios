@@ -15,10 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.webapp.webapp.model.ItemToBuy;
+import es.webapp.webapp.model.Order;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ItemToBuyService;
 import es.webapp.webapp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 public class ShoppingCartRestController {
@@ -58,6 +64,13 @@ public class ShoppingCartRestController {
 
     //LOGGED WITH JWT
 
+    @Operation(summary = "Get an user shopping cart")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get an user shopping cart", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ShoppingCart.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No shopping cart founded", content = @Content)
+    })
     @GetMapping("/api/shoppingcart/{username}")
     public ResponseEntity<ShoppingCart> getShoppingCart(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
@@ -69,7 +82,13 @@ public class ShoppingCartRestController {
         }
     }
 
-
+    @Operation(summary = "Get a shopping cart items listing")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get a shopping cart items", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ShoppingCart.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No item founded", content = @Content)
+    })
     @GetMapping("/api/shoppingcart/{username}/items")
     public ResponseEntity<List<ItemToBuy>> getItemsToBuy(@PathVariable String username){
         Optional<User> user = userService.findByUsername(username);
@@ -81,6 +100,13 @@ public class ShoppingCartRestController {
         }
     }
 
+    @Operation(summary = "Delete an item from a shopping cart")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Delete an item from a shopping cart", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ShoppingCart.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No item removed", content = @Content)
+    })
     @DeleteMapping("/api/shoppingcart/{id}/remove")
     public ResponseEntity<String> deleteItemToBuyById(@PathVariable Integer id){
         Optional<ItemToBuy> item = itemToBuyService.findById(id);

@@ -28,10 +28,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.webapp.webapp.model.Direction;
+import es.webapp.webapp.model.Order;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -58,6 +64,13 @@ public class UserRestController {
 
     //LOGGED WITH JWT
 
+    @Operation(summary = "Post a new user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Post a new user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user posted", content = @Content)
+    })
     @PostMapping("/api/users/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
@@ -70,11 +83,25 @@ public class UserRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
+    @Operation(summary = "Get user listing")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get user listing", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user founded", content = @Content)
+    })
     @GetMapping("/api/users")
     public List<User> getUsers(){
         return userService.findAll();
     }
 
+    @Operation(summary = "Get current user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get current user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user founded", content = @Content)
+    })
     @GetMapping("/api/users/current")
     public ResponseEntity<User> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -104,6 +131,13 @@ public class UserRestController {
         }
     }*/
     
+    @Operation(summary = "Get an user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get an user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user founded", content = @Content)
+    })
     @GetMapping("/api/users/{id}")
     public ResponseEntity<User> getUserByUsername(@PathVariable Integer id){
         Optional<User> user = userService.findById(id);
@@ -124,6 +158,13 @@ public class UserRestController {
         }
     }*/
 
+    @Operation(summary = "Post an user image")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Post an user image", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user image posted", content = @Content)
+    })
     @PostMapping("/api/users/{id}/image")
     public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
         
@@ -144,6 +185,13 @@ public class UserRestController {
         }
     }
 
+    @Operation(summary = "Update an user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Update an user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user updated", content = @Content)
+    })
     @PutMapping("/api/users/{id}/update")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User newUser, Direction address) throws IOException{
         
@@ -161,7 +209,13 @@ public class UserRestController {
         }
     }
 
-
+    @Operation(summary = "Update an user address")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Update an user address", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user address updated", content = @Content)
+    })
     @PutMapping("/api/users/{id}/update/address")
     public ResponseEntity<User> updateUserAddresse(@PathVariable Integer id, @RequestBody Direction address) throws IOException{
         
@@ -178,6 +232,13 @@ public class UserRestController {
         }
     }
 
+    @Operation(summary = "Get an user image")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get an user image", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No user image founded", content = @Content)
+    })
     @GetMapping("/api/users/{id}/image")
     public ResponseEntity<Object> getUserImageById(@PathVariable Integer id) throws SQLException{
 

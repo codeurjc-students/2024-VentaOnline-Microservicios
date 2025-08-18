@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.UserRepo;
@@ -24,15 +26,19 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private RedisTemplate<String, User> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public UserService(RedisTemplate<String, User> redisTemplate, PasswordEncoder passwordEncoder) {
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    public UserService(RedisTemplate<String, Object> redisTemplate, PasswordEncoder passwordEncoder) {
         this.redisTemplate = redisTemplate;
         this.passwordEncoder = passwordEncoder;
     }
 
     public User authenticate(String username, String rawPassword) {
-        User user = redisTemplate.opsForValue().get("user:" + username);
+        Object obj = redisTemplate.opsForValue().get("user:" + username);
+        User user = objectMapper.convertValue(obj, User.class);
         if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
             return user;
         }

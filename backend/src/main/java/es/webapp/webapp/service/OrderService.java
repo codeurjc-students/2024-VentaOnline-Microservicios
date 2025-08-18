@@ -64,12 +64,12 @@ public class OrderService {
     public Page<Order> findAll(Pageable page) {
         return orderRepo.findAll(page);
     }
-    
-    public Page<Order> findByUser(User user, Pageable page){
-        return orderRepo.findByUser(user, page);
-    }
 
     public Optional<Order> findById(Integer id) {
         return orderRepo.findById(id);
+    }
+
+    public Page<Order> findByUser(User user, Pageable page){
+        return orderRepo.findByUser(user, page);
     }
 }

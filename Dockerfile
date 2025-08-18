@@ -6,7 +6,7 @@ FROM node:18-alpine AS builder
 WORKDIR /project
 
 #files from frontend are copied on work directory
-COPY frontend/ .
+#COPY frontend/ .
 
 #dependencies app need are installed
 RUN npm install
@@ -17,7 +17,7 @@ RUN npm install
 ##BACKEND
 
 #addition of java image
-FROM maven:3.9.0-eclipse-temurin-19 as backends
+FROM maven:3.9.0-eclipse-temurin-19 AS backend
 
 #definition of the work directory in /project to execute commands
 WORKDIR /project
@@ -26,7 +26,7 @@ WORKDIR /project
 COPY pom.xml /project/
 
 #project dependencies are downloaded
-RUN mvn clean verify --fall-never
+RUN mvn clean verify --fail-never
 
 #backend project code is copied on the work directory
 COPY backend/src /project/src
@@ -34,10 +34,10 @@ COPY backend/src /project/src
 # files are copied
 # origin --> dist/frontend
 # destiny --> src/main/resources/static/(new)
-COPY --from=builder /project/dist/frontend /project/src/main/resources/static
+#COPY --from=builder /project/dist/frontend /project/src/main/resources/static
 
 # app building once the code is compiled
-RUN mvn clean package -o -DskipTests=true
+RUN mvn clean package -DskipTests=true
 
 ## image for the app container
 FROM eclipse-temurin:19-jdk
@@ -47,9 +47,15 @@ WORKDIR /usr/src/app/
 
 # JAR file of compilation container is copied on JAR work directory
 COPY --from=backend /project/target/*.jar /usr/src/app/
+COPY --from=backend /project/target/webapp-0.0.1-SNAPSHOT.jar /usr/src/app/app.jar
 
-# port exposes container
+# Copiar wait-for-it
+COPY wait-for-it.sh .
+
+# Dar permisos al script
+RUN chmod +x wait-for-it.sh
+
 EXPOSE 8443
 
-# command to execute to do docker run
-ENTRYPOINT ["java","jar",""]
+# Espera a MySQL y Redis antes de arrancar la app
+ENTRYPOINT ["./wait-for-it.sh", "db:3306", "--timeout=90", "--strict", "--", "./wait-for-it.sh", "redis:6379", "--timeout=90", "--strict", "--", "java", "-jar", "app.jar"]

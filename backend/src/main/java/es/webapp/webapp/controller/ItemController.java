@@ -87,7 +87,7 @@ public class ItemController {
         item.get().getUsers().add(user.get());
         itemService.save(item.get());
         model.addAttribute("username",user.get().getUsername());
-        return "redirect:/";
+        return "redirect://localhost:8442/store";
 
     }
 }

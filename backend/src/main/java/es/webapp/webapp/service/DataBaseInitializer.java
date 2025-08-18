@@ -68,9 +68,9 @@ public class DataBaseInitializer {
     @Autowired
     SizeRepo sizeRepo;
 
-     private final RedisTemplate<String, User> redisTemplate;
+     private final RedisTemplate<String, Object> redisTemplate;
 
-    public DataBaseInitializer(RedisTemplate<String, User> redisTemplate, PasswordEncoder passwordEncoder) {
+    public DataBaseInitializer(RedisTemplate<String, Object> redisTemplate, PasswordEncoder passwordEncoder) {
         this.redisTemplate = redisTemplate;
         this.passwordEncoder = passwordEncoder;
     }
@@ -90,7 +90,7 @@ public class DataBaseInitializer {
 
         Direction address = new Direction("Calle Roma",2,85503,"Almería");
         user1.setDirection(address);
-        redisTemplate.opsForValue().set("user:administrator", user1);
+        redisTemplate.opsForValue().set("user:administrator1", user1);
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
         if(!user01.isPresent())
             userRepo.save(user1);

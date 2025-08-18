@@ -127,3 +127,20 @@ Anonymous and registered user navigation:
 Administrator user navigation:
 
 ![navigation_I](/images/navigation_diagram_II.PNG)
+
+## SETTING
+keytool -genkey -keyalg RSA -alias tienda -keystore keystore.jks -storepass password -validity 360 -keysize 2048
+
+EXECUTE THIS CODE ON THE PROJECT WHERE THE KESTORE.JKS IS LOCATED
+keytool -exportcert -alias tienda -keystore keystore.jks -rfc -file tienda.crt 
+
+EXECUTE THIS CODE ON THE GATEWAY PROJECT
+keytool -import -alias tienda -file tienda.crt -keystore gateway-truststore.jks
+
+HOW DO I DOCUMENTED TE API REST
+
+1. added plugins and dependency on the pom.xml file,
+2. wake up the project with mvn spring-boot:run
+3. download the following file: https://localhost:8443/v3/api-docs.yaml and include it on the project path backend/api-docs
+4. execute the command mvn generate-source where the pom.xml find. In my case, I move the pom.xml file to the path backend and from that route I execute the command mentioned
+

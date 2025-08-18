@@ -78,11 +78,12 @@ public class UserController {
                     @RequestParam(required=false) Integer number, @RequestParam(required=false) Integer zipCode, @RequestParam(required=false) String city) throws IOException{
 
         
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            String usernameReddis = (String) session.getAttribute("user");
-            if(usernameReddis != null){
-                Optional<User> userReddis = userService.findByUsername(usernameReddis);
+        //HttpSession session = request.getSession(false);
+        //if(session != null){
+        //    String usernameReddis = (String) session.getAttribute("user");
+        //    if(usernameReddis != null){
+        //        Optional<User> userReddis = userService.findByUsername(usernameReddis);
+            Optional<User> userReddis = userService.findById(id);
                 if(userReddis.isPresent()){
 
                     User user = new User();
@@ -99,14 +100,14 @@ public class UserController {
 
                     model.addAttribute("state_reg", "updated");
 
-                    return "redirect:/my_profile";
+                    return "redirect://localhost:8442/store/my_profile";
                 } else {
-                    model.addAttribute("state_reg", "user not found");
-                    return "redirect:/my_profile";
+                    //model.addAttribute("state_reg", "user not found");
+                    return "redirect://localhost:8442/store/logginerror";
                 }
-            }
-            return "redirect:/loginerror";
-        }
-        return "redirect:/loginerror";
+    //        }
+    //        return "redirect:/loginerror";
+    //    }
+    //    return "redirect:/loginerror";
     }
 }

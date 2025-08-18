@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/bulma.min.css">
-    <link rel="stylesheet" href="/css/material-design-iconic-font.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/store/css/bulma.min.css">
+    <link rel="stylesheet" href="/store/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/store/css/styles.css">
 </head>
 
 <body>
     <header>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -24,12 +24,12 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/api/users/{{id}}/image" alt="" width="200" height="200"></img>
+                <img src="//localhost:8443/api/users/{{id}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
             <div class="user-img">
-                <img src="/api/users/6/image" alt="" width="200" height="200"></img>
+                <img src="//localhost:8443/api/users/6/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             <div class="columns">
@@ -52,7 +52,7 @@
         <div class="columns">
             <div class="column">
                 <h2 class="is-size-4">Profile</h2>
-                <form action="/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
+                <form action="/store/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
 
                     <input type="text" name="name" placeholder="Name" class="form-control-field"/>
                     <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
@@ -90,12 +90,12 @@
         </div>
     </footer>
 
-    <script src="/js/main.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/store/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
 <script>
 
-    let ruta = '//localhost:8443/users/session';
+    let ruta = '/store/users/session';
     function loadData(callback){
         $.ajax({
             url:ruta
