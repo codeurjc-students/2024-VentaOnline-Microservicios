@@ -1,0 +1,29 @@
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    #image: maalami/onlinestore:v1
+    ports:
+      - 8443:8443
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb2:3306/items
+      - SPRING_DATASOURCE_PASSWORD=Mundialmente1
+      #- SPRING_REDIS_HOST=redis
+      #- SPRING_REDIS_PORT=6379
+    restart: always
+    depends_on:
+      - db
+      #- redis
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=Mundialmente1   
+      - MYSQL_DATABASE=items    
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  #redis:
+  #  ports:
+  #    - "6379:6379"
+  #  restart: always

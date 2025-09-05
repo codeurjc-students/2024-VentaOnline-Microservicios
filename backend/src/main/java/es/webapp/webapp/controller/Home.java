@@ -26,28 +26,39 @@ public class Home {
 
     @ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
-        String username = (String) request.getSession().getAttribute("user");
-        //model.addAttribute("username",username);
-        if(username != null){
-            Optional<User> user = userService.findByUsername(username);
-            model.addAttribute("username",user.get().getUsername());
-            model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
-            model.addAttribute("user", user.get().getRol().equals("USER"));
-            model.addAttribute("id", user.get().getId());
-            model.addAttribute("logged",true);
+        HttpSession session = request.getSession(false);
+        if(session != null) {   
+            String username = (String) session.getAttribute("user");
+            if(username != null){
+                Optional<User> user = userService.findByUsername(username);
+                model.addAttribute("username",user.get().getUsername());
+                model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
+                model.addAttribute("user", user.get().getRol().equals("USER"));
+                model.addAttribute("id", user.get().getId());
+                model.addAttribute("logged",true);
+            } else {
+                model.addAttribute("username","anonymous");
+                model.addAttribute("admin", "");
+                model.addAttribute("user", "");
+                model.addAttribute("id", 6);
+                model.addAttribute("logged",false);
+            }
         } else {
             model.addAttribute("username","anonymous");
+            model.addAttribute("admin", "");
+            model.addAttribute("user", "");
+            model.addAttribute("id", 6);
             model.addAttribute("logged",false);
         }
     }
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model, HttpServletRequest request){   
         return "index";
     }
 
     @GetMapping("/my_profile")
-    public String getProfile(Model model){
+    public String getProfile(Model model, HttpServletRequest request){
         model.addAttribute("state_reg", "");
         return "my_profile";
     }
@@ -63,8 +74,8 @@ public class Home {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String processLogin(
+    @PostMapping("/signin")
+    public String processLogin(Model model,
             @RequestParam String username,
             @RequestParam String password,
             HttpServletRequest request) {
@@ -72,28 +83,41 @@ public class Home {
         User user = userService.authenticate(username, password);
 
         if (user != null) {
-            HttpSession session = request.getSession(); // <- Redis guarda esto si está configurado
+            HttpSession session = request.getSession(true); // <- Redis guarda esto si está configurado
             session.setAttribute("user", user.getUsername());
-            //session.setAttribute("role", user.getRol());
-            return "index";
-        } else {
-            return "error";
+            
+            String usernameLogged = (String) session.getAttribute("user");
+         
+            if (username != null) {
+                Optional<User> userLogged = userService.findByUsername(usernameLogged);
+                model.addAttribute("username",userLogged.get().getUsername());
+                model.addAttribute("admin", userLogged.get().getRol().equals("ADMIN"));
+                model.addAttribute("user", userLogged.get().getRol().equals("USER"));
+                model.addAttribute("id", userLogged.get().getId());
+                model.addAttribute("logged",true);   
+                return "index";
+            }
         }
-    }
-
-
-    @GetMapping("/signout")
-    public String logout(Model model, HttpServletRequest request) { 
-        HttpSession session = request.getSession(false); // false = no crear si no existe
-        if (session != null) {
-            session.invalidate(); // Esto borra también de Redis si estás usando Spring Session
-            return "index";
-        } 
         return "error";
     }
 
+    
+    @GetMapping("/signout")
+    public String logout(Model model, HttpServletRequest request) { 
+        request.getSession().removeAttribute("user");
+        
+        model.addAttribute("username","anonymous");
+        model.addAttribute("admin", "");
+        model.addAttribute("user", "");
+        model.addAttribute("id", 6);
+        model.addAttribute("logged",false);
+        
+        return "index";
+    }
+
+
     @GetMapping("/loginerror")
-    public String loginerror(){
+    public String loginerror(HttpServletRequest request){
         return "error";
     }
 }

@@ -23,6 +23,8 @@ public class ShoppingCart {
     @Column(name = "id")
     private Long id;
 
+    private String code;
+
     @OneToOne(mappedBy="shoppingCart")
     @JsonIgnore
     private User user;
@@ -44,6 +46,14 @@ public class ShoppingCart {
 
     public Long getId(){
         return id;
+    }
+
+    public void setCode(String code){
+        this.code=code;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     public void setUser(User user){

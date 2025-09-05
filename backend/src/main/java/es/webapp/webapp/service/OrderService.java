@@ -34,7 +34,7 @@ public class OrderService {
         orderRepo.save(order);
     }
 
-    public boolean buy(String username){
+    public void buy(String username){
         Order order = new Order();
 
         Optional<User> user = userRepo.findByUsername(username);
@@ -58,20 +58,18 @@ public class OrderService {
             order.setCreationDate(date);
             order.setUser(user.get());
             orderRepo.save(order);
-
-            return true;
         }
-        return false;
-    }
-    public Page<Order> findAll(Pageable page) {
-        return orderRepo.findAll(page);
     }
     
-    public Page<Order> findByUser(User user, Pageable page){
-        return orderRepo.findByUser(user, page);
+    public Page<Order> findAll(Pageable page) {
+        return orderRepo.findAll(page);
     }
 
     public Optional<Order> findById(Integer id) {
         return orderRepo.findById(id);
+    }
+
+    public Page<Order> findByUser(User user, Pageable page){
+        return orderRepo.findByUser(user, page);
     }
 }

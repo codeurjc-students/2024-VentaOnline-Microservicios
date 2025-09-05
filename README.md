@@ -127,3 +127,56 @@ Anonymous and registered user navigation:
 Administrator user navigation:
 
 ![navigation_I](/images/navigation_diagram_II.PNG)
+
+## SETTING
+keytool -genkey -keyalg RSA -alias tienda -keystore keystore.jks -storepass password -validity 360 -keysize 2048
+
+EXECUTE THIS CODE ON THE PROJECT WHERE THE KESTORE.JKS IS LOCATED
+keytool -exportcert -alias tienda -keystore keystore.jks -rfc -file tienda.crt 
+
+EXECUTE THIS CODE ON THE GATEWAY PROJECT
+keytool -import -alias tienda -file tienda.crt -keystore gateway-truststore.jks
+
+HOW DO I DOCUMENTED TE API REST
+
+1. added plugins and dependency on the pom.xml file,
+2. wake up the project with mvn spring-boot:run
+3. download the following file: https://localhost:8443/v3/api-docs.yaml and include it on the project path backend/api-docs
+4. execute the command mvn generate-source where the pom.xml find. In my case, I move the pom.xml file to the path backend and from that route I execute the command mentioned
+
+BUILDING
+(How to generate the .jar file)
+- type on the root the project of the terminal --> mvn package
+
+DOCKER AND DOCKER COMPOSE
+(Service store)
+create the network (if it does not exists)
+0. docker network create springboot-mysql-net
+Add to the springboot-mysql-net network the database
+1. docker run --name mysqldb2 --network springboot-mysql-net -e MYSQL_ROOT_PASSWORD=Mundialmente1 -e MYSQL_DATABASE=items -e MYSQL_PASSWORD=Mundialmente1 -d mysql:8.0.33
+check out the insertion
+2. docker exec -it ebd bash
+
+2. docker run --name redisdb --network springboot-mysql-net -p 6379:6379 -d redis:latest
+create the image of the website
+3. docker build -t springbootmysql .
+Add to the springboot-mysql-net network the image of the website
+4. docker run --name store-container --network springboot-mysql-net -p 8443:8443 -d springbootmysql
+check connectivity
+5. docker network inspect springboot-mysql-net
+
+(Service gateway)
+0. docker network create springboot-mysql-net
+1. docker build -t springbootgateway .
+2. docker run --name springboot-container1 --network springboot-gateway-net -p 8442:8442 -d springbootgateway
+3. docker network inspect springboot-gateway-net
+
+send the image a docker hub
+4. docker tag springbootmysql:latest maalami/springbootmysql:latest
+5. docker push maalami/springbootmysql:latest
+
+
+NETWORKS
+
+1. springboot-mysql-net
+
