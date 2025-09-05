@@ -169,6 +169,7 @@ public class User {
         this.imageFile = image;
     }
 
+    
     public Blob getImageFile(){
         return imageFile;
     }

@@ -29,42 +29,35 @@ public class OrderController {
     private UserService userService;
 
     @Autowired
-    private ItemToBuyService itemToBuyService;
-
-    @Autowired
     private OrderService orderService;
 
-    @ModelAttribute
+    /*@ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
-
-        Principal principal = request.getUserPrincipal();
-
-        if(principal != null){
-            String name = principal.getName();
-            Optional<User> user = userService.findByUsername(name);
+        String username = (String) request.getSession().getAttribute("user");
+        //model.addAttribute("username",username);
+        if(username != null){
+            Optional<User> user = userService.findByUsername(username);
             model.addAttribute("username",user.get().getUsername());
-            model.addAttribute("id",user.get().getId());
-            model.addAttribute("admin", request.isUserInRole("ADMIN"));
-            model.addAttribute("user", request.isUserInRole("USER"));
+            model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
+            model.addAttribute("user", user.get().getRol().equals("USER"));
+            model.addAttribute("id", user.get().getId());
             model.addAttribute("logged",true);
-            List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.get().getShoppingCart());
-            if(itemsToBuy.size() > 0){
-                model.addAttribute("neworder",false);
-            }
         } else {
+            model.addAttribute("username","anonymous");
             model.addAttribute("logged",false);
         }
-        
-        model.addAttribute("order","");
-    }
+    }*/
 
-    @GetMapping("/new/users/{username}")
-    public String generate(Model model, @PathVariable String username) throws IOException {
+    @GetMapping("/new/user")
+    public String generate(Model model,HttpServletRequest request) throws IOException {
 
-        if(orderService.buy(username))
-            return "index";
-        else 
-            return "error";
+        String username = (String) request.getSession().getAttribute("user");
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()){
+            orderService.buy(username);
+            return "redirect://localhost:8442/store";
+        }
+        return "error";
     }
 
 }

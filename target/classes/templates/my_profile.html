@@ -13,8 +13,8 @@
 <body>
     <header>
         <nav class="navbar">
-            <nav class="nav-menu --nav-dark-light" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-dark" href="/">Avenue Fashion</a>
+            <nav class="nav-menu" id="mySidenav">
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -24,16 +24,15 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/api/users/{{id}}/image" alt="" width="200" height="200"></img>
+                <img src="http://localhost:8443/api/users/{{id}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
             <div class="user-img">
-                <img src="/api/users/6/image" alt="" width="200" height="200"></img>
+                <img src="http://localhost:8443/api/users/6/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             <div class="columns">
-                
                 <div class="column">
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Username: </strong></p>
                     <p class="has-text-grey-light"><strong class="has-text-grey-light">Name: </strong></p>
@@ -53,13 +52,10 @@
         <div class="columns">
             <div class="column">
                 <h2 class="is-size-4">Profile</h2>
-                <form action="/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
+                <form action="/store/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
 
-                    <input type="text" name="username" placeholder="User name" class="form-control-field"/>
                     <input type="text" name="name" placeholder="Name" class="form-control-field"/>
                     <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
-                    <input type="password" name="password" placeholder="Password" class="form-control-field" minlength="5" maxlength="10"></input>
-                    <input type="password" name="passwordConfirmation" placeholder="Confirm your password" class="form-control-field" minlength="5" maxlength="10"></input>
                     <div class="user-img">
                         <input type='file' name='imageField' accept=".jpg, .jpeg"></input>
                     </div> 
@@ -95,11 +91,11 @@
     </footer>
 
     <script src="/js/main.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
 <script>
 
-    let ruta = 'https://localhost:8443/api/users/current';
+    let ruta = "/store/users/session";
     function loadData(callback){
         $.ajax({
             url:ruta
@@ -117,9 +113,9 @@
 
     $(document).ready(function(){
         loadData(function(value){
-            console.log(value);
-            console.log(value.direction);
-            console.log(value.direction.street);
+            //console.log(value);
+            //console.log(value.direction);
+            //console.log(value.direction.street);
             getCurrentUser(value);
         })
     });

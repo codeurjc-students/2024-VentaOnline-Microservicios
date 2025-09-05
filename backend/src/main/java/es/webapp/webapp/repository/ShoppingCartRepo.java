@@ -10,4 +10,6 @@ import es.webapp.webapp.model.User;
 public interface ShoppingCartRepo extends JpaRepository<ShoppingCart, Integer>{
     
     Optional<ShoppingCart> findByUser(User user);
+
+    Optional<ShoppingCart> findByCode(String code);
 }
