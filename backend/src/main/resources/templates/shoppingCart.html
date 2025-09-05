@@ -70,8 +70,8 @@
 </body>
 <script>
 
-    let ruta='/store/shoppingcart/user/items';
-    let ruta1='/store/shoppingcart/user';
+    let ruta="/store/shoppingcart/user/items";
+    let ruta1="/store/shoppingcart/user";
   
     var stock = "";
     
@@ -99,7 +99,7 @@
             stock = "less than 5 articles avaialables";
         }
         $('.slider').append(
-            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="//localhost:8443/api/items/' + item.items[0].id + 
+            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="http://localhost:8443/api/items/' + item.items[0].id + 
             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/store/shoppingcart/' + item.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
             '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
@@ -116,7 +116,7 @@
             stock = "less than 5 articles avaialables";
         }
         $('.slider').append(
-            '<div class="slider-img-container"><div class="column"><div class="card"><img src="//localhost:8443/api/items/' + item.items[0].id + 
+            '<div class="slider-img-container"><div class="column"><div class="card"><img src="http://localhost:8443/api/items/' + item.items[0].id + 
             '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/store/shoppingcart/' + item.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
             '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 

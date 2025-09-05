@@ -24,12 +24,12 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="//localhost:8443/api/users/{{id}}/image" alt="" width="200" height="200"></img>
+                <img src="http://localhost:8443/api/users/{{id}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
             <div class="user-img">
-                <img src="//localhost:8443/api/users/6/image" alt="" width="200" height="200"></img>
+                <img src="http://localhost:8443/api/users/6/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
         </div>

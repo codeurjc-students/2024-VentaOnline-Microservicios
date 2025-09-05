@@ -1,15 +1,15 @@
 ##FRONTEND
 #selection of the image base
-FROM node:18-alpine AS builder
+#FROM node:18-alpine AS builder
 
 #definition of the work directory in /project to execute commands
-WORKDIR /project
+#WORKDIR /project
 
 #files from frontend are copied on work directory
 #COPY frontend/ .
 
 #dependencies app need are installed
-RUN npm install
+#RUN npm install
 
 #files to production are generated in the specific route "new"
 #RUN npm run build -- --base=href=/new/
@@ -17,7 +17,7 @@ RUN npm install
 ##BACKEND
 
 #addition of java image
-FROM maven:3.9.0-eclipse-temurin-19 AS backend
+FROM maven:3.9.6-eclipse-temurin-21 AS backend
 
 #definition of the work directory in /project to execute commands
 WORKDIR /project
@@ -40,22 +40,25 @@ COPY backend/src /project/src
 RUN mvn clean package -DskipTests=true
 
 ## image for the app container
-FROM eclipse-temurin:19-jdk
+FROM eclipse-temurin:21-jdk
 
 # definition of the work directory where JAR file finds
 WORKDIR /usr/src/app/
+
+RUN curl -LJO https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
+&& chmod +x /usr/src/app/wait-for-it.sh
 
 # JAR file of compilation container is copied on JAR work directory
 COPY --from=backend /project/target/*.jar /usr/src/app/
 COPY --from=backend /project/target/webapp-0.0.1-SNAPSHOT.jar /usr/src/app/app.jar
 
 # Copiar wait-for-it
-COPY wait-for-it.sh .
+#COPY wait-for-it.sh .
 
 # Dar permisos al script
-RUN chmod +x wait-for-it.sh
+#RUN chmod +x wait-for-it.sh
 
 EXPOSE 8443
 
 # Espera a MySQL y Redis antes de arrancar la app
-ENTRYPOINT ["./wait-for-it.sh", "db:3306", "--timeout=90", "--strict", "--", "./wait-for-it.sh", "redis:6379", "--timeout=90", "--strict", "--", "java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

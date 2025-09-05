@@ -32,6 +32,11 @@ public class RestSecurityConfiguration{
     @Autowired
     UserDetailService userDetailsService; 
 
+    @Bean
+    public UserDetailService userDetailsService(){
+        return userDetailsService;
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
