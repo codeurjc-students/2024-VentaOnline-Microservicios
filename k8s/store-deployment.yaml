@@ -20,6 +20,14 @@ spec:
           value: jdbc:mysql://127.0.0.1:3306/onlinestore
         - name: MYSQL_ROOT_PASSWORD
           value: Mundialmente1
+        - name: SPRING_SESSION_STORE_TYPE
+          value: redis
+        - name: SPRING_REDIS_HOST
+          value: redisdb
+        - name: SPRING_REDIS_PORT
+          value: "6379"
+        - name: SPRING_SESSION_REDIS_ENABLE_KEYSPACE_EVENTS
+          value: "false"
         ports:
         - containerPort: 8443
       - name: cloud-sql-proxy
