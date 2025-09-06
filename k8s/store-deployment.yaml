@@ -23,7 +23,7 @@ spec:
         ports:
         - containerPort: 8443
       - name: cloud-sql-proxy
-        image: gcr.io/cloudsql-docker/gce-proxy:1.40.0
+        image: gcr.io/cloudsql-docker/gce-proxy:latest
         command:
         - "/cloud_sql_proxy"
         - "-instances=gothic-avenue-470908-m7:us-central1:onlinestore-mysql=tcp:3306"
