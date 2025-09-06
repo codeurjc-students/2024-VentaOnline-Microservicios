@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mysqldb2
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/mysql
+        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/mysql:8.0
         ports:
         - containerPort: 3306
         env:
