@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-container
+  template:
+    metadata:
+      labels:
+        app: inventory-container
+    spec:
+      containers:
+      - name: inventory-container
+        image: maalami/springbootinventory
+        ports:
+        - containerPort: 8444

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-container
+  template:
+    metadata:
+      labels:
+        app: gateway-container
+    spec:
+      containers:
+      - name: gateway-container
+        image: maalami/springbootgateway
+        ports:
+        - containerPort: 8442

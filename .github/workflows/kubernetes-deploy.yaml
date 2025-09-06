@@ -3,10 +3,76 @@ on:
   push:
     branches:
       - main
+env:
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout
           uses: actions/checkout@v2
-    
+        ### GATEWAY
+        - name: Deploy Gateway App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/gateway-deployment.yaml
+          # service
+        - name: Deploy Gateway App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/gateway-service.yaml
+          # ingress
+        - name: Deploy Gateway App (Ingress)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/gateway-ingress.yaml
+        ### STORE
+        - name: Deploy Store App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/store-deployment.yaml
+          # service
+        - name: Deploy Store App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/store-service.yaml
+        ### INVENTORY
+        - name: Deploy Inventory App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/inventory-deployment.yaml
+          # service
+        - name: Deploy Inventory App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/inventory-service.yaml
+        ### ORDER
+        - name: Deploy Order App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/order-deployment.yaml
+          # service
+        - name: Deploy Order App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/order-service.yaml
+        ### REDIS
+        - name: Deploy Redis App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/redis-deployment.yaml
+          # service
+        - name: Deploy Redis App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/redis-service.yaml
+        ### MYSQL
+        - name: Deploy Mysql App (Deployment)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/mysql-deployment.yaml
+          # service
+        - name: Deploy Mysql App (Service)
+          uses: actions-hub/kubectl@master
+          with:
+            args: apply -f k8s/mysql-service.yaml

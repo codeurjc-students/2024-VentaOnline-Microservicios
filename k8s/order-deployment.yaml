@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-container
+  template:
+    metadata:
+      labels:
+        app: order-container
+    spec:
+      containers:
+      - name: order-container
+        image: maalami/springbootorder
+        ports:
+        - containerPort: 8445
