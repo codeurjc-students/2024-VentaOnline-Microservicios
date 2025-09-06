@@ -1,50 +1,48 @@
 name: kubernetes-deploy
+
 on:
   push:
     branches:
       - main
-#env:
-#  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        
-        - name: install the gcloud cli
-          uses: google-github-actions/setup-gcloud@v0
-          with:
-            project_id: ${{ secrets.GOOGLE_PROJECT}}
-            service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-            install_components: 'gke-gcloud-auth-plugin'
-            export_default_credentials: true
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: build and push the docker image
-          env:
-            GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT}}
-          run:
-            gcloud auth configure-docker us-central1-docker.pkg.dev
-            docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest .
-            docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
-        - name: deploy to gke
-          env:
-            GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT}}
-          run:
-            gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" gateway-deployment.yaml
-            kubectl apply -f k8s/gateway-deployment.yaml
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" store-deployment.yaml
-            kubectl apply -f k8s/store-deployment.
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" inventory-deployment.yaml
-            kubectl apply -f k8s/inventory-deployment.yaml
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" order-deployment.yaml
-            kubectl apply -f k8s/order-deployment.yaml
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" mysql-deployment.yaml
-            kubectl apply -f k8s/mysql-deployment.yaml
-            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" redis-deployment.yaml
-            kubectl apply -f k8s/redis-deployment.yaml
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build and push Docker image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        run: |
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest
+
+      - name: Deploy to GKE
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        run: |
+          gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
+          for file in k8s/*-deployment.yaml; do
+            sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" $file
+            kubectl apply -f $file
+          done
+
 #        ### GATEWAY
 #        - name: Deploy Gateway App (Deployment)
 #          uses: actions-hub/kubectl@master
