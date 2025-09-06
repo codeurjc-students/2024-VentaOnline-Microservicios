@@ -14,6 +14,18 @@ spec:
     spec:
       containers:
       - name: gateway-container
-        image: maalami/springbootgateway
+        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootgateway
         ports:
         - containerPort: 8442
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: gateway-container
+  ports:
+    - port: 8442
+      targetPort: 8442
+  type: NodePort
