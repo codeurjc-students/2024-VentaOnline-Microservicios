@@ -32,6 +32,18 @@ jobs:
         run: |
           docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest -f k8s/Dockerfile .
           docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/nginx:latest
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootgateway -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootgateway
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootinventory -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootinventory
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootorder -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootorder
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootredis -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootredis
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/mysql:8.0 -f k8s/Dockerfile .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/mysql:8.0
 
       - name: Deploy to GKE
         env:
