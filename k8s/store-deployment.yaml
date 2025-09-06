@@ -20,8 +20,6 @@ spec:
           value: jdbc:mysql://127.0.0.1:3306/onlinestore
         - name: MYSQL_ROOT_PASSWORD
           value: Mundialmente1
-        - name: MYSQL_DATABASE
-          value: items
         ports:
         - containerPort: 8443
       - name: cloud-sql-proxy
