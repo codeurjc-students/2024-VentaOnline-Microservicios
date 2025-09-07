@@ -180,3 +180,18 @@ NETWORKS
 
 1. springboot-mysql-net
 
+IMPORT DB FROM LOCALHOST TO GKE DB
+0. create db
+gcloud sql databases create onlinestore --instance=onlinestore-mysql
+0. create bucket for the db
+gcloud storage buckets create gs://onlinestore-bucket   --location=us-central1
+0. copy the db items table to gke db bucket
+gcloud storage cp items.sql gs://onlinestore-bucket/
+1. Asigne admin roles to the admin
+gcloud projects add-iam-policy-binding gothic-avenue-470908-m7   --member="serviceAccount:p939569016236-d1a8i9@gcp-sa-cloud-sql.iam.gserviceaccount.com"   --role="roles/storage.objectViewer"
+1. create instance for the db
+gcloud sql databases create onlinestore --instance=onlinestore-mysql
+2. import db item table to gke database bucket
+gcloud sql import sql onlinestore-mysql gs://onlinestore-bucket/items.sql --database=onlinestore
+3. credentials for the cloud sql for the project id: gothic-avenue-470908-m7 -> google cloud > IAM > cuentas de servicio > claves > "agregar clave" -> devuelve archivo .json
+kubectl create secret generic cloudsql-instance-credentials   --from-file=credentials.json=/gothic-avenue-470908-m7-c89af71c9378.json
