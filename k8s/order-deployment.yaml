@@ -26,6 +26,6 @@ spec:
   selector:
     app: order-container
   ports:
-    - port: 80
+    - port: 8445
       targetPort: 8445
   type: ClusterIP
