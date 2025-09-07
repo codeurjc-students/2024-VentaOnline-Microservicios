@@ -38,8 +38,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"   # o "gce" si quieres usar GKE Ingress
 spec:
   rules:
-  - host: 34.118.237.111
-    http:
+  - http:
       paths:
       - path: /store
         pathType: Prefix
