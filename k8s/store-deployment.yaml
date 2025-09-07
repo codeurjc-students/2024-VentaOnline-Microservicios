@@ -53,6 +53,6 @@ spec:
   selector:
     app: store-container
   ports:
-    - port: 8443
+    - port: 80
       targetPort: 8443
   type: ClusterIP

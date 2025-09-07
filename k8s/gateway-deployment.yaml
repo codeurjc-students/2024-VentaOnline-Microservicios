@@ -26,7 +26,7 @@ spec:
   selector:
     app: gateway-container
   ports:
-    - port: 8442
+    - port: 80
       targetPort: 8442
   type: LoadBalancer
 ---
@@ -40,10 +40,9 @@ spec:
   rules:
   - http:
       paths:
-      - path: /store
         pathType: Prefix
         backend:
           service:
             name: gateway-service
             port:
-              number: 8442
+              number: 80

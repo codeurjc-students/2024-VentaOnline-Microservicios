@@ -26,6 +26,6 @@ spec:
   selector:
     app: inventory-container
   ports:
-    - port: 8444
+    - port: 80
       targetPort: 8444
   type: ClusterIP
