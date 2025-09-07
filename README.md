@@ -195,3 +195,8 @@ gcloud sql databases create onlinestore --instance=onlinestore-mysql
 gcloud sql import sql onlinestore-mysql gs://onlinestore-bucket/items.sql --database=onlinestore
 3. credentials for the cloud sql for the project id: gothic-avenue-470908-m7 -> google cloud > IAM > cuentas de servicio > claves > "agregar clave" -> devuelve archivo .json
 kubectl create secret generic cloudsql-instance-credentials   --from-file=credentials.json=/gothic-avenue-470908-m7-c89af71c9378.json
+
+DEPLOY URL
+
+0. get ip address to access the url
+kubectl get ingress
