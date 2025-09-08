@@ -32,8 +32,9 @@ spec:
         ports:
         - containerPort: 8443
       - name: cloud-sql-proxy
-        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.10.1
-        args:
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.1
+        command:
+          - "/cloud-sql-proxy"
           - "--instances=gothic-avenue-470908-m7:us-central1:onlinestore-mysql=tcp:3306"
           - "--credential_file=/secrets/cloudsql/credentials.json"
         volumeMounts:
