@@ -18,7 +18,7 @@ spec:
         image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootstore
         env:
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://127.0.0.1:3306/onlinestore
+          value: jdbc:mysql://35.188.122.189:3306/onlinestore
         - name: MYSQL_ROOT_PASSWORD
           value: Mundialmente1
         - name: SPRING_SESSION_STORE_TYPE
@@ -31,20 +31,7 @@ spec:
           value: "false"
         ports:
         - containerPort: 8443
-      - name: cloud-sql-proxy
-        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.1
-        command:
-          - "/cloud_sql_proxy"
-          - "--instances=gothic-avenue-470908-m7:us-central1:onlinestore-mysql=tcp:3306"
-          - "--credential_file=/secrets/cloudsql/credentials.json"
-        volumeMounts:
-          - name: cloudsql-instance-credentials
-            mountPath: /secrets/cloudsql
-            readOnly: true
-      volumes:
-        - name: cloudsql-instance-credentials
-          secret:
-            secretName: cloudsql-instance-credentials
+
 
 ---
 apiVersion: v1
