@@ -41,7 +41,7 @@
                     {{#logged}}
                     {{#user}}
                     <div class="user-img">
-                        <a href="/store/login"><img src="http://34.13.78.77/api/users/{{id}}/image" alt="" width="50" height="50"></img></a>
+                        <a href="/store/login"><img src="http://localhost:8443/api/users/{{id}}/image" alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/store/my_profile" class="nav-menu-link">My profile</a></li>
                     <li class="nav-menu-item"><a href="/order/orders/users/{{id}}" class="nav-menu-link">Orders</a></li>
@@ -266,7 +266,7 @@
         $('.pagination').click(function() {
             size+=10;
 
-            let ruta="http://34.13.78.77/api/items?size=" +size;
+            let ruta="http://localhost:8443/api/items?size=" +size;
 
             $('#spinner-div').show();
             $.ajax({

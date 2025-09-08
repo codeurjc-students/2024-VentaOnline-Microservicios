@@ -1,5 +1,4 @@
 apiVersion: apps/v1
-# port updating
 kind: Deployment
 metadata:
   name: store-container
