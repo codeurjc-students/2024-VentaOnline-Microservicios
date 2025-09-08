@@ -45,6 +45,9 @@ jobs:
           # Actualizar los Deployment.yaml con el nuevo TAG
           for file in k8s/store-deployment.yaml; do
             sed -i "s|GOOGLE_PROJECT|$GOOGLE_PROJECT|g" $file
-            sed -i "s|:latest|:$TAG|g" $file
+            # Solo cambiar el tag si es un microservicio tuyo
+            if grep -q "springboot" $file || grep -q "mysql" $file || grep -q "nginx" $file; then
+              sed -i "s|:latest|:$TAG|g" $file
+            fi
             kubectl apply -f $file
           done
