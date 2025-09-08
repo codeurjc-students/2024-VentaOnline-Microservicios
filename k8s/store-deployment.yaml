@@ -34,7 +34,7 @@ spec:
       - name: cloud-sql-proxy
         image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.1
         command:
-          - "/cloud-sql-proxy"
+          - "/cloud_sql_proxy"
           - "--instances=gothic-avenue-470908-m7:us-central1:onlinestore-mysql=tcp:3306"
           - "--credential_file=/secrets/cloudsql/credentials.json"
         volumeMounts:
