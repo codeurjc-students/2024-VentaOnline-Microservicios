@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: store-container
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootstore:${TAG}
+        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootstore:__TAG__
         env:
         - name: SPRING_DATASOURCE_URL
           value: jdbc:mysql://35.188.122.189:3306/onlinestore

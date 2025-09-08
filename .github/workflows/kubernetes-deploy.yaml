@@ -47,7 +47,7 @@ jobs:
             sed -i "s|GOOGLE_PROJECT|$GOOGLE_PROJECT|g" $file
             # Solo cambiar el tag si es un microservicio tuyo
             if grep -q "springboot" $file || grep -q "mysql" $file || grep -q "nginx" $file; then
-              sed -i "s|:latest|:$TAG|g" $file
+              sed -i "s|__TAG__|:$TAG|g" $file
             fi
             kubectl apply -f $file
           done
