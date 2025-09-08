@@ -42,12 +42,7 @@ jobs:
         run: |
           gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
 
-          # Actualizar los Deployment.yaml con el nuevo TAG
-          for file in k8s/store-deployment.yaml; do
-            sed -i "s|GOOGLE_PROJECT|$GOOGLE_PROJECT|g" $file
-            # Solo cambiar el tag si es un microservicio tuyo
-            if grep -q "springboot" $file || grep -q "mysql" $file || grep -q "nginx" $file; then
-              sed -i "s|__TAG__|:$TAG|g" $file
-            fi
-            kubectl apply -f $file
-          done
+ 
+          kubectl apply -f k8s/store-deployment.yaml
+          kubectl set image deployment/store-container \
+            store-container=us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG
