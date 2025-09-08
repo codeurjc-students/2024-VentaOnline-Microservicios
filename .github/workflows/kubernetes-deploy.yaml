@@ -32,7 +32,7 @@ jobs:
           TAG: ${{ github.sha }}
         run: |
           # Store
-          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG -f k8s/Dockerfile.store .
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG -f k8s/Dockerfile .
           docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG
 
       - name: Deploy to GKE
