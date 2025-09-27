@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -89,6 +90,8 @@ public class DataBaseInitializer {
         user1.setRol("ADMIN");
 
         Direction address = new Direction("Calle Roma",2,85503,"Almería");
+        address.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
+        directionRepo.save(address);
         user1.setDirection(address);
         redisTemplate.opsForValue().set("user:administrator1", user1);
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
@@ -98,7 +101,7 @@ public class DataBaseInitializer {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
-        shoppingCart.setBuyTime(LocalTime.now());
+        shoppingCart.setBuyTime(LocalTime.now().toString());
         Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
         if (!cart01.isPresent())
             shoppingCartRepo.save(shoppingCart);
@@ -113,6 +116,8 @@ public class DataBaseInitializer {
         setUserImage(user2, "/images/ava1.jpg");
 
         Direction address2 = new Direction("Calle de la constitución",1,28933,"Madrid");
+        address2.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
+        directionRepo.save(address2);
         user2.setDirection(address2);
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
         redisTemplate.opsForValue().set("user:carlos", user2);

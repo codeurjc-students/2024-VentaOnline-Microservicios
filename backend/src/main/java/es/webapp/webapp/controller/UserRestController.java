@@ -31,6 +31,7 @@ import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.Order;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.service.DirectionService;
 import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,9 @@ public class UserRestController {
 
     @Autowired
     private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private DirectionService directionService;
 
     //LOGGED WITH REDDIS
 
@@ -75,6 +79,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> addUser(@RequestBody User newUser){
         Direction newAddress = new Direction();
+        directionService.save(newAddress);
         newUser.setDirection(newAddress);
         ShoppingCart cart = new ShoppingCart();
         shoppingCartService.save(cart);

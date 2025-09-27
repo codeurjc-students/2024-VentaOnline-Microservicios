@@ -2,6 +2,7 @@ package es.webapp.webapp.controller;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.service.DirectionService;
 import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private DirectionService directionService;
 
     /*@ModelAttribute
     public void addAttribute(Model model, HttpServletRequest request){
@@ -60,6 +65,7 @@ public class UserController {
             user.setRol("USER");
             ShoppingCart cart = new ShoppingCart();
             shoppingCartService.save(cart);
+            directionService.save(address);
             user.setDirection(address);
             user.setShoppingCart(cart);
             userService.add(user);
@@ -95,7 +101,7 @@ public class UserController {
                     address.setNumber(number);
                     address.setZipCode(zipCode);
                     address.setCity(city);
-                
+                    
                     userService.update(id, user, address, imageField);
 
                     model.addAttribute("state_reg", "updated");

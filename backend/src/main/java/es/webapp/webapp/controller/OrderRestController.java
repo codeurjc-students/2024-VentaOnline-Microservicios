@@ -53,7 +53,7 @@ public class OrderRestController {
     }
 
     //LOGGED WITH JWT
-    @Operation(summary = "Buy - Generate and order")
+    @Operation(summary = "Buy - Generate an order")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Generate an order", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class))

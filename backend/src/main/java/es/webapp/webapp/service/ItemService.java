@@ -44,7 +44,7 @@ public class ItemService {
 
                 itemToBuy.getItems().add(product.get());
                 if(user.get().getShoppingCart().getItems().isEmpty())
-                    user.get().getShoppingCart().setBuyTime(LocalTime.now());
+                    user.get().getShoppingCart().setBuyTime(LocalTime.now().toString());
                 
                 itemToBuy.setShoppingCart(user.get().getShoppingCart());
                 itemToBuy.setCode(UUID.randomUUID().toString().toUpperCase().substring(0,7));

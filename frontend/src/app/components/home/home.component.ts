@@ -110,24 +110,19 @@ export class HomeComponent {
 
   showMoreFoundedItems(){
     this.tam1 += 10;
-    this.itemService.getItems(this.tam1).subscribe(
-      items => {
-        let firstItems: Item[] = [];
+    let firstItems: Item[] = [];
 
-         //the rest ot items founded by a name
-         let count = 0;
-         for(var i=0; i < this.foundedItems.length; i++){
-           if(count < this.tam1){
-             count++;
-             firstItems.push(this.foundedItems[i]);
-           }
-           else
-             break;
-         }  
-         this.data = firstItems;  
-      },
-      error => console.log(error)
-    );
+    //the rest ot items founded by a name
+    let count = 0;
+    for(var i=this.tam1; i < this.foundedItems.length; i++){
+      if(count < this.tam1){
+        count++;
+        firstItems.push(this.foundedItems[i]);
+      }
+      else
+        break;
+    }  
+    this.data = firstItems; 
   }
 
 }

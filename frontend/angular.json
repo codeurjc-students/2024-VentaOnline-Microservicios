@@ -31,7 +31,10 @@
               "src/css/bulma.min.css",
               "src/css/material-design-iconic-font.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/js/main.js",
+              "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {

@@ -14,17 +14,17 @@ spec:
     spec:
       containers:
       - name: store-container
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootstore
+        image: maalami/springbootstore
         imagePullPolicy: Always
         env:
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://35.188.122.189:3306/onlinestore
+          value: jdbc:mysql://127.0.0.1:3306/items
         - name: MYSQL_ROOT_PASSWORD
           value: Mundialmente1
         - name: SPRING_SESSION_STORE_TYPE
           value: redis
-        - name: SPRING_REDIS_HOST
-          value: redisdb
+        #- name: SPRING_REDIS_HOST
+        #  value: redisdb
         - name: SPRING_REDIS_PORT
           value: "6379"
         - name: SPRING_SESSION_REDIS_ENABLE_KEYSPACE_EVENTS

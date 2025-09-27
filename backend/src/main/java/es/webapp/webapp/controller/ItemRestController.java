@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -182,6 +183,25 @@ public class ItemRestController {
         }
     }
     
+    @Operation(summary = "Post an user favourite item")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Add for an user a new favourite item", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Item.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "No item added", content = @Content)
+    })
+    @GetMapping("/api/items/{code}/favourites/{id}/new")
+    public ResponseEntity<Item> addFavouriteItem(Model model, @PathVariable String code, @PathVariable Integer id)  {
+        Optional<Item> item = itemService.findByCode(code);
+        Optional<User> user = userService.findById(id);
+        
+        item.get().getUsers().add(user.get());
+        if(itemService.save(item.get()) != null)
+            return new ResponseEntity<>(item.get(), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
 
     /*@PostMapping("/items/{id}/stock")
     public ResponseEntity<Stock> postMethodName(@PathVariable Integer id, @RequestBody Stock stock) {

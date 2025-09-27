@@ -3,6 +3,7 @@ package es.webapp.webapp.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.repository.DirectionRepo;
 import es.webapp.webapp.repository.UserRepo;
 
 @Service
@@ -22,6 +24,9 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private DirectionRepo directionRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -76,6 +81,8 @@ public class UserService {
             if(newUser != null && !newUser.getEmail().isEmpty()){
                 user.get().setEmail(newUser.getEmail());
             }
+            if(address != null && address.getCode().isEmpty()){
+                user.get().getDirection().setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));            }
             if(address != null && address.getNumber() != null){
                 user.get().getDirection().setNumber(address.getNumber());
             }
@@ -95,6 +102,7 @@ public class UserService {
             //userReddis.setPassword(user.get().getPassword());
 //
             //redisTemplate.opsForValue().set("user:" + user.get().getUsername(), userReddis);
+            directionRepo.save(user.get().getDirection());
             userRepo.save(user.get());
         }
     }

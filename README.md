@@ -200,3 +200,9 @@ DEPLOY URL
 
 0. get ip address to access the url
 kubectl get ingress
+
+##ANALOGIA
+GKE con Kubernetes = eres el dueño de la cocina completa. Tú contratas cocineros (nodos), les das recetas (pods) y decides todo el proceso.
+
+Azure App Service = vas a un restaurante. Tú solo llevas tu receta (app) y el restaurante (Azure) te cocina, lava platos y sirve.
+

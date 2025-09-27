@@ -32,7 +32,7 @@ export class ItemAggregationComponent {
     this.shoppingCart = {totalCost: 0, items: []};
     this.user = {username: '', name: '', email: '', password: '', passwordConfirmation: '', rol: 'USER', direction: {street: '', number: '', zipCode: '', city: ''}, favouritesItems: [], shoppingCart: this.shoppingCart, orders: []};
     this.model = {size: '', stock: 0};
-    this.item = {name:'', description:'', price:0, gender:'', type:'', stock:0, sizes:[], stocks:[], favouritesUsers:[], itemsToBuy:[]}
+    this.item = {name:'', description:'', price:0, gender:'', type:'', stocks:[], favouritesUsers:[], itemsToBuy:[]}
   }
 
   addItem(){

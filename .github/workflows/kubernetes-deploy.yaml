@@ -10,39 +10,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      # 2. Login en Docker Hub
+      - name: Log in to Docker Hub 
+        uses: docker/login-action@v2
+        with: 
+          username: ${{ secrets.DOCKER_USERNAME }} 
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ secrets.GOOGLE_PROJECT }}
-          install_components: 'gke-gcloud-auth-plugin'
+      #- name: Authenticate to Google Cloud
+      #  uses: google-github-actions/auth@v2
+      #  with:
+      #    credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#
+      #- name: Setup gcloud CLI
+      #  uses: google-github-actions/setup-gcloud@v2
+      #  with:
+      #    project_id: ${{ secrets.GOOGLE_PROJECT }}
+      #    install_components: 'gke-gcloud-auth-plugin'
 
-      - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+      #- name: Configure Docker for Artifact Registry
+      #  run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Build and push Docker images
         env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      #    GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
           TAG: ${{ github.sha }}
         run: |
           # Store
-          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG -f k8s/Dockerfile .
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG
+          docker build -t maalami/springbootstore:$TAG -f k8s/Dockerfile .
+          docker push maalami/springbootstore:$TAG
 
-      - name: Deploy to GKE
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-          TAG: ${{ github.sha }}
-        run: |
-          gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
 
- 
-          kubectl apply -f k8s/store-deployment.yaml
-          kubectl set image deployment/store-container \
-            store-container=us-central1-docker.pkg.dev/$GOOGLE_PROJECT/onlinestore/maalami/springbootstore:$TAG
+      #- name: Deploy to HUB
+      #  env:
+      ##    GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      #    TAG: ${{ github.sha }}
+      #  run: |
+      #    kubectl apply -f k8s/store-deployment.yaml
+      #    kubectl set image deployment/store-container \
+      #    store-container=maalami/springbootstore:$TAG
+
+      #    gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
+#
+ #
+          

@@ -18,6 +18,9 @@ public class Direction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column
+    private String code;
+
     @Column(name = "street")
     private String street;
 
@@ -51,6 +54,14 @@ public class Direction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setCode(String code){
+        this.code=code;
+    }
+
+    public String getCode(){
+        return code;
     }
 
     public void setStreet(String street){
