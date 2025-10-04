@@ -13,46 +13,18 @@ jobs:
         uses: actions/checkout@v2
 
       # 2. Login en Docker Hub
-      - name: Log in to Docker Hub 
+      - name: Log in to OCIR
         uses: docker/login-action@v2
         with: 
-          username: ${{ secrets.DOCKER_USERNAME }} 
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      #- name: Authenticate to Google Cloud
-      #  uses: google-github-actions/auth@v2
-      #  with:
-      #    credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-#
-      #- name: Setup gcloud CLI
-      #  uses: google-github-actions/setup-gcloud@v2
-      #  with:
-      #    project_id: ${{ secrets.GOOGLE_PROJECT }}
-      #    install_components: 'gke-gcloud-auth-plugin'
-
-      #- name: Configure Docker for Artifact Registry
-      #  run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          registry: us-chicago-1.ocir.io
+          username: ${{ secrets.OCIR_USERNAME }} 
+          password: ${{ secrets.OCIR_PASSWORD }}
 
       - name: Build and push Docker images
         env:
-      #    GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+          NAMESPACE: ${{ secrets.OCIR_NAMESPACE }}
           TAG: ${{ github.sha }}
         run: |
-          # Store
-          docker build -t maalami/springbootstore:$TAG -f k8s/Dockerfile .
-          docker push maalami/springbootstore:$TAG
-
-
-      #- name: Deploy to HUB
-      #  env:
-      ##    GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-      #    TAG: ${{ github.sha }}
-      #  run: |
-      #    kubectl apply -f k8s/store-deployment.yaml
-      #    kubectl set image deployment/store-container \
-      #    store-container=maalami/springbootstore:$TAG
-
-      #    gcloud container clusters get-credentials onlinestore-cluster --region us-central1 --project $GOOGLE_PROJECT
-#
- #
-          
+          IMAGE=us-chicago-1.ocir.io/$NAMESPACE/springbootstore/store:$TAG
+          docker build -t $IMAGE -f k8s/Dockerfile .
+          docker push $IMAGE

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: store-container
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: store-container
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: store-container
-        image: maalami/springbootstore
+        image: us-chicago-1.ocir.io/axswp1b7lgyy/springbootstore/store
         imagePullPolicy: Always
         env:
         - name: SPRING_DATASOURCE_URL
@@ -31,8 +31,8 @@ spec:
           value: "false"
         ports:
         - containerPort: 8443
-
-
+      imagePullSecrets:
+      - name: ocirsecret
 ---
 apiVersion: v1
 kind: Service
@@ -45,3 +45,11 @@ spec:
     - port: 8443
       targetPort: 8443
   type: ClusterIP
+
+
+  spec:
+    containers:
+    - name: inventory-container
+      image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootinventory
+      ports:
+      - containerPort: 8444
