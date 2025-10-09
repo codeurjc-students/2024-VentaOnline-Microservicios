@@ -5,11 +5,6 @@ on:
     branches:
       - main
 
-env:
-  TAG: ${{ github.sha }}
-  NAMESPACE: ${{ secrets.OCIR_NAMESPACE }}
-  IMAGE: us-chicago-1.ocir.io/$NAMESPACE/springbootstore/store:$TAG
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,7 +21,11 @@ jobs:
           password: ${{ secrets.OCIR_PASSWORD }}
 
       - name: Build and push Docker images
+        env:
+          NAMESPACE: ${{ secrets.OCIR_NAMESPACE }}
+          TAG: ${{ github.sha }}
         run: |
+          IMAGE=us-chicago-1.ocir.io/$NAMESPACE/springbootstore/store:$TAG
           docker build -t $IMAGE -f k8s/Dockerfile .
           docker push $IMAGE
 
@@ -42,9 +41,15 @@ jobs:
           chmod 600 ~/.kube/config
 
       - name: Update deployment image
+        env:
+          TAG: ${{ github.sha }}
         run: |
-          kubectl set image deployment/store-container store-container=$IMAGE:$TAG --record || true
+          IMAGE_NAME=us-chicago-1.ocir.io/$NAMESPACE/springbootstore/store:$TAG_NAME
+          kubectl set image deployment/store-container store-container=$IMAGE_NAME:$TAG_NAME --record || true
           kubectl apply -f k8s/store-deployment.yaml
 
       - name: Verify rollout
         run: kubectl rollout status deployment/store-container
+
+
+    
