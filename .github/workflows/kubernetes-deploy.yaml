@@ -42,9 +42,10 @@ jobs:
 
       - name: Update deployment image
         env:
-          TAG: ${{ github.sha }}
+          NAMESPACE_VAL: ${{ secrets.OCIR_NAMESPACE }}
+          TAG_NAME: ${{ github.sha }}
         run: |
-          IMAGE_NAME=us-chicago-1.ocir.io/$NAMESPACE/springbootstore/store:$TAG_NAME
+          IMAGE_NAME=us-chicago-1.ocir.io/$NAMESPACE_VAL/springbootstore/store:$TAG_NAME
           kubectl set image deployment/store-container store-container=$IMAGE_NAME:$TAG_NAME --record || true
           kubectl apply -f k8s/store-deployment.yaml
 
