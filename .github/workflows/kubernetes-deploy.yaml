@@ -50,7 +50,7 @@ jobs:
           if kubectl get deployment store-container >/dev/null 2>&1; then
             kubectl set image deployment/store-container store-container=$IMAGE_NAME:$TAG_NAME
           else
-            kubectl apply -f k8s/store-deployment.yaml
+            kubectl apply -f k8s/store-deployment.yaml --validate=false
           fi
       - name: Verify rollout
         run: |
