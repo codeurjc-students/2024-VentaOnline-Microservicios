@@ -14,17 +14,10 @@ spec:
         app: store-container
 
     spec:
-      volumes:
-        - name: wallet-volume
-          secret:
-            secretName: wallet-secret
       containers:
       - name: store-container
         image: us-chicago-1.ocir.io/axswp1b7lgyy/springbootstore/store
         imagePullPolicy: Always
-        volumeMounts:
-          - name: wallet-volume
-            mountPath: /app/wallet 
         env:
         # --- Base de datos Oracle ---
         - name: SPRING_DATASOURCE_URL
