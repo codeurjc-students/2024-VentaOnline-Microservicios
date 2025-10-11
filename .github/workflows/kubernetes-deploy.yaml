@@ -20,11 +20,6 @@ jobs:
           username: ${{ secrets.OCIR_USERNAME }} 
           password: ${{ secrets.OCIR_PASSWORD }}
 
-      - name: Install OCI CLI
-        run: |
-          bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)" -- --accept-all-defaults
-           echo "$HOME/bin" >> $GITHUB_PATH
-
       - name: Build and push Docker images
         env:
           NAMESPACE: ${{ secrets.OCIR_NAMESPACE }}
@@ -59,3 +54,8 @@ jobs:
 
 
     
+
+
+
+
+
