@@ -56,9 +56,3 @@ jobs:
         run: |
           set -e
           kubectl rollout status deployment/store-container --namespace default --timeout=120s
-
-
-
-
-
-    
