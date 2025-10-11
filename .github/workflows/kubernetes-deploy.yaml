@@ -53,7 +53,10 @@ jobs:
             kubectl apply -f k8s/store-deployment.yaml
           fi
       - name: Verify rollout
-        run: kubectl rollout status deployment/store-container
+        run: |
+          set -e
+          kubectl rollout status deployment/store-container --namespace default --timeout=120s
+
 
 
     
