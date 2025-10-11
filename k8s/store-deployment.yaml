@@ -21,7 +21,6 @@ spec:
       containers:
       - name: store-container
         image: us-chicago-1.ocir.io/axswp1b7lgyy/springbootstore/store
-        imagePullPolicy: Always
         volumeMounts:
           - name: wallet-volume
             mountPath: /app/wallet 
