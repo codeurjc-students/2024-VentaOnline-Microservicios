@@ -48,7 +48,7 @@ jobs:
         run: |
           IMAGE_NAME=us-chicago-1.ocir.io/$NAMESPACE_VAL/springbootstore/store:$TAG_NAME
           if kubectl get deployment store-container >/dev/null 2>&1; then
-            kubectl set image deployment/store-container store-container=$IMAGE_NAME:$TAG_NAME
+            kubectl set image deployment/store-container store-container=$IMAGE_NAME:$TAG_NAME --validate=false
           else
             kubectl apply -f k8s/store-deployment.yaml --validate=false
           fi
@@ -56,3 +56,6 @@ jobs:
         run: |
           set -e
           kubectl rollout status deployment/store-container --namespace default --timeout=120s
+
+
+
