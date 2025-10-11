@@ -47,7 +47,7 @@ jobs:
           TAG_NAME: ${{ github.sha }}
         run: |
           IMAGE_NAME=us-chicago-1.ocir.io/$NAMESPACE_VAL/springbootstore/store:$TAG_NAME
-          if kubectl get deployment store-container >/dev/null 2>&1; then
+          if kubectl get deployment store-container --namespace default >/dev/null 2>&1; then
             kubectl set image deployment/store-container store-container=$IMAGE_NAME
           else
             kubectl apply -f k8s/store-deployment.yaml
