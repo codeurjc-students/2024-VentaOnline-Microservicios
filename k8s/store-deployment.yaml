@@ -20,7 +20,7 @@ spec:
         env:
         # --- Base de datos Oracle ---
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:oracle:thin:@microservicesdb_medium?TNS_ADMIN=/app/wallet
+          value: jdbc:oracle:thin:@adb.us-chicago-1.oraclecloud.com:1522/g309daf07f9df06_microservicesdb_medium.adb.oraclecloud.com
         - name: SPRING_DATASOURCE_USERNAME
           value: ITEMS
         - name: SPRING_DATASOURCE_PASSWORD
