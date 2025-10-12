@@ -12,16 +12,6 @@ spec:
     metadata:
       labels:
         app: store-container
-
-    spec:
-      volumeMounts:
-        - name: wallet-volume
-          mountPath: /app/wallet
-      volumes:
-        - name: wallet-volume
-          secret:
-            secretName: wallet-secret
-
       containers:
       - name: store-container
         image: us-chicago-1.ocir.io/axswp1b7lgyy/springbootstore/store
@@ -60,6 +50,14 @@ spec:
 
         ports:
         - containerPort: 8443
+        volumeMounts:
+          - name: wallet-volume
+            mountPath: /app/wallet
+
+      volumes:
+        - name: wallet-volume
+          secret:
+            secretName: wallet-secret
       imagePullSecrets:
       - name: ocirsecret
 ---
