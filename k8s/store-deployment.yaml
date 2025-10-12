@@ -20,7 +20,7 @@ spec:
       volumes:
         - name: wallet-volume
           secret:
-            secretName: oracle-wallet-secret
+            secretName: wallet-secret
 
       containers:
       - name: store-container
