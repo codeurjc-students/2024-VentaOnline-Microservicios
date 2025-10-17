@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: inventory-container
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: inventory-container
@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
       - name: inventory-container
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootinventory
+        image: maalami/springbootinventory
         ports:
         - containerPort: 8444
+      nodeSelector:
+        role: backend
 ---
 apiVersion: v1
 kind: Service

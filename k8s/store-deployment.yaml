@@ -2,9 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: store-container
-  namespace: default
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: store-container
@@ -15,52 +14,11 @@ spec:
     spec:
       containers:
       - name: store-container
-        image: us-chicago-1.ocir.io/axswp1b7lgyy/springbootstore/store
-        imagePullPolicy: Always
-        env:
-        # --- Base de datos Oracle ---
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:oracle:thin:@adb.us-chicago-1.oraclecloud.com:1522/g309daf07f9df06_microservicesdb_low.adb.oraclecloud.com
-        - name: SPRING_DATASOURCE_USERNAME
-          value: ITEMS
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: Mundialmente1$
-        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-          value: oracle.jdbc.OracleDriver
-         # --- Redis Cloud ---
-        - name: SPRING_SESSION_STORE_TYPE
-          value: redis
-        - name: SPRING_REDIS_HOST
-          value: redis-13700.c328.europe-west3-1.gce.redns.redis-cloud.com
-        - name: SPRING_REDIS_PORT
-          value: "13700"
-        - name: SPRING_REDIS_PASSWORD
-          value: iRBz0IvyeSm0avlugvSwBQIpwtgqKJTk
-        - name: SPRING_REDIS_SSL
-          value: "true"
-        - name: SPRING_SESSION_REDIS_ENABLE_KEYSPACE_EVENTS
-          value: "false"
-        - name: SPRING_SESSION_REDIS_NAMESPACE
-          value: app:session
-
-        # --- Server ---
-        - name: SERVER_PORT
-          value: "8443"
-        - name: SERVER_SSL_ENABLED
-          value: "false"
-
+        image: maalami/springbootstore
         ports:
         - containerPort: 8443
-        volumeMounts:
-          - name: wallet-volume
-            mountPath: /app/wallet
-
-      volumes:
-        - name: wallet-volume
-          secret:
-            secretName: wallet-secret
-      imagePullSecrets:
-      - name: ocirsecret
+      nodeSelector:
+        role: backend
 ---
 apiVersion: v1
 kind: Service
