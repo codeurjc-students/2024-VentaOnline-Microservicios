@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: gateway-container
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: gateway-container
@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
       - name: gateway-container
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootgateway
+        image: maalami/springbootgateway
         ports:
         - containerPort: 8442
+      nodeSelector:
+        role: gateway
 ---
 apiVersion: v1
 kind: Service
@@ -28,19 +30,20 @@ spec:
   ports:
     - port: 8442
       targetPort: 8442
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gateway-ingress
   annotations:
-    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - http:
+  - host: http://localhost:8442/store/
+    http:
       paths:
-      - path: /store
+      - path: /
         pathType: Prefix
         backend:
           service:

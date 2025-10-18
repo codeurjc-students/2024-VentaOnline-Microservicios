@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mysqldb2
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mysqldb2
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/mysql:8.0
+        image: mysql:8.0
         ports:
         - containerPort: 3306
         env:
@@ -22,6 +22,8 @@ spec:
           value: Mundialmente1
         - name: MYSQL_DATABASE
           value: items
+      nodeSelector:
+        role: backend
 ---
 apiVersion: v1
 kind: Service

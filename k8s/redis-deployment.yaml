@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: redisdb
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
       - name: redisdb
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/redis
+        image: redis:latest
         ports:
         - containerPort: 6379
+      nodeSelector:
+        role: backend
 ---
 apiVersion: v1
 kind: Service

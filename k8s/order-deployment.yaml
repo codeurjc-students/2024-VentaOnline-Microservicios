@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: order-container
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: order-container
@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
       - name: order-container
-        image: us-central1-docker.pkg.dev/gothic-avenue-470908-m7/onlinestore/maalami/springbootorder
+        image: maalami/springbootorder
         ports:
         - containerPort: 8445
+      nodeSelector:
+        role: backend
 ---
 apiVersion: v1
 kind: Service
