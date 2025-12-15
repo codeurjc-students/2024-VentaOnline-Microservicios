@@ -121,10 +121,11 @@ public class DataBaseInitializer {
         directionRepo.save(address2);
         user2.setDirection(address2);
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
-        redisTemplate.opsForValue().set("user:carlos", user2);
+        
         if(!user02.isPresent()){
             user2.setShoppingCart(shoppingCart);
             userRepo.save(user2);
+            redisTemplate.opsForValue().set("user:carlos", user2);
         }
 
         User user3 = new User();
@@ -134,9 +135,11 @@ public class DataBaseInitializer {
         setUserImage(user3, "/images/user-img.png");
 
         Optional<User> user03 = userRepo.findByUsername(user3.getUsername());
-        redisTemplate.opsForValue().set("user:anonymous", user3);
-        if(!user03.isPresent())
+        
+        if(!user03.isPresent()){
             userRepo.save(user3);
+            redisTemplate.opsForValue().set("user:anonymous", user3);
+        }
 
         //ITEMS & STOCKS
         //1:N
