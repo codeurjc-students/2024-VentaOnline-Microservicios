@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mysqldb2
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -22,8 +22,8 @@ spec:
           value: Mundialmente1
         - name: MYSQL_DATABASE
           value: items
-      nodeSelector:
-        role: backend
+#      nodeSelector:
+#        role: backend
 ---
 apiVersion: v1
 kind: Service

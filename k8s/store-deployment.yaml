@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: store-container
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: store-container
@@ -17,8 +17,6 @@ spec:
         image: maalami/springbootstore
         ports:
         - containerPort: 8443
-      nodeSelector:
-        role: backend
 ---
 apiVersion: v1
 kind: Service
