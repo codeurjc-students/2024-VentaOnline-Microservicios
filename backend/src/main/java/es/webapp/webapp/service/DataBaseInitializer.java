@@ -93,11 +93,12 @@ public class DataBaseInitializer {
         address.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         directionRepo.save(address);
         user1.setDirection(address);
-        redisTemplate.opsForValue().set("user:administrator1", user1);
+        
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
-        if(!user01.isPresent())
+        if(!user01.isPresent()){
             userRepo.save(user1);
-
+            redisTemplate.opsForValue().set("user:administrator1", user1);
+        }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
