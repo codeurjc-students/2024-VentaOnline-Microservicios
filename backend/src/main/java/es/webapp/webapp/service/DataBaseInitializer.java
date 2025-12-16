@@ -80,6 +80,7 @@ public class DataBaseInitializer {
     public void init() throws IOException, URISyntaxException {
 
     //USERS, DIRECTIONS & SHOPPING CARTS
+    
         //1:1 bidirectional relationship
 
         User user1 = new User();
