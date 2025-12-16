@@ -80,7 +80,7 @@ public class DataBaseInitializer {
     public void init() throws IOException, URISyntaxException {
 
     //USERS, DIRECTIONS & SHOPPING CARTS
-    
+
         //1:1 bidirectional relationship
 
         User user1 = new User();
@@ -95,11 +95,11 @@ public class DataBaseInitializer {
         directionRepo.save(address);
         user1.setDirection(address);
         
-        Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
-        if(!user01.isPresent()){
+        //Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
+        //if(!user01.isPresent()){
             userRepo.save(user1);
             redisTemplate.opsForValue().set("user:administrator1", user1);
-        }
+        //}
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
