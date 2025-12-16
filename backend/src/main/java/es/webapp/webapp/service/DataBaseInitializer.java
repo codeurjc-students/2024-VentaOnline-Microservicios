@@ -96,16 +96,14 @@ public class DataBaseInitializer {
         user1.setDirection(address);
         
         
-        if(userRepo.findByUsername(user1.getUsername()).isEmpty()){
+       
             userRepo.save(user1);
             redisTemplate.opsForValue().set("user:administrator1", user1);
-        }
+        
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
         shoppingCart.setBuyTime(LocalTime.now().toString());
-        Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
-        if (!cart01.isPresent())
             shoppingCartRepo.save(shoppingCart);
 
         User user2 = new User();
@@ -121,13 +119,11 @@ public class DataBaseInitializer {
         address2.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
         directionRepo.save(address2);
         user2.setDirection(address2);
-        Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
         
-        if(!user02.isPresent()){
             user2.setShoppingCart(shoppingCart);
             userRepo.save(user2);
             redisTemplate.opsForValue().set("user:carlos", user2);
-        }
+        
 
         User user3 = new User();
         user3.setUsername("anonymous");
@@ -135,12 +131,9 @@ public class DataBaseInitializer {
         user3.setEmail("an@yahoo.es");
         setUserImage(user3, "/images/user-img.png");
 
-        Optional<User> user03 = userRepo.findByUsername(user3.getUsername());
-        
-        if(!user03.isPresent()){
             userRepo.save(user3);
             redisTemplate.opsForValue().set("user:anonymous", user3);
-        }
+        
 
         //ITEMS & STOCKS
         //1:N
@@ -159,11 +152,10 @@ public class DataBaseInitializer {
         size1.setCode("SIZE1");
         size1.setLabel("S");
 
-        Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
-        if (!size01.isPresent()) {
+        
             sizeRepo.save(size1);
             stock1.setSize(size1);
-        }  
+         
 
 
 
@@ -192,11 +184,10 @@ public class DataBaseInitializer {
         size3.setCode("SIZE3");
         size3.setLabel("40");
 
-        Optional<Size> size03 = sizeRepo.findByCode("SIZE3");
-        if (!size03.isPresent()) {
+        
             sizeRepo.save(size3);
             stock5.setSize(size3);
-        }  
+        
 
 
 
@@ -242,8 +233,7 @@ public class DataBaseInitializer {
         item1.getUsers().add(user2);
          
 
-        Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
-        if(!item01.isPresent())      
+            
             itemRepo.save(item1);
 
         stock1.setItem(item1);
@@ -258,10 +248,9 @@ public class DataBaseInitializer {
 
 
         //--> save stock into the db
-        Optional<Clothes> stock01 = clothesRepo.findByCode(stock1.getCode());
-        if(!stock01.isPresent()){
+        
             clothesRepo.save(stock1);
-        }
+        
      
 
         Item item2 = new Item();
@@ -273,8 +262,7 @@ public class DataBaseInitializer {
         item2.setType("jeans");
         setItemImage(item2,"/images/vaquero_mujer_2.PNG");
 
-        Optional<Item> item02 = itemRepo.findByCode(item2.getCode());
-        if(!item02.isPresent())      
+          
             itemRepo.save(item2);
 
         //ORDERS
@@ -289,10 +277,9 @@ public class DataBaseInitializer {
         order.setUser(user2);
 
         
-        Optional<Order> order01 = orderRepo.findByCode(order.getCode());
-        if(!order01.isPresent()) {
+        
             orderRepo.save(order);
-        }
+        
 
         itemBuy1.setOrder(order);
         //M:N
@@ -300,8 +287,7 @@ public class DataBaseInitializer {
         itemBuy1.getItems().add(item1);  
         
         
-        Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
-        if(!itemBuy01.isPresent())
+       
             itemToBuyRepo.save(itemBuy1);
         
 
@@ -314,8 +300,7 @@ public class DataBaseInitializer {
         item3.setType("jeans");
         setItemImage(item3,"/images/vaquero_mujer_3.PNG");
 
-        Optional<Item> item03 = itemRepo.findByCode(item3.getCode());
-        if(!item03.isPresent())      
+            
             itemRepo.save(item3);
 
         Item item4 = new Item();
@@ -327,8 +312,7 @@ public class DataBaseInitializer {
         item4.setType("jeans");
         setItemImage(item4,"/images/vaquero_mujer_4.PNG");
 
-        Optional<Item> item04 = itemRepo.findByCode(item4.getCode());
-        if(!item04.isPresent())      
+             
             itemRepo.save(item4);
 
         Item item5 = new Item();
@@ -340,8 +324,7 @@ public class DataBaseInitializer {
         item5.setType("jeans");
         setItemImage(item5,"/images/vaquero_mujer_5.PNG");
 
-        Optional<Item> item05 = itemRepo.findByCode(item5.getCode());
-        if(!item05.isPresent())      
+          
             itemRepo.save(item5);
 
         Item item6 = new Item();
@@ -353,8 +336,7 @@ public class DataBaseInitializer {
         item6.setType("jeans");
         setItemImage(item6,"/images/vaquero_mujer_6.PNG");
 
-        Optional<Item> item06 = itemRepo.findByCode(item6.getCode());
-        if(!item06.isPresent())      
+        
             itemRepo.save(item6);
 
         Item item7 = new Item();
@@ -366,8 +348,7 @@ public class DataBaseInitializer {
         item7.setType("jeans");
         setItemImage(item7,"/images/vaquero_mujer_7.PNG");
 
-        Optional<Item> item07 = itemRepo.findByCode(item7.getCode());
-        if(!item07.isPresent())      
+           
             itemRepo.save(item7);
 
         Item item8 = new Item();
@@ -379,8 +360,7 @@ public class DataBaseInitializer {
         item8.setType("jeans");
         setItemImage(item8,"/images/vaquero_mujer_8.PNG");
 
-        Optional<Item> item08 = itemRepo.findByCode(item8.getCode());
-        if(!item08.isPresent())      
+             
             itemRepo.save(item8);
 
         Item item11 = new Item();
@@ -392,8 +372,7 @@ public class DataBaseInitializer {
         item11.setType("jeans");
         setItemImage(item11, "/images/vaquero_hombre_1.PNG");
 
-        Optional<Item> item011 = itemRepo.findByCode(item11.getCode());
-        if(!item011.isPresent())      
+             
             itemRepo.save(item11);
 
         
@@ -407,8 +386,7 @@ public class DataBaseInitializer {
         item12.setType("jeans");
         setItemImage(item12,"/images/vaquero_hombre_2.PNG");
 
-        Optional<Item> item012 = itemRepo.findByCode(item12.getCode());
-        if(!item012.isPresent())      
+             
             itemRepo.save(item12);
 
         
@@ -422,8 +400,7 @@ public class DataBaseInitializer {
         item13.setType("jeans");
         setItemImage(item13,"/images/vaquero_hombre_3.PNG");
 
-        Optional<Item> item013 = itemRepo.findByCode(item13.getCode());
-        if(!item013.isPresent())      
+          
             itemRepo.save(item13);
 
         
@@ -437,8 +414,7 @@ public class DataBaseInitializer {
         item14.setType("jeans");
         setItemImage(item14,"/images/vaquero_hombre_4.PNG");
 
-        Optional<Item> item014 = itemRepo.findByCode(item14.getCode());
-        if(!item014.isPresent())      
+             
             itemRepo.save(item14);
 
         
@@ -452,8 +428,7 @@ public class DataBaseInitializer {
         item15.setType("jeans");
         setItemImage(item15,"/images/vaquero_hombre_5.PNG");
 
-        Optional<Item> item015 = itemRepo.findByCode(item15.getCode());
-        if(!item015.isPresent())      
+            
             itemRepo.save(item15);
 
         
@@ -467,8 +442,7 @@ public class DataBaseInitializer {
         item16.setType("jeans");
         setItemImage(item16,"/images/vaquero_hombre_6.PNG");
 
-        Optional<Item> item016 = itemRepo.findByCode(item16.getCode());
-        if(!item016.isPresent())      
+             
             itemRepo.save(item16);
 
         
@@ -482,8 +456,7 @@ public class DataBaseInitializer {
         item17.setType("jeans");
         setItemImage(item17,"/images/vaquero_hombre_7.PNG");
 
-        Optional<Item> item017 = itemRepo.findByCode(item17.getCode());
-        if(!item017.isPresent())      
+            
             itemRepo.save(item17);
 
         
@@ -497,8 +470,7 @@ public class DataBaseInitializer {
         item21.setType("camisa");
         setItemImage(item21, "/images/camisa_1.PNG");
 
-        Optional<Item> item021 = itemRepo.findByCode(item21.getCode());
-        if(!item021.isPresent())      
+           
             itemRepo.save(item21);
 
         
@@ -512,8 +484,7 @@ public class DataBaseInitializer {
         item22.setType("camisa");
         setItemImage(item22,"/images/camisa_2.PNG");
 
-        Optional<Item> item022 = itemRepo.findByCode(item22.getCode());
-        if(!item022.isPresent())      
+            
             itemRepo.save(item22);
 
         
@@ -527,8 +498,7 @@ public class DataBaseInitializer {
         item23.setType("camisa");
         setItemImage(item23,"/images/camisa_3.PNG");
 
-        Optional<Item> item023 = itemRepo.findByCode(item23.getCode());
-        if(!item023.isPresent())      
+            
             itemRepo.save(item23);
 
         
@@ -542,8 +512,7 @@ public class DataBaseInitializer {
         item24.setType("camisa");
         setItemImage(item24,"/images/camisa_4.PNG");
 
-        Optional<Item> item024 = itemRepo.findByCode(item24.getCode());
-        if(!item024.isPresent())      
+             
             itemRepo.save(item24);
 
         
@@ -557,8 +526,7 @@ public class DataBaseInitializer {
         item25.setType("camisa");
         setItemImage(item25,"/images/camisa_5.PNG");
 
-        Optional<Item> item025 = itemRepo.findByCode(item25.getCode());
-        if(!item025.isPresent())      
+            
             itemRepo.save(item25);
 
         
@@ -572,8 +540,7 @@ public class DataBaseInitializer {
         item26.setType("camisa");
         setItemImage(item26,"/images/camisa_6.PNG");
 
-        Optional<Item> item026 = itemRepo.findByCode(item26.getCode());
-        if(!item026.isPresent())      
+            
             itemRepo.save(item26);
 
         
@@ -587,8 +554,7 @@ public class DataBaseInitializer {
         item27.setType("camisa");
         setItemImage(item27,"/images/camisa_7.PNG");   
         
-        Optional<Item> item027 = itemRepo.findByCode(item27.getCode());
-        if(!item027.isPresent())      
+            
             itemRepo.save(item27);
 
         
@@ -602,8 +568,7 @@ public class DataBaseInitializer {
         item31.setType("camiseta");
         setItemImage(item31, "/images/camiseta_2.PNG");
 
-        Optional<Item> item031 = itemRepo.findByCode(item31.getCode());
-        if(!item031.isPresent())      
+        
             itemRepo.save(item31);
 
         
@@ -617,8 +582,7 @@ public class DataBaseInitializer {
         item32.setType("camiseta");
         setItemImage(item32,"/images/camiseta_3.PNG");
 
-        Optional<Item> item032 = itemRepo.findByCode(item32.getCode());
-        if(!item032.isPresent())      
+         
             itemRepo.save(item32);
 
         
@@ -632,8 +596,7 @@ public class DataBaseInitializer {
         item33.setType("camiseta");
         setItemImage(item33,"/images/camiseta_5.PNG");
 
-        Optional<Item> item033 = itemRepo.findByCode(item33.getCode());
-        if(!item033.isPresent())      
+           
             itemRepo.save(item33);
 
         
@@ -649,8 +612,7 @@ public class DataBaseInitializer {
 
         //item34.getUsers().add(user2);
 
-        Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
-        if(!item034.isPresent())      
+         
             itemRepo.save(item34);
 
         
@@ -664,8 +626,7 @@ public class DataBaseInitializer {
         item35.setType("camiseta");
         setItemImage(item35,"/images/camiseta_7.PNG");
 
-        Optional<Item> item035 = itemRepo.findByCode(item35.getCode());
-        if(!item035.isPresent())      
+            
             itemRepo.save(item35);
 
         
@@ -679,8 +640,7 @@ public class DataBaseInitializer {
         item36.setType("camiseta");
         setItemImage(item36,"/images/camisetas_1.PNG");
 
-        Optional<Item> item036 = itemRepo.findByCode(item36.getCode());
-        if(!item036.isPresent())      
+           
             itemRepo.save(item36);
 
         
@@ -694,8 +654,7 @@ public class DataBaseInitializer {
         item37.setType("camiseta");
         setItemImage(item37,"/images/camisetas_4.PNG");   
 
-        Optional<Item> item037 = itemRepo.findByCode(item37.getCode());
-        if(!item037.isPresent())      
+             
             itemRepo.save(item37);
 
         
@@ -709,8 +668,7 @@ public class DataBaseInitializer {
         item41.setType("zapato");
         setItemImage(item41, "/images/zapato_1.PNG");
 
-        Optional<Item> item041 = itemRepo.findByCode(item41.getCode());
-        if(!item041.isPresent())      
+              
             itemRepo.save(item41);
 
         stock5.setItem(item41);
@@ -724,10 +682,9 @@ public class DataBaseInitializer {
 
 
         //--> save stock into the db
-        Optional<Shoe> stock05 = shoeRepo.findByCode(stock5.getCode());
-        if(!stock05.isPresent()){
+       
             shoeRepo.save(stock5);
-        }
+        
 
         ItemToBuy itemBuy2 = new ItemToBuy();
         itemBuy2.setCode("GFD7643");
@@ -744,8 +701,7 @@ public class DataBaseInitializer {
         //shoppingCart.setTotalCost(cost);
         itemBuy2.getItems().add(item41); 
 
-        Optional<ItemToBuy> itemBuy02 = itemToBuyRepo.findByCode(itemBuy2.getCode());
-        if(!itemBuy02.isPresent())
+     
             itemToBuyRepo.save(itemBuy2);
 
 
@@ -760,8 +716,7 @@ public class DataBaseInitializer {
         item42.setType("zapato");
         setItemImage(item42,"/images/zapato_2.PNG");
 
-        Optional<Item> item042 = itemRepo.findByCode(item42.getCode());
-        if(!item042.isPresent())      
+          
             itemRepo.save(item42);
 
 
@@ -774,8 +729,7 @@ public class DataBaseInitializer {
         item43.setType("zapato");
         setItemImage(item43,"/images/zapato_3.PNG");
 
-        Optional<Item> item043 = itemRepo.findByCode(item43.getCode());
-        if(!item043.isPresent())      
+     
             itemRepo.save(item43);
 
 
@@ -788,8 +742,7 @@ public class DataBaseInitializer {
         item44.setType("zapato");
         setItemImage(item44,"/images/zapato_4.PNG");
 
-        Optional<Item> item044 = itemRepo.findByCode(item44.getCode());
-        if(!item044.isPresent())      
+         
             itemRepo.save(item44);
 
 
@@ -802,8 +755,7 @@ public class DataBaseInitializer {
         item45.setType("zapato");
         setItemImage(item45,"/images/zapato_5.PNG");
 
-        Optional<Item> item045 = itemRepo.findByCode(item45.getCode());
-        if(!item045.isPresent())      
+     
             itemRepo.save(item45);
 
 
@@ -816,8 +768,7 @@ public class DataBaseInitializer {
         item46.setType("zapato");
         setItemImage(item46,"/images/zapato_6.PNG");
 
-        Optional<Item> item046 = itemRepo.findByCode(item46.getCode());
-        if(!item046.isPresent())      
+         
             itemRepo.save(item46);
 
 
@@ -830,8 +781,7 @@ public class DataBaseInitializer {
         item47.setType("zapato");
         setItemImage(item47,"/images/zapato_7.PNG");   
         
-        Optional<Item> item047 = itemRepo.findByCode(item47.getCode());
-        if(!item047.isPresent())      
+          
             itemRepo.save(item47);
 
         
@@ -844,8 +794,7 @@ public class DataBaseInitializer {
         item48.setType("zapato");
         setItemImage(item48, "/images/zapato_8.PNG");
 
-        Optional<Item> item048 = itemRepo.findByCode(item48.getCode());
-        if(!item048.isPresent())      
+          
             itemRepo.save(item48);
 
 
@@ -858,8 +807,7 @@ public class DataBaseInitializer {
         item49.setType("zapato");
         setItemImage(item49,"/images/zapato_9.PNG");
 
-        Optional<Item> item049 = itemRepo.findByCode(item49.getCode());
-        if(!item049.isPresent())      
+    
             itemRepo.save(item49);
 
 
@@ -872,8 +820,7 @@ public class DataBaseInitializer {
         item50.setType("zapato");
         setItemImage(item50,"/images/zapato_10.PNG");
 
-        Optional<Item> item050 = itemRepo.findByCode(item50.getCode());
-        if(!item050.isPresent())      
+    
             itemRepo.save(item50);
 
 
@@ -886,8 +833,7 @@ public class DataBaseInitializer {
         item51.setType("zapato");
         setItemImage(item51,"/images/zapato_11.PNG");
 
-        Optional<Item> item051 = itemRepo.findByCode(item51.getCode());
-        if(!item051.isPresent())      
+    
             itemRepo.save(item51);
 
 
@@ -900,8 +846,7 @@ public class DataBaseInitializer {
         item52.setType("zapato");
         setItemImage(item52,"/images/zapato_12.PNG");
 
-        Optional<Item> item052 = itemRepo.findByCode(item52.getCode());
-        if(!item052.isPresent())      
+    
             itemRepo.save(item52);
 
 
@@ -915,8 +860,7 @@ public class DataBaseInitializer {
         setItemImage(item53,"/images/zapato_13.PNG");
 
 
-        Optional<Item> item053 = itemRepo.findByCode(item53.getCode());
-        if(!item053.isPresent())      
+     
             itemRepo.save(item53);
 
 
@@ -937,57 +881,47 @@ public class DataBaseInitializer {
         size2.setCode("SIZE2");
         size2.setLabel("M");
         stock2.setSize(size2);  
-        Optional<Size> size02 = sizeRepo.findByCode(size2.getCode());
-        if(!size02.isPresent()){
+
             sizeRepo.save(size2);           
-        }
+        
 
         Size size4 = new Size();
         size4.setCode("SIZE4");
         size4.setLabel("36");
         stock3.setSize(size4);
-        Optional<Size> size04 = sizeRepo.findByCode(size4.getCode());
-        if(!size04.isPresent())
+
             sizeRepo.save(size4);
         
         stock2.setItem(item34);
         
         stock3.setItem(item34);
 
-        Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
-        if(!stock02.isPresent())
+
             clothesRepo.save(stock2);
 
-        Optional<Clothes> stock03 = clothesRepo.findByCode(stock3.getCode());
-        if(!stock03.isPresent()){
+
             clothesRepo.save(stock3);
-        }
+        
 
 
 
-        Optional<Clothes> stock04 = clothesRepo.findByCode(stock4.getCode());
-        if(!stock04.isPresent())
+       
             clothesRepo.save(stock4);
 
-        Optional<Shoe> stock06 = shoeRepo.findByCode(stock6.getCode());
-        if(!stock06.isPresent()){
             shoeRepo.save(stock6);
-        }
+        
 
-        Optional<Shoe> stock07 = shoeRepo.findByCode(stock7.getCode());
-        if(!stock07.isPresent()){
+      
             shoeRepo.save(stock7);
-        }
+        
 
-        Optional<Shoe> stock08 = shoeRepo.findByCode(stock8.getCode());
-        if(!stock08.isPresent()){
+ 
             shoeRepo.save(stock8);
-        }
+        
 
-        Optional<Shoe> stock09 = shoeRepo.findByCode(stock9.getCode());
-        if(!stock09.isPresent()){
+
             shoeRepo.save(stock9);
-        }
+        
 
         
 
