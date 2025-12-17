@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/bulma.min.css">
-    <link rel="stylesheet" href="https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/material-design-iconic-font.css">
-    <link rel="stylesheet" href="https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/styles.css">
+    <link rel="stylesheet" href="//pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/bulma.min.css">
+    <link rel="stylesheet" href="//pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="//pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/css/styles.css">
     <title>Avenue Fashion</title>
 </head>
 
@@ -41,14 +41,14 @@
                     {{#logged}}
                     {{#user}}
                     <div class="user-img">
-                        <a href="/store/login"><img src="http://localhost:8443/api/users/{{id}}/image" alt="" width="50" height="50"></img></a>
+                        <a href="/store/login"><img src="/store/api/users/{{id}}/image" alt="" width="50" height="50"></img></a>
                     </div>
                     <li class="nav-menu-item"><a href="/store/my_profile" class="nav-menu-link">My profile</a></li>
                     <li class="nav-menu-item"><a href="/order/orders/users/{{id}}" class="nav-menu-link">Orders</a></li>
                     {{/user}}
                     {{#admin}}
                     <div class="user-img">
-                        <img src="http://localhost:8443/api/users/6/image" alt="" width="50" height="50"></img>
+                        <img src="/store/api/users/8/image" alt="" width="50" height="50"></img>
                     </div>
                     <li class="nav-menu-item"><a href="/inventory/items/" class="nav-menu-link">Inventory</a></li>
                     <li class="nav-menu-item"><a href="/order/orders/admin" class="nav-menu-link">Orders</a></li>        
@@ -57,7 +57,7 @@
                     {{/logged}}
                     {{^logged}}
                     <div class="user-img">
-                        <img src="http://localhost:8443/api/users/6/image" alt="" width="50" height="50"></img>
+                        <img src="/store/api/users/8/image" alt="" width="50" height="50"></img>
                     </div>   
                     <li class="nav-menu-item"><a href="/store/signup" class="nav-menu-link">Registration</a></li>
                     <li class="nav-menu-item"><a href="/store/login" class="nav-menu-link">Login</a></li>
@@ -161,7 +161,7 @@
             <li class="footer-bar-top-links">2024 Avenue Fashion</li>
         </div>
     </footer>
-    <script src="https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/js/main.js"></script>
+    <script src="//pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/js/main.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
 </body>
@@ -170,7 +170,7 @@
     var size1=10;
     var size2=10;
 
-    let ruta="http://localhost:8443/api/items?size=" + size;
+    let ruta="/store/api/items?size=" + size;
 
     function loadInitItems(callback,size){
         $.ajax({
@@ -202,7 +202,7 @@
     function showItemLoaded(item){
         $('#itemListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span><img src="http://localhost:8443/api/items/' + item.id + 
+            '</span><img src="/store/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#logged}}{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}{{/logged}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -213,7 +213,7 @@
     function showItemFoundedLoaded(item){
         $('#itemFoundedListing').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span><img src="http://localhost:8443/api/items/' + item.id + 
+            '</span><img src="/store/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#logged}}{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}{{/logged}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -224,7 +224,7 @@
     function showFavItemLoaded(item, id){
         $('#favouritesItems').append(
             '<div class="column is-half-mobile is-one-quarter-desktop"><div class="card"><span class="price">' + item.price +
-            '</span><img src="http://localhost:8443/api/items/' + item.id + 
+            '</span><img src="/store/api/items/' + item.id + 
             '/image" alt="" width="200" height="200">{{#user}}<div class="card-simple-options"><a href="/store/items/' + 
             item.id + '/page" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">ADD</div></div></a></div>{{/user}}<div class="card-info"><h4 class="has-text-black has-text-centered has-text-weight-bold">' +
             item.name + '</h4><p class="has-text-centered">' + item.description + '<h4 class="has-text-black has-text-centered has-text-weight-bold">' + item.price + 
@@ -266,7 +266,7 @@
         $('.pagination').click(function() {
             size+=10;
 
-            let ruta="http://localhost:8443/api/items?size=" +size;
+            let ruta="/store/api/items?size=" +size;
 
             $('#spinner-div').show();
             $.ajax({
@@ -287,7 +287,7 @@
             $('#itemFoundedListing').empty();
             size1=10;
             let value = $('#name').val();
-            let ruta="http://localhost:8443/api/items/"+value+"?size="+size1;
+            let ruta="/store/api/items/"+value+"?size="+size1;
 
             $('#spinner-div').show();
             $.ajax({
@@ -310,7 +310,7 @@
             let value= $('#name').val();
             if(value != ""){
                 size1+=10;
-                let ruta="http://localhost:8443/api/items/"+value+"?size="+size1;
+                let ruta="/store/api/items/"+value+"?size="+size1;
 
                 $('#spinner-div').show();
                 $.ajax({
@@ -330,7 +330,7 @@
         $('.fav-items-pagination').click(function() {
             size2+=10;
 
-            let ruta="http://localhost:8443/items/favourites/user?size="+size2;
+            let ruta="/store/items/favourites/user?size="+size2;
 
             $('#spinner-div').show();
             $.ajax({
