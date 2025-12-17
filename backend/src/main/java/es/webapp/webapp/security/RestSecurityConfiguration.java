@@ -76,7 +76,7 @@ public class RestSecurityConfiguration{
                 registry.antMatchers(HttpMethod.POST,"/api/add/cart/users/{name}/items/{id}").hasRole("USER"); 
                 registry.antMatchers(HttpMethod.GET,"/api/orders/users/{username}").hasRole("USER"); 
                 registry.antMatchers(HttpMethod.POST,"/api/items/{code}/favourites/{id}/new").hasRole("USER");
-                //registry.anyRequest().permitAll();
+                registry.anyRequest().permitAll();
             })
             .csrf().disable()
             .httpBasic().disable()
