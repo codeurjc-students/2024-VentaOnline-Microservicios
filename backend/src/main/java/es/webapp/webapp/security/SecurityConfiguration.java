@@ -71,7 +71,7 @@ public class SecurityConfiguration{
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.headers(header -> 
-        header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "https://localhost:8443")));
+        header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
         http.cors();
         return http.build();
     }
