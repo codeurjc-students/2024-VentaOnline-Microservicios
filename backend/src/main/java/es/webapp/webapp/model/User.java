@@ -47,6 +47,8 @@ public class User {
 
 
     @Lob
+    @Transient
+    @JsonIgnore
     @Column(name = "imageFile")
     private Blob imageFile;
 
