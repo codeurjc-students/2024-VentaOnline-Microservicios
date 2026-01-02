@@ -15,8 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.webapp.webapp.model.Direction;
+import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.model.UserDTO;
+import es.webapp.webapp.model.newUserDTO;
 import es.webapp.webapp.repository.DirectionRepo;
+import es.webapp.webapp.repository.ShoppingCartRepo;
 import es.webapp.webapp.repository.UserRepo;
 
 @Service
@@ -27,6 +31,9 @@ public class UserService {
 
     @Autowired
     private DirectionRepo directionRepo;
+
+    @Autowired
+    private ShoppingCartRepo shoppingCartRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -194,7 +201,71 @@ public class UserService {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
         
-    } 
+    }
+
+    public void updateDTO(Integer id, UserDTO newUser) {
+
+         Optional<User> user = userRepo.findById(id);
+
+        if(user.isPresent()){
+            if (newUser.getName() != "") 
+                user.get().setName(newUser.getName());
+            else
+                user.get().setName(user.get().getName());
+
+            if (newUser.getEmail() != "") 
+                user.get().setEmail(newUser.getEmail());
+            else
+                user.get().setEmail(user.get().getEmail());
+
+            //if (newUser.getDirection() != null) {
+                if (user.get().getDirection() == null) 
+                    user.get().setDirection(new Direction());
+
+                if (newUser.getCode() != "") user.get().getDirection().setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));  
+                if (newUser.getStreet() != "") user.get().getDirection().setStreet(newUser.getStreet());
+                if (newUser.getNumber() != 0) user.get().getDirection().setNumber(newUser.getNumber());
+                if (newUser.getZipCode() != 0) user.get().getDirection().setZipCode(newUser.getZipCode());
+                if (newUser.getCity() != "")    user.get().getDirection().setCity(newUser.getCity());
+            //}
+                
+            directionRepo.save(user.get().getDirection());
+            userRepo.save(user.get());
+        }
+    }
+
+    public User addDTO(newUserDTO newUser) {
+        User user = new User();
+
+        Direction newAddress = new Direction();
+        if (newUser.getCode() != null || newUser.getCode() != "") newAddress.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));  
+        if (newUser.getStreet() != "") newAddress.setStreet(newUser.getStreet());
+        if (newUser.getNumber() != 0) newAddress.setNumber(newUser.getNumber());
+        if (newUser.getZipCode() != 0) newAddress.setZipCode(newUser.getZipCode());
+        if (newUser.getCity() != "")    newAddress.setCity(newUser.getCity());
+        directionRepo.save(newAddress);
+        user.setDirection(newAddress);
+
+        ShoppingCart cart = new ShoppingCart();
+        shoppingCartRepo.save(cart);
+        user.setShoppingCart(cart);
+
+        if (newUser.getUsername() != "") 
+            user.setUsername(newUser.getUsername());
+        if (newUser.getName() != "") 
+            user.setName(newUser.getName());
+        if (newUser.getEmail() != "") 
+            user.setEmail(newUser.getEmail());
+
+        if(newUser.getPassword().equals(newUser.getPasswordConfirmation())){
+            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            user.setPasswordConfirmation(passwordEncoder.encode(newUser.getPasswordConfirmation()));
+            user.setRol("USER");
+        }else{
+            return null;
+        }
+        return userRepo.save(user);
+    }
 
     /*public void update(Integer id, User newUser){
         Optional<User> user = userRepo.findById(id);

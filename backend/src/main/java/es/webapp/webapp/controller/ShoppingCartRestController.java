@@ -111,6 +111,8 @@ public class ShoppingCartRestController {
     public ResponseEntity<String> deleteItemToBuyById(@PathVariable Integer id){
         Optional<ItemToBuy> item = itemToBuyService.findById(id);
         if(item.isPresent()){
+            
+            itemToBuyService.updateShoppingCart(item.get());
             itemToBuyService.deleteById(id);
             return new ResponseEntity<>("done",HttpStatus.OK);
         }else{

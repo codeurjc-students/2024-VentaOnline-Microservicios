@@ -31,6 +31,8 @@ import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.Order;
 import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.model.UserDTO;
+import es.webapp.webapp.model.newUserDTO;
 import es.webapp.webapp.service.DirectionService;
 import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
@@ -77,14 +79,8 @@ public class UserRestController {
     })
     @PostMapping("/api/users/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> addUser(@RequestBody User newUser){
-        Direction newAddress = new Direction();
-        directionService.save(newAddress);
-        newUser.setDirection(newAddress);
-        ShoppingCart cart = new ShoppingCart();
-        shoppingCartService.save(cart);
-        newUser.setShoppingCart(cart);
-        User user = userService.add(newUser);
+    public ResponseEntity<User> addUser(@RequestBody newUserDTO newUser){
+        User user = userService.addDTO(newUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
@@ -171,13 +167,13 @@ public class UserRestController {
         @ApiResponse(responseCode = "404", description = "No user image posted", content = @Content)
     })
     @PostMapping("/api/users/{id}/image")
-    public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile avatar) throws IOException{
+    public ResponseEntity<User> addUserImage(@PathVariable Integer id, @RequestParam MultipartFile imageFile) throws IOException{
         
         Optional<User> user = userService.findById(id);
 
         URI location = fromCurrentRequest().build().toUri();
         
-        user.get().setImageFile(BlobProxy.generateProxy(avatar.getInputStream(), avatar.getSize()));
+        user.get().setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
 
         
         //userService.setPassword(id,user.get());
@@ -198,15 +194,13 @@ public class UserRestController {
         @ApiResponse(responseCode = "404", description = "No user updated", content = @Content)
     })
     @PutMapping("/api/users/{id}/update")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User newUser, Direction address) throws IOException{
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody UserDTO newUser) throws IOException{
         
         Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){
 
-            //newUser.setDirection(user.get().getDirection());
-            //newUser.setId(user.get().getId());
-            userService.update(id, newUser, address, null);
+            userService.updateDTO(id, newUser);
 
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
@@ -214,7 +208,7 @@ public class UserRestController {
         }
     }
 
-    @Operation(summary = "Update an user address")
+    /*@Operation(summary = "Update an user address")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Update an user address", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
@@ -235,7 +229,7 @@ public class UserRestController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
     @Operation(summary = "Get an user image")
     @ApiResponses(value = {

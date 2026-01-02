@@ -117,4 +117,21 @@ public class OrderRestController {
         } 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Operation(summary = "Get user orders paged")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Get user orders paged", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Orders not founded", content = @Content)
+    })
+    @GetMapping("/api/orders/user/{id}")
+    public ResponseEntity<Page<Order>> getOrdersByUser(@PathVariable Integer id, Pageable page) {
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()) {
+            return new ResponseEntity<>(orderService.findByUser(user.get(),page),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

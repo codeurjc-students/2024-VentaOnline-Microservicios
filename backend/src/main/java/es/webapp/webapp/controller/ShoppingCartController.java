@@ -89,30 +89,12 @@ public class ShoppingCartController {
         Optional<ItemToBuy> itemToBuy = itemToBuyService.findById(id);
 
         User user = itemToBuy.get().getShoppingCart().getUser();
-        Item product = itemToBuy.get().getItems().get(0);
-        int count = itemToBuy.get().getCount();
 
         if(itemToBuy.isPresent()) {
             itemToBuyService.deleteById(id);
         }
     
-        //remove item from shopping cart
-        user.getShoppingCart().getItems().remove(itemToBuy.get());
-
-        //increase the stock
-        for(Stock<?> stock: product.getStocks()){
-            if(stock.getSize().getLabel().equals(itemToBuy.get().getSize())){
-                stock.setStock(stock.getStock() + count);
-                
-            }
-        }
-
-        //update cost of the shopping cart
-        double cost = (count * product.getPrice());
-        double totalCost = (user.getShoppingCart().getTotalCost() - cost);
-        user.getShoppingCart().setTotalCost(totalCost);
-
-        shoppingCartService.save(user.getShoppingCart());
+        itemToBuyService.updateShoppingCart(itemToBuy.get());
 
 
         List<ItemToBuy> itemsToBuy = itemToBuyService.findByShoppingCart(user.getShoppingCart());
