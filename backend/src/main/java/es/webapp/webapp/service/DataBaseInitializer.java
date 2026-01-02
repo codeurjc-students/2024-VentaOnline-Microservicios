@@ -94,7 +94,6 @@ public class DataBaseInitializer {
         directionRepo.save(address);
         user1.setDirection(address);
         
-        
             userRepo.save(user1);
             redisTemplate.opsForValue().set("user:administrator1", user1);
         
@@ -102,8 +101,6 @@ public class DataBaseInitializer {
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
         shoppingCart.setBuyTime(LocalTime.now().toString());
-        Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
-        if (!cart01.isPresent())
             shoppingCartRepo.save(shoppingCart);
 
         User user2 = new User();
