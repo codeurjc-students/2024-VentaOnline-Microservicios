@@ -90,17 +90,35 @@ public class DataBaseInitializer {
         user1.setRol("ADMIN");
 
         Direction address = new Direction("Calle Roma",2,85503,"Almería");
-        address.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
-        directionRepo.save(address);
-        user1.setDirection(address);
+        //address.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
+        address.setCode("address01");
+        Optional<Direction> address01 = directionRepo.findByCode(address.getCode());
+        if (!address01.isPresent()) {
+            directionRepo.save(address);
+            user1.setDirection(address);
+        }
         
+        
+        Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
+        if(!user01.isPresent()){
             userRepo.save(user1);
-            redisTemplate.opsForValue().set("user:administrator1", user1);
-        
+            User user1Redis = new User();
+            user1Redis.setId(user1.getId());
+            user1Redis.setUsername(user1.getUsername());
+            user1Redis.setEmail(user1.getEmail());
+            user1Redis.setRol(user1.getRol());
+            user1Redis.setPassword(user1.getPassword());
+            user1Redis.setPasswordConfirmation(user1.getPasswordConfirmation());
+            user1Redis.setDirection(user1.getDirection());
+            user1Redis.setImageFile(null);
+            redisTemplate.opsForValue().set("user:administrator1", user1Redis);
+        }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCode("sh_cart1");
         shoppingCart.setTotalCost(23.26);
         shoppingCart.setBuyTime(LocalTime.now().toString());
+        Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
+        if (!cart01.isPresent())
             shoppingCartRepo.save(shoppingCart);
 
         User user2 = new User();
@@ -110,28 +128,53 @@ public class DataBaseInitializer {
         user2.setPassword(passwordEncoder.encode("user02"));
         user2.setPasswordConfirmation(passwordEncoder.encode("user02"));
         user2.setRol("USER");
-        setUserImage(user2, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/ava1.jpg");
+        setUserImage(user2, "/images/ava1.jpg");
 
         Direction address2 = new Direction("Calle de la constitución",1,28933,"Madrid");
-        address2.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
-        directionRepo.save(address2);
-        user2.setDirection(address2);
-     
+        address2.setCode("address02");
+        Optional<Direction> address02 = directionRepo.findByCode(address2.getCode());
+        if (!address02.isPresent()) {
+            directionRepo.save(address2);
+            user2.setDirection(address2);
+        }
+       
+        Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
+        
+        if(!user02.isPresent()){
             user2.setShoppingCart(shoppingCart);
             userRepo.save(user2);
-            redisTemplate.opsForValue().set("user:carlos", user2);
-        
+            User user2Redis = new User();
+            user2Redis.setId(user2.getId());
+            user2Redis.setUsername(user2.getUsername());
+            user2Redis.setName(user2.getName());
+            user2Redis.setEmail(user2.getEmail());
+            user2Redis.setRol(user2.getRol());
+            user2Redis.setPassword(user2.getPassword());
+            user2Redis.setPasswordConfirmation(user2.getPasswordConfirmation());
+            user2Redis.setDirection(user2.getDirection());
+            user2Redis.setShoppingCart(user2.getShoppingCart());
+            user2Redis.setImageFile(null);
+            redisTemplate.opsForValue().set("user:carlos", user2Redis);
+        }
 
         User user3 = new User();
         user3.setUsername("anonymous");
         user3.setName("anonymous");
         user3.setEmail("an@yahoo.es");
-        setUserImage(user3, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/user-img.png");
+        setUserImage(user3, "/images/user-img.png");
 
-      
-            userRepo.save(user3);
-            redisTemplate.opsForValue().set("user:anonymous", user3);
+        Optional<User> user03 = userRepo.findByUsername(user3.getUsername());
         
+        if(!user03.isPresent()){
+            userRepo.save(user3);
+            User user3Redis = new User();
+            user3Redis.setId(user3.getId());
+            user3Redis.setUsername(user3.getUsername());
+            user3Redis.setName(user3.getName());
+            user3Redis.setEmail(user3.getEmail());
+            user3Redis.setImageFile(null);
+            redisTemplate.opsForValue().set("user:anonymous", user3Redis);
+        }
 
         //ITEMS & STOCKS
         //1:N
@@ -150,10 +193,11 @@ public class DataBaseInitializer {
         size1.setCode("SIZE1");
         size1.setLabel("S");
 
-      
+        Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
+        if (!size01.isPresent()) {
             sizeRepo.save(size1);
             stock1.setSize(size1);
-        
+        }  
 
 
 
@@ -182,10 +226,11 @@ public class DataBaseInitializer {
         size3.setCode("SIZE3");
         size3.setLabel("40");
 
-    
+        Optional<Size> size03 = sizeRepo.findByCode("SIZE3");
+        if (!size03.isPresent()) {
             sizeRepo.save(size3);
             stock5.setSize(size3);
-         
+        }  
 
 
 
@@ -223,7 +268,7 @@ public class DataBaseInitializer {
         item1.setPrice(18.00);
         item1.setGender("woman");
         item1.setType("jeans");
-        setItemImage(item1, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_1.PNG");
+        setItemImage(item1, "/images/vaquero_mujer_1.PNG");
        
         //USERS <--> FAVOURITES ITEMS
         //M:N
@@ -231,7 +276,8 @@ public class DataBaseInitializer {
         item1.getUsers().add(user2);
          
 
-           
+        Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
+        if(!item01.isPresent())      
             itemRepo.save(item1);
 
         stock1.setItem(item1);
@@ -245,9 +291,11 @@ public class DataBaseInitializer {
         //--> establish relationship stock <--> item /an item can have several stocks
 
 
-    
+        //--> save stock into the db
+        Optional<Clothes> stock01 = clothesRepo.findByCode(stock1.getCode());
+        if(!stock01.isPresent()){
             clothesRepo.save(stock1);
-        
+        }
      
 
         Item item2 = new Item();
@@ -257,9 +305,10 @@ public class DataBaseInitializer {
         item2.setPrice(20.87);
         item2.setGender("woman");
         item2.setType("jeans");
-        setItemImage(item2,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_2.PNG");
+        setItemImage(item2,"/images/vaquero_mujer_2.PNG");
 
-          
+        Optional<Item> item02 = itemRepo.findByCode(item2.getCode());
+        if(!item02.isPresent())      
             itemRepo.save(item2);
 
         //ORDERS
@@ -274,9 +323,10 @@ public class DataBaseInitializer {
         order.setUser(user2);
 
         
-        
+        Optional<Order> order01 = orderRepo.findByCode(order.getCode());
+        if(!order01.isPresent()) {
             orderRepo.save(order);
-        
+        }
 
         itemBuy1.setOrder(order);
         //M:N
@@ -284,7 +334,8 @@ public class DataBaseInitializer {
         itemBuy1.getItems().add(item1);  
         
         
-       
+        Optional<ItemToBuy> itemBuy01 = itemToBuyRepo.findByCode(itemBuy1.getCode());
+        if(!itemBuy01.isPresent())
             itemToBuyRepo.save(itemBuy1);
         
 
@@ -295,9 +346,10 @@ public class DataBaseInitializer {
         item3.setPrice(18.00);
         item3.setGender("woman");
         item3.setType("jeans");
-        setItemImage(item3,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_3.PNG");
+        setItemImage(item3,"/images/vaquero_mujer_3.PNG");
 
-          
+        Optional<Item> item03 = itemRepo.findByCode(item3.getCode());
+        if(!item03.isPresent())      
             itemRepo.save(item3);
 
         Item item4 = new Item();
@@ -307,9 +359,10 @@ public class DataBaseInitializer {
         item4.setPrice(8.69);
         item4.setGender("woman");
         item4.setType("jeans");
-        setItemImage(item4,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_4.PNG");
+        setItemImage(item4,"/images/vaquero_mujer_4.PNG");
 
-       
+        Optional<Item> item04 = itemRepo.findByCode(item4.getCode());
+        if(!item04.isPresent())      
             itemRepo.save(item4);
 
         Item item5 = new Item();
@@ -319,9 +372,10 @@ public class DataBaseInitializer {
         item5.setPrice(10.00);
         item5.setGender("woman");
         item5.setType("jeans");
-        setItemImage(item5,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_5.PNG");
+        setItemImage(item5,"/images/vaquero_mujer_5.PNG");
 
-         
+        Optional<Item> item05 = itemRepo.findByCode(item5.getCode());
+        if(!item05.isPresent())      
             itemRepo.save(item5);
 
         Item item6 = new Item();
@@ -331,9 +385,10 @@ public class DataBaseInitializer {
         item6.setPrice(18.00);
         item6.setGender("woman");
         item6.setType("jeans");
-        setItemImage(item6,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_6.PNG");
+        setItemImage(item6,"/images/vaquero_mujer_6.PNG");
 
-     
+        Optional<Item> item06 = itemRepo.findByCode(item6.getCode());
+        if(!item06.isPresent())      
             itemRepo.save(item6);
 
         Item item7 = new Item();
@@ -343,9 +398,10 @@ public class DataBaseInitializer {
         item7.setPrice(18.00);
         item7.setGender("woman");
         item7.setType("jeans");
-        setItemImage(item7,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_7.PNG");
+        setItemImage(item7,"/images/vaquero_mujer_7.PNG");
 
-       
+        Optional<Item> item07 = itemRepo.findByCode(item7.getCode());
+        if(!item07.isPresent())      
             itemRepo.save(item7);
 
         Item item8 = new Item();
@@ -355,9 +411,10 @@ public class DataBaseInitializer {
         item8.setPrice(10.00);
         item8.setGender("woman");
         item8.setType("jeans");
-        setItemImage(item8,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_mujer_8.PNG");
+        setItemImage(item8,"/images/vaquero_mujer_8.PNG");
 
-           
+        Optional<Item> item08 = itemRepo.findByCode(item8.getCode());
+        if(!item08.isPresent())      
             itemRepo.save(item8);
 
         Item item11 = new Item();
@@ -367,9 +424,10 @@ public class DataBaseInitializer {
         item11.setPrice(17.53);
         item11.setGender("man");
         item11.setType("jeans");
-        setItemImage(item11, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_1.PNG");
+        setItemImage(item11, "/images/vaquero_hombre_1.PNG");
 
-        
+        Optional<Item> item011 = itemRepo.findByCode(item11.getCode());
+        if(!item011.isPresent())      
             itemRepo.save(item11);
 
         
@@ -381,9 +439,10 @@ public class DataBaseInitializer {
         item12.setPrice(18.00);
         item12.setGender("man");
         item12.setType("jeans");
-        setItemImage(item12,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_2.PNG");
+        setItemImage(item12,"/images/vaquero_hombre_2.PNG");
 
-           
+        Optional<Item> item012 = itemRepo.findByCode(item12.getCode());
+        if(!item012.isPresent())      
             itemRepo.save(item12);
 
         
@@ -395,9 +454,10 @@ public class DataBaseInitializer {
         item13.setPrice(18.00);
         item13.setGender("man");
         item13.setType("jeans");
-        setItemImage(item13,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_3.PNG");
+        setItemImage(item13,"/images/vaquero_hombre_3.PNG");
 
-            
+        Optional<Item> item013 = itemRepo.findByCode(item13.getCode());
+        if(!item013.isPresent())      
             itemRepo.save(item13);
 
         
@@ -409,9 +469,10 @@ public class DataBaseInitializer {
         item14.setPrice(17.46);
         item14.setGender("man");
         item14.setType("jeans");
-        setItemImage(item14,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_4.PNG");
+        setItemImage(item14,"/images/vaquero_hombre_4.PNG");
 
-        
+        Optional<Item> item014 = itemRepo.findByCode(item14.getCode());
+        if(!item014.isPresent())      
             itemRepo.save(item14);
 
         
@@ -423,9 +484,10 @@ public class DataBaseInitializer {
         item15.setPrice(12.99);
         item15.setGender("man");
         item15.setType("jeans");
-        setItemImage(item15,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_5.PNG");
+        setItemImage(item15,"/images/vaquero_hombre_5.PNG");
 
-     
+        Optional<Item> item015 = itemRepo.findByCode(item15.getCode());
+        if(!item015.isPresent())      
             itemRepo.save(item15);
 
         
@@ -437,9 +499,10 @@ public class DataBaseInitializer {
         item16.setPrice(34.99);
         item16.setGender("man");
         item16.setType("jeans");
-        setItemImage(item16,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_6.PNG");
+        setItemImage(item16,"/images/vaquero_hombre_6.PNG");
 
-   
+        Optional<Item> item016 = itemRepo.findByCode(item16.getCode());
+        if(!item016.isPresent())      
             itemRepo.save(item16);
 
         
@@ -451,9 +514,10 @@ public class DataBaseInitializer {
         item17.setPrice(12.00);
         item17.setGender("man");
         item17.setType("jeans");
-        setItemImage(item17,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/vaquero_hombre_7.PNG");
+        setItemImage(item17,"/images/vaquero_hombre_7.PNG");
 
-      
+        Optional<Item> item017 = itemRepo.findByCode(item17.getCode());
+        if(!item017.isPresent())      
             itemRepo.save(item17);
 
         
@@ -465,9 +529,10 @@ public class DataBaseInitializer {
         item21.setPrice(17.35);
         item21.setGender("unisex");
         item21.setType("camisa");
-        setItemImage(item21, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_1.PNG");
+        setItemImage(item21, "/images/camisa_1.PNG");
 
-     
+        Optional<Item> item021 = itemRepo.findByCode(item21.getCode());
+        if(!item021.isPresent())      
             itemRepo.save(item21);
 
         
@@ -479,9 +544,10 @@ public class DataBaseInitializer {
         item22.setPrice(7.57);
         item22.setGender("unisex");
         item22.setType("camisa");
-        setItemImage(item22,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_2.PNG");
+        setItemImage(item22,"/images/camisa_2.PNG");
 
-    
+        Optional<Item> item022 = itemRepo.findByCode(item22.getCode());
+        if(!item022.isPresent())      
             itemRepo.save(item22);
 
         
@@ -493,9 +559,10 @@ public class DataBaseInitializer {
         item23.setPrice(32.27);
         item23.setGender("unisex");
         item23.setType("camisa");
-        setItemImage(item23,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_3.PNG");
+        setItemImage(item23,"/images/camisa_3.PNG");
 
-  
+        Optional<Item> item023 = itemRepo.findByCode(item23.getCode());
+        if(!item023.isPresent())      
             itemRepo.save(item23);
 
         
@@ -507,9 +574,10 @@ public class DataBaseInitializer {
         item24.setPrice(8.99);
         item24.setGender("unisex");
         item24.setType("camisa");
-        setItemImage(item24,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_4.PNG");
+        setItemImage(item24,"/images/camisa_4.PNG");
 
-     
+        Optional<Item> item024 = itemRepo.findByCode(item24.getCode());
+        if(!item024.isPresent())      
             itemRepo.save(item24);
 
         
@@ -521,9 +589,10 @@ public class DataBaseInitializer {
         item25.setPrice(9.60);
         item25.setGender("unisex");
         item25.setType("camisa");
-        setItemImage(item25,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_5.PNG");
+        setItemImage(item25,"/images/camisa_5.PNG");
 
-       
+        Optional<Item> item025 = itemRepo.findByCode(item25.getCode());
+        if(!item025.isPresent())      
             itemRepo.save(item25);
 
         
@@ -535,8 +604,10 @@ public class DataBaseInitializer {
         item26.setPrice(18.63);
         item26.setGender("unisex");
         item26.setType("camisa");
-        setItemImage(item26,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_6.PNG");
-    
+        setItemImage(item26,"/images/camisa_6.PNG");
+
+        Optional<Item> item026 = itemRepo.findByCode(item26.getCode());
+        if(!item026.isPresent())      
             itemRepo.save(item26);
 
         
@@ -548,9 +619,10 @@ public class DataBaseInitializer {
         item27.setPrice(5.69);
         item27.setGender("unisex");
         item27.setType("camisa");
-        setItemImage(item27,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisa_7.PNG");   
+        setItemImage(item27,"/images/camisa_7.PNG");   
         
-    
+        Optional<Item> item027 = itemRepo.findByCode(item27.getCode());
+        if(!item027.isPresent())      
             itemRepo.save(item27);
 
         
@@ -562,9 +634,10 @@ public class DataBaseInitializer {
         item31.setPrice(420.00);
         item31.setGender("unisex");
         item31.setType("camiseta");
-        setItemImage(item31, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camiseta_2.PNG");
+        setItemImage(item31, "/images/camiseta_2.PNG");
 
-  
+        Optional<Item> item031 = itemRepo.findByCode(item31.getCode());
+        if(!item031.isPresent())      
             itemRepo.save(item31);
 
         
@@ -576,9 +649,10 @@ public class DataBaseInitializer {
         item32.setPrice(8.90);
         item32.setGender("unisex");
         item32.setType("camiseta");
-        setItemImage(item32,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camiseta_3.PNG");
+        setItemImage(item32,"/images/camiseta_3.PNG");
 
-           
+        Optional<Item> item032 = itemRepo.findByCode(item32.getCode());
+        if(!item032.isPresent())      
             itemRepo.save(item32);
 
         
@@ -590,8 +664,10 @@ public class DataBaseInitializer {
         item33.setPrice(20.00);
         item33.setGender("unisex");
         item33.setType("camiseta");
-        setItemImage(item33,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camiseta_5.PNG");
-     
+        setItemImage(item33,"/images/camiseta_5.PNG");
+
+        Optional<Item> item033 = itemRepo.findByCode(item33.getCode());
+        if(!item033.isPresent())      
             itemRepo.save(item33);
 
         
@@ -603,10 +679,12 @@ public class DataBaseInitializer {
         item34.setPrice(17.00);
         item34.setGender("unisex");
         item34.setType("camiseta");
-        setItemImage(item34,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camiseta_6.PNG");
+        setItemImage(item34,"/images/camiseta_6.PNG");
 
         //item34.getUsers().add(user2);
-     
+
+        Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
+        if(!item034.isPresent())      
             itemRepo.save(item34);
 
         
@@ -618,9 +696,10 @@ public class DataBaseInitializer {
         item35.setPrice(0.71);
         item35.setGender("unisex");
         item35.setType("camiseta");
-        setItemImage(item35,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camiseta_7.PNG");
+        setItemImage(item35,"/images/camiseta_7.PNG");
 
-     
+        Optional<Item> item035 = itemRepo.findByCode(item35.getCode());
+        if(!item035.isPresent())      
             itemRepo.save(item35);
 
         
@@ -632,9 +711,10 @@ public class DataBaseInitializer {
         item36.setPrice(2.30);
         item36.setGender("unisex");
         item36.setType("camiseta");
-        setItemImage(item36,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisetas_1.PNG");
+        setItemImage(item36,"/images/camisetas_1.PNG");
 
-      
+        Optional<Item> item036 = itemRepo.findByCode(item36.getCode());
+        if(!item036.isPresent())      
             itemRepo.save(item36);
 
         
@@ -646,8 +726,10 @@ public class DataBaseInitializer {
         item37.setPrice(6.99);
         item37.setGender("unisex");
         item37.setType("camiseta");
-        setItemImage(item37,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/camisetas_4.PNG");   
-     
+        setItemImage(item37,"/images/camisetas_4.PNG");   
+
+        Optional<Item> item037 = itemRepo.findByCode(item37.getCode());
+        if(!item037.isPresent())      
             itemRepo.save(item37);
 
         
@@ -659,8 +741,10 @@ public class DataBaseInitializer {
         item41.setPrice(23.26);
         item41.setGender("unisex");
         item41.setType("zapato");
-        setItemImage(item41, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_1.PNG");
-     
+        setItemImage(item41, "/images/zapato_1.PNG");
+
+        Optional<Item> item041 = itemRepo.findByCode(item41.getCode());
+        if(!item041.isPresent())      
             itemRepo.save(item41);
 
         stock5.setItem(item41);
@@ -674,9 +758,10 @@ public class DataBaseInitializer {
 
 
         //--> save stock into the db
- 
+        Optional<Shoe> stock05 = shoeRepo.findByCode(stock5.getCode());
+        if(!stock05.isPresent()){
             shoeRepo.save(stock5);
-        
+        }
 
         ItemToBuy itemBuy2 = new ItemToBuy();
         itemBuy2.setCode("GFD7643");
@@ -693,6 +778,8 @@ public class DataBaseInitializer {
         //shoppingCart.setTotalCost(cost);
         itemBuy2.getItems().add(item41); 
 
+        Optional<ItemToBuy> itemBuy02 = itemToBuyRepo.findByCode(itemBuy2.getCode());
+        if(!itemBuy02.isPresent())
             itemToBuyRepo.save(itemBuy2);
 
 
@@ -705,8 +792,10 @@ public class DataBaseInitializer {
         item42.setPrice(14.46);
         item42.setGender("unisex");
         item42.setType("zapato");
-        setItemImage(item42,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_2.PNG");
-     
+        setItemImage(item42,"/images/zapato_2.PNG");
+
+        Optional<Item> item042 = itemRepo.findByCode(item42.getCode());
+        if(!item042.isPresent())      
             itemRepo.save(item42);
 
 
@@ -717,8 +806,10 @@ public class DataBaseInitializer {
         item43.setPrice(12.89);
         item43.setGender("unisex");
         item43.setType("zapato");
-        setItemImage(item43,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_3.PNG");
-    
+        setItemImage(item43,"/images/zapato_3.PNG");
+
+        Optional<Item> item043 = itemRepo.findByCode(item43.getCode());
+        if(!item043.isPresent())      
             itemRepo.save(item43);
 
 
@@ -729,8 +820,10 @@ public class DataBaseInitializer {
         item44.setPrice(16.09);
         item44.setGender("unisex");
         item44.setType("zapato");
-        setItemImage(item44,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_4.PNG");
-    
+        setItemImage(item44,"/images/zapato_4.PNG");
+
+        Optional<Item> item044 = itemRepo.findByCode(item44.getCode());
+        if(!item044.isPresent())      
             itemRepo.save(item44);
 
 
@@ -741,8 +834,10 @@ public class DataBaseInitializer {
         item45.setPrice(14.89);
         item45.setGender("unisex");
         item45.setType("zapato");
-        setItemImage(item45,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_5.PNG");
-   
+        setItemImage(item45,"/images/zapato_5.PNG");
+
+        Optional<Item> item045 = itemRepo.findByCode(item45.getCode());
+        if(!item045.isPresent())      
             itemRepo.save(item45);
 
 
@@ -753,8 +848,10 @@ public class DataBaseInitializer {
         item46.setPrice(17.79);
         item46.setGender("unisex");
         item46.setType("zapato");
-        setItemImage(item46,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_6.PNG");
-     
+        setItemImage(item46,"/images/zapato_6.PNG");
+
+        Optional<Item> item046 = itemRepo.findByCode(item46.getCode());
+        if(!item046.isPresent())      
             itemRepo.save(item46);
 
 
@@ -765,8 +862,10 @@ public class DataBaseInitializer {
         item47.setPrice(52.99);
         item47.setGender("unisex");
         item47.setType("zapato");
-        setItemImage(item47,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_7.PNG");   
-     
+        setItemImage(item47,"/images/zapato_7.PNG");   
+        
+        Optional<Item> item047 = itemRepo.findByCode(item47.getCode());
+        if(!item047.isPresent())      
             itemRepo.save(item47);
 
         
@@ -777,8 +876,10 @@ public class DataBaseInitializer {
         item48.setPrice(35.99);
         item48.setGender("unisex");
         item48.setType("zapato");
-        setItemImage(item48, "https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_8.PNG");
-     
+        setItemImage(item48, "/images/zapato_8.PNG");
+
+        Optional<Item> item048 = itemRepo.findByCode(item48.getCode());
+        if(!item048.isPresent())      
             itemRepo.save(item48);
 
 
@@ -789,8 +890,10 @@ public class DataBaseInitializer {
         item49.setPrice(13.59);
         item49.setGender("unisex");
         item49.setType("zapato");
-        setItemImage(item49,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_9.PNG");
-     
+        setItemImage(item49,"/images/zapato_9.PNG");
+
+        Optional<Item> item049 = itemRepo.findByCode(item49.getCode());
+        if(!item049.isPresent())      
             itemRepo.save(item49);
 
 
@@ -801,8 +904,10 @@ public class DataBaseInitializer {
         item50.setPrice(17.56);
         item50.setGender("unisex");
         item50.setType("zapato");
-        setItemImage(item50,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_10.PNG");
-   
+        setItemImage(item50,"/images/zapato_10.PNG");
+
+        Optional<Item> item050 = itemRepo.findByCode(item50.getCode());
+        if(!item050.isPresent())      
             itemRepo.save(item50);
 
 
@@ -813,8 +918,10 @@ public class DataBaseInitializer {
         item51.setPrice(11.86);
         item51.setGender("unisex");
         item51.setType("zapato");
-        setItemImage(item51,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_11.PNG");
-   
+        setItemImage(item51,"/images/zapato_11.PNG");
+
+        Optional<Item> item051 = itemRepo.findByCode(item51.getCode());
+        if(!item051.isPresent())      
             itemRepo.save(item51);
 
 
@@ -825,8 +932,10 @@ public class DataBaseInitializer {
         item52.setPrice(11.02);
         item52.setGender("unisex");
         item52.setType("zapato");
-        setItemImage(item52,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_12.PNG");
-      
+        setItemImage(item52,"/images/zapato_12.PNG");
+
+        Optional<Item> item052 = itemRepo.findByCode(item52.getCode());
+        if(!item052.isPresent())      
             itemRepo.save(item52);
 
 
@@ -837,8 +946,11 @@ public class DataBaseInitializer {
         item53.setPrice(27.99);
         item53.setGender("unisex");
         item53.setType("zapato");
-        setItemImage(item53,"https://pub-f65070d681344ae4af3e8b15f47129a8.r2.dev/images/zapato_13.PNG");
-    
+        setItemImage(item53,"/images/zapato_13.PNG");
+
+
+        Optional<Item> item053 = itemRepo.findByCode(item53.getCode());
+        if(!item053.isPresent())      
             itemRepo.save(item53);
 
 
@@ -859,32 +971,59 @@ public class DataBaseInitializer {
         size2.setCode("SIZE2");
         size2.setLabel("M");
         stock2.setSize(size2);  
+        Optional<Size> size02 = sizeRepo.findByCode(size2.getCode());
+        if(!size02.isPresent()){
             sizeRepo.save(size2);           
+        }
 
         Size size4 = new Size();
         size4.setCode("SIZE4");
         size4.setLabel("36");
         stock3.setSize(size4);
-
+        Optional<Size> size04 = sizeRepo.findByCode(size4.getCode());
+        if(!size04.isPresent())
             sizeRepo.save(size4);
         
         stock2.setItem(item34);
         
         stock3.setItem(item34);
 
+        Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
+        if(!stock02.isPresent())
             clothesRepo.save(stock2);
 
+        Optional<Clothes> stock03 = clothesRepo.findByCode(stock3.getCode());
+        if(!stock03.isPresent()){
             clothesRepo.save(stock3);
-        
+        }
+
+
+
+        Optional<Clothes> stock04 = clothesRepo.findByCode(stock4.getCode());
+        if(!stock04.isPresent())
             clothesRepo.save(stock4);
 
+        Optional<Shoe> stock06 = shoeRepo.findByCode(stock6.getCode());
+        if(!stock06.isPresent()){
             shoeRepo.save(stock6);
+        }
 
+        Optional<Shoe> stock07 = shoeRepo.findByCode(stock7.getCode());
+        if(!stock07.isPresent()){
             shoeRepo.save(stock7);
-        
+        }
+
+        Optional<Shoe> stock08 = shoeRepo.findByCode(stock8.getCode());
+        if(!stock08.isPresent()){
             shoeRepo.save(stock8);
-        
+        }
+
+        Optional<Shoe> stock09 = shoeRepo.findByCode(stock9.getCode());
+        if(!stock09.isPresent()){
             shoeRepo.save(stock9);
+        }
+
+        
 
         //USERS <--> FAVOURITES ITEMS
         //M:N

@@ -80,26 +80,26 @@ public class UserService {
     public void update(Integer id, User newUser, Direction address, MultipartFile imageField) throws IOException{
         Optional<User> user = userRepo.findById(id);
         if(user.isPresent()){
-            if(!imageField.isEmpty()){
+            if(imageField != null &&!imageField.isEmpty()){
                 user.get().setImageFile(BlobProxy.generateProxy(imageField.getInputStream(), imageField.getSize()));
-            }if(newUser != null && !newUser.getName().isEmpty()){
+            }if(newUser.getName() != null && !newUser.getName().isEmpty()){
                 user.get().setName(newUser.getName());
             }
-            if(newUser != null && !newUser.getEmail().isEmpty()){
+            if(newUser.getEmail() != null && !newUser.getEmail().isEmpty()){
                 user.get().setEmail(newUser.getEmail());
             }
-            if(address != null && address.getCode().isEmpty()){
+            if(address.getCode() != null && address.getCode().isEmpty()){
                 user.get().getDirection().setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));            }
-            if(address != null && address.getNumber() != null){
+            if(address.getNumber() != null && address.getNumber() != null){
                 user.get().getDirection().setNumber(address.getNumber());
             }
-            if(address != null && !address.getStreet().isEmpty()){
+            if(address.getStreet() != null && !address.getStreet().isEmpty()){
                 user.get().getDirection().setStreet(address.getStreet());
             }
-            if(address != null && address.getZipCode() != null){
+            if(address.getZipCode() != null && address.getZipCode() != null){
                 user.get().getDirection().setZipCode(address.getZipCode());
             }
-            if(address != null && !address.getCity().isEmpty()){
+            if(address.getCity() != null && !address.getCity().isEmpty()){
                 user.get().getDirection().setCity(address.getCity());
             }
             //user.get().setId(user.get().getId());

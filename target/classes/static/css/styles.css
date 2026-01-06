@@ -730,7 +730,7 @@ footer {
 }
 
 .banner-cover {
-    background-image: url("https://34392e44.onlinestore-5ro.pages.dev/banner.png");
+    background-image: url("../img/banner.png");
     height: 100vh;
 }
 
@@ -756,12 +756,12 @@ footer {
 }
 
 .banner-cover {
-    background-image: url("https://34392e44.onlinestore-5ro.pages.dev/banner.png");
+    background-image: url("../img/banner.png");
     height: 100vh;
 }
 
 .banner-second {
-    background-image: url("https://34392e44.onlinestore-5ro.pages.dev/banner-second.jpg");
+    background-image: url("../img/banner-second.jpg");
     height: 50vh;
     margin-bottom: 1rem;
     position: relative;
@@ -798,7 +798,7 @@ footer {
 
 @media screen and (min-width: 1023px) {
     .banner-cover {
-        background-image: url("https://34392e44.onlinestore-5ro.pages.dev/banner-large.jpg");
+        background-image: url("../img/banner-large.jpg");
     }
 }
 
@@ -1199,12 +1199,12 @@ footer {
     position: relative;
     width: var(--w);
     height: var(--h);
-    background: url("https://34392e44.onlinestore-5ro.pages.dev/star-empty.svg") left/var(--w) var(--h) no-repeat;
+    background: url("../img/star-empty.svg") left/var(--w) var(--h) no-repeat;
 }
 
 .rating-stars::after {
     content: '';
-    background: url("https://34392e44.onlinestore-5ro.pages.dev/star-full.svg") left/var(--w) var(--h) no-repeat;
+    background: url("../img/star-full.svg") left/var(--w) var(--h) no-repeat;
     position: absolute;
     top: 0;
     left: 0;

@@ -79,7 +79,7 @@ public class SecurityConfiguration{
 
     public void addCorsMapping(CorsRegistry registry){
         registry.addMapping("/**")
-                //.allowedOrigins("http://34.13.78.77")
+                .allowedOrigins("*")
                 .allowCredentials(true);
     }
 }
