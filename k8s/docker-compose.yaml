@@ -18,5 +18,5 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=Mundialmente1
       - MYSQL_DATABASE=items
-      - MYSQL_USERNAME=root
+      - MYSQL_USER=root
       - MYSQL_PASSWORD=Mundialmente1
