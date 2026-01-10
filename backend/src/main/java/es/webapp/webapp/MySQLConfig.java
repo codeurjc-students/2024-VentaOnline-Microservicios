@@ -25,19 +25,19 @@ public class MySQLConfig {
     @Autowired
     private Environment env;
 
-    @Bean(name = "itemDataSource")
-    public DataSource itemDataSource(){
-        return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver")
-                                                        .url("jdbc:mysql://db:3306/items")
-                                                        .username("root") 
-                                                        .password("Mundialmente1")
-                                                        .build();
-    }
+    //@Bean(name = "itemDataSource")
+    //public DataSource itemDataSource(){
+    //    return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver")
+    //                                                    .url("jdbc:mysql://db:3306/items")
+    //                                                    .username("root") 
+    //                                                    .password("Mundialmente1")
+    //                                                    .build();
+    //}
 
     @Bean(name = "itemEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(itemDataSource());
+        //em.setDataSource(itemDataSource());
         em.setPackagesToScan("es.webapp.webapp.model"); 
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
