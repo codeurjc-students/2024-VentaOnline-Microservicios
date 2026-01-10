@@ -16,7 +16,5 @@ services:
   db:
     image: mysql:8.0
     environment:
-      - MYSQL_ROOT_PASSWORD=Mundialmente1
       - MYSQL_DATABASE=items
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=Mundialmente1
+      - MYSQL_ROOT_PASSWORD=Mundialmente1
