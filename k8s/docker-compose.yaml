@@ -2,7 +2,6 @@ version: "3.9"
 services: 
   web:
     build:
-      context: ..
       dockerfile: Dockerfile
     image: maalami/springbootstore:latest
     ports:
@@ -19,5 +18,5 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=Mundialmente1
       - MYSQL_DATABASE=items
-      - MYSQL_USERNAME=rot
+      - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=Mundialmente1
