@@ -277,11 +277,11 @@ public class DataBaseInitializer {
          
 
         Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
-        if(!item01.isPresent())      
+        if(!item01.isPresent()){   
             itemRepo.save(item1);
 
-        stock1.setItem(item1);
-        
+            stock1.setItem(item1);
+        }
 
          /** 1:N 
          * 1º create and save object with OneToMany relationship into the db
@@ -326,9 +326,10 @@ public class DataBaseInitializer {
         Optional<Order> order01 = orderRepo.findByCode(order.getCode());
         if(!order01.isPresent()) {
             orderRepo.save(order);
-        }
+        
 
         itemBuy1.setOrder(order);
+        }
         //M:N
         //to control the stock of items bought
         itemBuy1.getItems().add(item1);  
@@ -744,11 +745,11 @@ public class DataBaseInitializer {
         setItemImage(item41, "/images/zapato_1.PNG");
 
         Optional<Item> item041 = itemRepo.findByCode(item41.getCode());
-        if(!item041.isPresent())      
+        if(!item041.isPresent()){  
             itemRepo.save(item41);
 
         stock5.setItem(item41);
-        
+        }
          /** 1:N 
          * 1º create and save object with OneToMany relationship into the db
          * 2º relate object with ManyToOne relationship to the father

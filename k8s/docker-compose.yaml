@@ -1,0 +1,22 @@
+version: "3.9"
+services: 
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: maalami/springbootstore
+    ports:
+      - 8443:8443
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/items
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=Mundialmente1
+    restart: always
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0.33
+    environment:
+      - MYSQL_ROOT_PASSWORD=Mundialmente1
+      - MYSQL_DATABASE=items
+      - MYSQL_PASSWORD=Mundialmente1
