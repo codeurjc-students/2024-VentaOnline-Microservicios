@@ -4,7 +4,7 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: maalami/springbootstore
+    image: maalami/springbootstore:latest
     ports:
       - 8443:8443
     environment:
