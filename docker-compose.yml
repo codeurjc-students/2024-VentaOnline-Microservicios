@@ -3,6 +3,8 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    volumes:
+    - ./certs:/etc/ssl
     #image: maalami/onlinestore:v1
     ports:
       - 8443:8443
