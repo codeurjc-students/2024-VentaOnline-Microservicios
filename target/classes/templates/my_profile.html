@@ -15,7 +15,7 @@
     <header>
         <nav class="navbar">
             <nav class="nav-menu" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/store">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/new/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -25,12 +25,12 @@
         <div class="banner-container ">
             {{#logged}}
             <div class="user-img">
-                <img src="/store/api/users/{{id}}/image" alt="" width="200" height="200"></img>
+                <img src="/new/store/api/users/{{id}}/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             {{^logged}}
             <div class="user-img">
-                <img src="/store/api/users/8/image" alt="" width="200" height="200"></img>
+                <img src="/new/store/api/users/8/image" alt="" width="200" height="200"></img>
             </div>
             {{/logged}}
             <div class="columns">
@@ -53,7 +53,7 @@
         <div class="columns">
             <div class="column">
                 <h2 class="is-size-4">Profile</h2>
-                <form action="/store/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
+                <form action="/new/store/update/{{id}}" method="post" class="form-control" enctype="multipart/form-data">
 
                     <input type="text" name="name" placeholder="Name" class="form-control-field"/>
                     <input type="email" name="email" placeholder="Email" class="form-control-field"></input>
@@ -96,7 +96,7 @@
 </body>
 <script>
 
-    let ruta = "/store/users/session";
+    let ruta = "/new/store/users/session";
     function loadData(callback){
         $.ajax({
             url:ruta

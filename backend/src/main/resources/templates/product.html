@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar">
             <nav class="nav-menu --nav-dark" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" href="/store">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-light" href="/new/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -31,11 +31,11 @@
     </div>
 
 
-<form action="/store/items/{{id}}/purchase" method="post" class="form-control">
+<form action="/new/store/items/{{id}}/purchase" method="post" class="form-control">
     <div class="container">
         <div class="columns">
             <div class="column">
-                <img src="/store/api/items/{{id}}/image" alt="camiseta" width="440" height="440"></img>
+                <img src="/new/store/api/items/{{id}}/image" alt="camiseta" width="440" height="440"></img>
             </div>
             <div class="column">
                 <h3 class="is-size-4">Size and Quantity selection:</h3>
@@ -75,7 +75,7 @@
 </body>
 <script>
 
-    let ruta = "/store/items/{{id}}";
+    let ruta = "/new/store/items/{{id}}";
 
     function loadItem(callback){
         $.ajax({
