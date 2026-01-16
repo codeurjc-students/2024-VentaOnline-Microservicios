@@ -171,7 +171,7 @@ public class DataBaseInitializer {
         size1.setLabel("S");
         //Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
         //if (!size01.isPresent()) {
-            sizeRepo.save(size1);
+            //sizeRepo.save(size1);
             stock1.setSize(size1);
         //}
 
@@ -251,7 +251,9 @@ public class DataBaseInitializer {
         //M:N
         //an user can have several favourites items
         item1.getUsers().add(user2);
+
         item1.getStocks().add(stock1);
+        stock1.setItem(item1);
         //Optional<Item> item01 = itemRepo.findByCode(item1.getCode());
 
 
@@ -274,7 +276,7 @@ public class DataBaseInitializer {
 
 
         //if(!stock01.isPresent())
-            clothesRepo.save(stock1);
+            //clothesRepo.save(stock1);
         
      
 
@@ -687,6 +689,9 @@ public class DataBaseInitializer {
 
         item34.getStocks().add(stock2);
         item34.getStocks().add(stock3);
+        stock2.setItem(item34);
+        
+        stock3.setItem(item34);
         //item34.getUsers().add(user2);
      //Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
 
@@ -755,10 +760,11 @@ public class DataBaseInitializer {
  //Optional<Item> item041 = itemRepo.findByCode(item41.getCode());
 
         item41.getStocks().add(stock5);
+        stock5.setItem(item41);
         //if(!item041.isPresent()) 
             itemRepo.save(item41);
 
-        stock5.setItem(item41);
+        
         
          /** 1:N 
          * 1º create and save object with OneToMany relationship into the db
@@ -773,7 +779,7 @@ public class DataBaseInitializer {
 
 
         //if(!stock05.isPresent())
-            shoeRepo.save(stock5);
+            //shoeRepo.save(stock5);
         
 
         ItemToBuy itemBuy2 = new ItemToBuy();
@@ -1017,21 +1023,19 @@ public class DataBaseInitializer {
         //if(!size04.isPresent())
             //sizeRepo.saveAndFlush(size4);
         
-        stock2.setItem(item34);
         
-        stock3.setItem(item34);
 
         //Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
 
 
         //if(!stock02.isPresent())
-            clothesRepo.save(stock2);
+            //clothesRepo.save(stock2);
 
         //Optional<Clothes> stock03 = clothesRepo.findByCode(stock3.getCode());
 
 
         //if(!stock03.isPresent())
-            clothesRepo.save(stock3);
+            //clothesRepo.save(stock3);
         
         //Optional<Clothes> stock04 = clothesRepo.findByCode(stock4.getCode());
 
