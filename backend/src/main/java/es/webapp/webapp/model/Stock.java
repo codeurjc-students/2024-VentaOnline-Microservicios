@@ -31,11 +31,9 @@ public abstract class Stock<T> {
     private Integer stock;
 
     @ManyToOne
-    @JsonIgnore
     private Item item;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "size_id", nullable = false)
+    @OneToOne
     private Size size;
     
     public Stock(){}
