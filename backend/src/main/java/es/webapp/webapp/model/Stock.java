@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,6 +34,7 @@ public abstract class Stock<T> {
     private Item item;
 
     @OneToOne
+    @JoinColumn(name = "size_id", nullable = false)
     private Size size;
     
     public Stock(){}
