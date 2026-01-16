@@ -171,7 +171,7 @@ public class DataBaseInitializer {
         size1.setLabel("S");
         //Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
         //if (!size01.isPresent()) {
-        //sizeRepo.save(size1);
+        sizeRepo.save(size1);
         stock1.setSize(size1);
         //}
 
@@ -205,7 +205,7 @@ public class DataBaseInitializer {
 
 
         //if (!size03.isPresent()) {
-            //sizeRepo.save(size3);
+            sizeRepo.save(size3);
             stock5.setSize(size3);
         //}
 
@@ -1005,13 +1005,13 @@ public class DataBaseInitializer {
         Size size2 = new Size();
         size2.setCode("SIZE2");
         size2.setLabel("M");
-        stock2.setSize(size2);
+        
         //Optional<Size> size02 = sizeRepo.findByCode(size2.getCode());
 
 
         //if(!size02.isPresent()) 
-            //sizeRepo.saveAndFlush(size2);           
-        
+        sizeRepo.save(size2);           
+        stock2.setSize(size2);
 
         Size size4 = new Size();
         size4.setCode("SIZE4");
@@ -1021,7 +1021,7 @@ public class DataBaseInitializer {
 
 
         //if(!size04.isPresent())
-        //sizeRepo.save(size4);
+        sizeRepo.save(size4);
         stock3.setSize(size4);
         
 
