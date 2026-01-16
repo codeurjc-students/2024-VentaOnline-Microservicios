@@ -171,7 +171,7 @@ public class DataBaseInitializer {
         size1.setLabel("S");
         //Optional<Size> size01 = sizeRepo.findByCode("SIZE1");
         //if (!size01.isPresent()) {
-            sizeRepo.save(size1);
+            //sizeRepo.save(size1);
             stock1.setSize(size1);
         //}
 
