@@ -261,7 +261,7 @@ public class DataBaseInitializer {
             itemRepo.save(item1);
 
         stock1.setItem(item1);
-        clothesRepo.save(stock1);
+        //clothesRepo.save(stock1);
 
          /** 1:N 
          * 1º create and save object with OneToMany relationship into the db
