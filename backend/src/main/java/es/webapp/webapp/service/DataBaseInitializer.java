@@ -205,7 +205,7 @@ public class DataBaseInitializer {
 
 
         //if (!size03.isPresent()) {
-            //sizeRepo.saveAndFlush(size3);
+            sizeRepo.save(size3);
             stock5.setSize(size3);
         //}
 
@@ -687,11 +687,9 @@ public class DataBaseInitializer {
         item34.setType("camiseta");
         setItemImage(item34,"/images/camiseta_6.PNG");
 
-        item34.getStocks().add(stock2);
-        item34.getStocks().add(stock3);
-        stock2.setItem(item34);
-        
-        stock3.setItem(item34);
+        //item34.getStocks().add(stock2);
+        //item34.getStocks().add(stock3);
+       
         //item34.getUsers().add(user2);
      //Optional<Item> item034 = itemRepo.findByCode(item34.getCode());
 
@@ -699,7 +697,9 @@ public class DataBaseInitializer {
         //if(!item034.isPresent()) 
             itemRepo.save(item34);
 
+        stock2.setItem(item34);
         
+        stock3.setItem(item34);
 
         Item item35 = new Item();
         item35.setCode("CAM12");
@@ -759,11 +759,11 @@ public class DataBaseInitializer {
         setItemImage(item41, "/images/zapato_1.PNG");
  //Optional<Item> item041 = itemRepo.findByCode(item41.getCode());
 
-        item41.getStocks().add(stock5);
-        stock5.setItem(item41);
+      
+        
         //if(!item041.isPresent()) 
             itemRepo.save(item41);
-
+        stock5.setItem(item41);
         
         
          /** 1:N 
@@ -1016,13 +1016,13 @@ public class DataBaseInitializer {
         Size size4 = new Size();
         size4.setCode("SIZE4");
         size4.setLabel("36");
-        stock3.setSize(size4);
+        
         //Optional<Size> size04 = sizeRepo.findByCode(size4.getCode());
 
 
         //if(!size04.isPresent())
-            //sizeRepo.saveAndFlush(size4);
-        
+        sizeRepo.save(size4);
+        stock3.setSize(size4);
         
 
         //Optional<Clothes> stock02 = clothesRepo.findByCode(stock2.getCode());
