@@ -60,7 +60,8 @@ public class UserRestController {
 
     @GetMapping("/users/session")
     public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
-        String username = (String) request.getSession().getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
         Optional<User> user = userService.findByUsername(username);
         if(user.isPresent()){
             return new ResponseEntity<>(user.get(), HttpStatus.OK);

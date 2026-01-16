@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,22 +61,17 @@ public class ItemController {
     }
 
     @PostMapping("/{id}/purchase")
-    public String itemBuy(Model model, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request) throws IOException{
-      
-        HttpSession session = request.getSession(false);
-        if(session != null) {   
-            String username = (String) session.getAttribute("user");
-            Optional<User> user = userService.findByUsername(username);
-            if(user.isPresent()){
-                if(itemService.addToCart(user.get().getUsername(), id, itemToBuy)){
-                    model.addAttribute("status","item successfully added to the cart");
-                    return "product";
-                }else{
-                    model.addAttribute("status","failed to add the item to the cart");
-                    return "error";
-                }
+    public String itemBuy(Model model, ItemToBuy itemToBuy, @PathVariable Integer id, HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) throws IOException{
+
+        Optional<User> user = userService.findByUsername(userDetails.getUsername());
+        if(user.isPresent()){
+            if(itemService.addToCart(user.get().getUsername(), id, itemToBuy)){
+                model.addAttribute("status","item successfully added to the cart");
+                return "product";
+            }else{
+                model.addAttribute("status","failed to add the item to the cart");
+                return "error";
             }
-            return "error";
         }
         return "error";
     }

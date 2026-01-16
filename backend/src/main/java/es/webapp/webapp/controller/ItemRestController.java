@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,9 +48,9 @@ public class ItemRestController {
     //LOGGED WITH REDDIS
 
     @GetMapping("/items/favourites/user")
-    public ResponseEntity<Page<Item>> getFavItems(HttpServletRequest request, Pageable page){
-        String username = (String) request.getSession().getAttribute("user");
-        Optional<User> user = userService.findByUsername(username);
+    public ResponseEntity<Page<Item>> getFavItems(HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails, Pageable page){
+        //String username = (String) request.getSession().getAttribute("user");
+        Optional<User> user = userService.findByUsername(userDetails.getUsername());
         if(user.isPresent()){
             Page<Item> items = new PageImpl<>(user.get().getItems(), page, user.get().getItems().size());
             return new ResponseEntity<>(items,HttpStatus.OK);

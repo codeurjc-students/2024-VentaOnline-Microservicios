@@ -1,11 +1,26 @@
 package es.webapp.webapp.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.webapp.webapp.model.User;
+import es.webapp.webapp.repository.UserRepo;
+import es.webapp.webapp.security.JWTGenerator;
+import es.webapp.webapp.service.TokenBlacklistService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -22,44 +40,45 @@ public class Home {
 
     @Autowired
     private UserService userService; 
-    
+
+    private AuthenticationManager authenticationManager;
+	private JWTGenerator jwtGenerator;
+
+    @Autowired
+	private UserDetailsService userDetailsService;
+
+    public Home(AuthenticationManager authenticationManager, JWTGenerator jwtGenerator){
+		this.authenticationManager = authenticationManager;	
+		this.jwtGenerator = jwtGenerator;				
+	}
 
     @ModelAttribute
-    public void addAttribute(Model model, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session != null) {   
-            String username = (String) session.getAttribute("user");
-            if(username != null){
-                Optional<User> user = userService.findByUsername(username);
-                model.addAttribute("username",user.get().getUsername());
-                model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
-                model.addAttribute("user", user.get().getRol().equals("USER"));
-                model.addAttribute("id", user.get().getId());
-                model.addAttribute("logged",true);
-            } else {
-                model.addAttribute("username","anonymous");
-                model.addAttribute("admin", "");
-                model.addAttribute("user", "");
-                model.addAttribute("id", 6);
-                model.addAttribute("logged",false);
-            }
+    public void addAttributes(Model model, HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+
+        Principal principal = request.getUserPrincipal();
+        
+        if(principal != null) {
+            model.addAttribute("logged", true);
+            model.addAttribute("username", principal.getName());
+            model.addAttribute("admin", request.isUserInRole("ADMIN"));
+            model.addAttribute("user", request.isUserInRole("USER"));
+            Optional<User> userSession = userService.findByUsername(userDetails.getUsername());
+            model.addAttribute("id", userSession.get().getId());
         } else {
-            model.addAttribute("username","anonymous");
-            model.addAttribute("admin", "");
-            model.addAttribute("user", "");
-            model.addAttribute("id", 6);
-            model.addAttribute("logged",false);
+            model.addAttribute("logged", false);
         }
     }
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest request){   
+    public String home(Model model, HttpServletRequest request){ 
+          
         return "index";
     }
 
     @GetMapping("/my_profile")
-    public String getProfile(Model model, HttpServletRequest request){
+    public String getProfile(Model model, HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails){
         model.addAttribute("state_reg", "");
+        addAttributes(model, request, userDetails);
         return "my_profile";
     }
 
@@ -69,54 +88,69 @@ public class Home {
         return "signup";
     }
 
+    private void addAccessTokenCookie(HttpHeaders httpHeaders, String token) {
+		httpHeaders.add(HttpHeaders.SET_COOKIE,token);
+	}
+
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository(); 
+
     @GetMapping("/login")
     public String login(Model model){
         return "login";
     }
 
     @PostMapping("/signin")
-    public String processLogin(Model model,
-            @RequestParam String username,
-            @RequestParam String password,
-            HttpServletRequest request) {
+    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, User user) {
 
-        User user = userService.authenticate(username, password);
+        HttpHeaders responseHeaders = new HttpHeaders();
+		//authenticate the user
+		Authentication authentication = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        if (user != null) {
-            HttpSession session = request.getSession(true); // <- Redis guarda esto si está configurado
-            session.setAttribute("user", user.getUsername());
-            
-            String usernameLogged = (String) session.getAttribute("user");
-         
-            if (username != null) {
-                Optional<User> userLogged = userService.findByUsername(usernameLogged);
-                model.addAttribute("username",userLogged.get().getUsername());
-                model.addAttribute("admin", userLogged.get().getRol().equals("ADMIN"));
-                model.addAttribute("user", userLogged.get().getRol().equals("USER"));
-                model.addAttribute("id", userLogged.get().getId());
-                model.addAttribute("logged",true);   
-                return "index";
-            }
-        }
-        return "error";
+		
+
+		UserDetails userDetail = userDetailsService.loadUserByUsername(user.getUsername());
+
+		String token = jwtGenerator.generateToken(userDetail);
+
+        SecurityContext securitycontext = SecurityContextHolder.getContext();
+		securitycontext.setAuthentication(authentication);
+
+        addAccessTokenCookie(responseHeaders, token);
+        request.getSession(true);
+		securityContextRepository.saveContext(securitycontext, request, response);
+
+        addAttributes(model, request, userDetail);
+
+       return "index";
     }
 
     
-    @GetMapping("/signout")
-    public String logout(Model model, HttpServletRequest request) { 
-        request.getSession().removeAttribute("user");
-        
-        model.addAttribute("username","anonymous");
-        model.addAttribute("admin", "");
-        model.addAttribute("user", "");
-        model.addAttribute("id", 6);
-        model.addAttribute("logged",false);
-        
+    @RequestMapping("/signout")
+    public String logout(Model model, HttpServletRequest request, HttpServletResponse response) { 
+        // Limpiar contexto y sesión para usuarios web
+        SecurityContextHolder.clearContext();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Borrar cookies
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                cookie.setMaxAge(0);
+                cookie.setValue("");
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
+        addAttributes(model, request, null);
         return "index";
     }
 
 
-    @GetMapping("/loginerror")
+    @RequestMapping("/loginerror")
     public String loginerror(HttpServletRequest request){
         return "error";
     }

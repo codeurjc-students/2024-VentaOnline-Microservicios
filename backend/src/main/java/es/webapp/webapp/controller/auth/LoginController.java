@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,7 +56,7 @@ public class LoginController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
 
-		
+		HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -68,10 +69,16 @@ public class LoginController {
 
 		String token = jwtGenerator.generateToken(userDetail);
 
+        addAccessTokenCookie(responseHeaders, token);
+        request.getSession(true);
 		securityContextRepository.saveContext(securitycontext, request, response);
 		
-		return new ResponseEntity<>(new AuthResponse(token),HttpStatus.OK);
-	
+		//return new ResponseEntity<>(new AuthResponse(token),HttpStatus.OK);
+        return ResponseEntity.ok().headers(responseHeaders).body(new AuthResponse(token));
+	}
+
+    private void addAccessTokenCookie(HttpHeaders httpHeaders, String token) {
+		httpHeaders.add(HttpHeaders.SET_COOKIE,token);
 	}
 
 

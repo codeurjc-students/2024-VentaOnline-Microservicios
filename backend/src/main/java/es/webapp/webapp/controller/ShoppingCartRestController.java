@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +40,9 @@ public class ShoppingCartRestController {
     //LOGGED WITH REDDIS
 
     @GetMapping("/shoppingcart/user")
-    public ResponseEntity<ShoppingCart> getShoppingCart(HttpServletRequest request){
-        String username = (String) request.getSession().getAttribute("user");
-        Optional<User> user = userService.findByUsername(username);
+    public ResponseEntity<ShoppingCart> getShoppingCart(HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails){
+       
+        Optional<User> user = userService.findByUsername(userDetails.getUsername()  );
         if(user.isPresent()) {
             ShoppingCart shoppingCart = user.get().getShoppingCart();
             return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
@@ -51,9 +53,9 @@ public class ShoppingCartRestController {
 
 
     @GetMapping("/shoppingcart/user/items")
-    public ResponseEntity<List<ItemToBuy>> getItemsToBuy(HttpServletRequest request){
-        String username = (String) request.getSession().getAttribute("user");
-        Optional<User> user = userService.findByUsername(username);
+    public ResponseEntity<List<ItemToBuy>> getItemsToBuy(HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails){
+        
+        Optional<User> user = userService.findByUsername(userDetails.getUsername());
         if(user.isPresent()) {
             ShoppingCart shoppingCart = user.get().getShoppingCart();
             return new ResponseEntity<>(itemToBuyService.findByShoppingCart(shoppingCart), HttpStatus.OK);

@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,31 +33,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    /*@ModelAttribute
-    public void addAttribute(Model model, HttpServletRequest request){
-        String username = (String) request.getSession().getAttribute("user");
-        //model.addAttribute("username",username);
-        if(username != null){
-            Optional<User> user = userService.findByUsername(username);
-            model.addAttribute("username",user.get().getUsername());
-            model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
-            model.addAttribute("user", user.get().getRol().equals("USER"));
-            model.addAttribute("id", user.get().getId());
-            model.addAttribute("logged",true);
-        } else {
-            model.addAttribute("username","anonymous");
-            model.addAttribute("logged",false);
-        }
-    }*/
-
     @GetMapping("/new/user")
-    public String generate(Model model,HttpServletRequest request) throws IOException {
+    public String generate(Model model,HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
 
-        String username = (String) request.getSession().getAttribute("user");
-        Optional<User> user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsername(userDetails.getUsername());
         if(user.isPresent()){
-            orderService.buy(username);
-            return "redirect://localhost:8442/store";
+            orderService.buy(userDetails.getUsername());
+            return "redirect://localhost:8442/new/store";
         }
         return "error";
     }

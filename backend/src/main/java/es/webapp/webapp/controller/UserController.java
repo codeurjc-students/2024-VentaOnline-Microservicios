@@ -34,25 +34,6 @@ public class UserController {
 
     @Autowired
     private DirectionService directionService;
-
-    /*@ModelAttribute
-    public void addAttribute(Model model, HttpServletRequest request){
-        String username = (String) request.getSession(false).getAttribute("user");
-        if(username != null){
-            Optional<User> user = userService.findByUsername(username);
-            model.addAttribute("username",user.get().getUsername());
-            model.addAttribute("admin", user.get().getRol().equals("ADMIN"));
-            model.addAttribute("user", user.get().getRol().equals("USER"));
-            model.addAttribute("id", user.get().getId());
-            model.addAttribute("logged",true);
-        } else {
-            model.addAttribute("username","anonymous");
-            model.addAttribute("admin", "");
-            model.addAttribute("user", "");
-            model.addAttribute("id", 6);
-            model.addAttribute("logged",false);
-        }
-    }*/
     
     @PostMapping("/new")
     public String user(Model model, User user, Direction address, MultipartFile imageField) throws IOException{
@@ -106,10 +87,10 @@ public class UserController {
 
                     model.addAttribute("state_reg", "updated");
 
-                    return "redirect://localhost:8442/store/my_profile";
+                    return "redirect://localhost:8442/new/store/my_profile";
                 } else {
                     //model.addAttribute("state_reg", "user not found");
-                    return "redirect://localhost:8442/store/logginerror";
+                    return "redirect://localhost:8442/new/store/logginerror";
                 }
     //        }
     //        return "redirect:/loginerror";
