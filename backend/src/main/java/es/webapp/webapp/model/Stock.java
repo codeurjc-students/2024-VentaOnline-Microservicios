@@ -33,7 +33,7 @@ public abstract class Stock<T> {
     @ManyToOne
     private Item item;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Size size;
     
     public Stock(){}
