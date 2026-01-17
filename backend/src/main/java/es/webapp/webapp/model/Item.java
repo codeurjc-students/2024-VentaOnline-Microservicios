@@ -47,7 +47,6 @@ public class Item {
     @Column(name = "type")
     private String type;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Stock<?>> itemStocks = new ArrayList<>();
 

@@ -31,6 +31,7 @@ public abstract class Stock<T> {
     private Integer stock;
 
     @ManyToOne
+    @JsonIgnore
     private Item item;
 
     @OneToOne(cascade = CascadeType.PERSIST)
