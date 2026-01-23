@@ -1,16 +1,16 @@
 package es.webapp.webapp.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Optional;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +35,22 @@ public class UserController {
     @Autowired
     private DirectionService directionService;
     
+    @ModelAttribute
+    public void addAttributes(Model model, HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+
+        Principal principal = request.getUserPrincipal();
+        
+        if(principal != null) {
+            model.addAttribute("logged", true);
+            model.addAttribute("username", principal.getName());
+            model.addAttribute("admin", request.isUserInRole("ADMIN"));
+            model.addAttribute("user", request.isUserInRole("USER"));
+            Optional<User> userSession = userService.findByUsername(userDetails.getUsername());
+            model.addAttribute("id", userSession.get().getId());
+        } else {
+            model.addAttribute("logged", false);
+        }
+    }
     @PostMapping("/new")
     public String user(Model model, User user, Direction address, MultipartFile imageField) throws IOException{
 
@@ -87,10 +103,10 @@ public class UserController {
 
                     model.addAttribute("state_reg", "updated");
 
-                    return "redirect://localhost:8442/new/store/my_profile";
+                    return "my_profile";
                 } else {
                     //model.addAttribute("state_reg", "user not found");
-                    return "redirect://localhost:8442/new/store/logginerror";
+                    return "error";
                 }
     //        }
     //        return "redirect:/loginerror";

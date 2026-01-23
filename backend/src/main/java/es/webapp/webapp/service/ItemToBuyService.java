@@ -54,18 +54,24 @@ public class ItemToBuyService {
         user.getShoppingCart().getItems().remove(itemToBuy);
 
         //increase the stock
-        for(Stock<?> stock: product.getStocks()){
-            if(stock.getSize().getLabel().equals(itemToBuy.getSize())){
-                stock.setStock(stock.getStock() + count);
-                
+        if(!product.getStocks().isEmpty()){
+            for(Stock<?> stock: product.getStocks()){
+                if(stock.getSize().getLabel().equals(itemToBuy.getSize())){
+                    stock.setStock(stock.getStock() + count);
+                    
+                }
             }
         }
 
         //update cost of the shopping cart
         double cost = (count * product.getPrice());
         double totalCost = (user.getShoppingCart().getTotalCost() - cost);
-        user.getShoppingCart().setTotalCost(totalCost);
+        if(totalCost <= 0)
+            user.getShoppingCart().setTotalCost(0.0);
+        else
+            user.getShoppingCart().setTotalCost(totalCost);
 
+        user.getShoppingCart().setBuyTime(null);
         shoppingCartRepo.save(user.getShoppingCart());
     }
 }

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,6 +28,11 @@ public class ItemToBuy {
     private String code;
 
     @ManyToMany
+    @JoinTable(
+        name = "tbl_itemtobuy_item",
+        joinColumns = @JoinColumn(name = "itemtobuy_id"),
+        inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Item> items = new ArrayList<>();
 
     private String size;

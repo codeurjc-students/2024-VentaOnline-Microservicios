@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -30,9 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.webapp.webapp.model.User;
-import es.webapp.webapp.repository.UserRepo;
 import es.webapp.webapp.security.JWTGenerator;
-import es.webapp.webapp.service.TokenBlacklistService;
 import es.webapp.webapp.service.UserService;
 
 @Controller
@@ -90,6 +87,7 @@ public class Home {
 
     private void addAccessTokenCookie(HttpHeaders httpHeaders, String token) {
 		httpHeaders.add(HttpHeaders.SET_COOKIE,token);
+        
 	}
 
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository(); 
@@ -100,16 +98,16 @@ public class Home {
     }
 
     @PostMapping("/signin")
-    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, User user) {
+    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String password) {
 
         HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+			new UsernamePasswordAuthenticationToken(username, password));
 
 		
 
-		UserDetails userDetail = userDetailsService.loadUserByUsername(user.getUsername());
+		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
 
 		String token = jwtGenerator.generateToken(userDetail);
 

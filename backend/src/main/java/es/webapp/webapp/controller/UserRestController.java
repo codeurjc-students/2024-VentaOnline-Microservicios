@@ -27,14 +27,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import es.webapp.webapp.model.Direction;
-import es.webapp.webapp.model.Order;
-import es.webapp.webapp.model.ShoppingCart;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.model.UserDTO;
 import es.webapp.webapp.model.newUserDTO;
-import es.webapp.webapp.service.DirectionService;
-import es.webapp.webapp.service.ShoppingCartService;
 import es.webapp.webapp.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,12 +44,6 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ShoppingCartService shoppingCartService;
-
-    @Autowired
-    private DirectionService directionService;
 
     //LOGGED WITH REDDIS
 

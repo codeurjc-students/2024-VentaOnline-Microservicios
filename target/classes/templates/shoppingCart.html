@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/new/store/css/bulma.min.css">
-    <link rel="stylesheet" href="/new/store/css/material-design-iconic-font.css">
-    <link rel="stylesheet" href="/new/store/css/styles.css">
+    <link rel="stylesheet" href="/store/css/bulma.min.css">
+    <link rel="stylesheet" href="/store/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="/store/css/styles.css">
 
     <title>Document</title>
 </head>
@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar">
             <nav class="nav-menu --nav-dark" id="mySidenav">
-                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/new/store">Avenue Fashion</a>
+                <a class="is-hidden-mobile brand is-uppercase has-text-weight-bold has-text-white" href="/store">Avenue Fashion</a>
                 <ul class="nav-menu-ul"></ul>
             </nav>
         </nav>
@@ -38,7 +38,7 @@
             {{/neworder}}
             {{^neworder}}
             <div class="has-text-light" id="cart"></div>
-            <a href="/new/store/orders/new/user"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
+            <a href="/store/orders/user"><h1 class="nav-menu-link has-text-weight-bold has-text-grey-light">Generate order</h1></a>
             {{/neworder}}
         </div>
     </div>
@@ -66,13 +66,13 @@
         </div>
     </footer>
 
-    <script src="/new/store/js/main.js"></script>
+    <script src="/store/js/main.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
 <script>
 
-    let ruta="/new/store/shoppingcart/user/items";
-    let ruta1="/new/store/shoppingcart/user";
+    let ruta="/store/shoppingcart/user/items";
+    let ruta1="/store/shoppingcart/user";
   
     var stock = "";
     
@@ -101,8 +101,8 @@
             stock = "less than 5 articles avaialables";
         }
         $('.slider').append(
-            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/new/store/api/items/' + item.items[0].id + 
-            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/new/store/shoppingcart/' + item.id + 
+            '<div class="slider-img-container active" style="align: center"><div class="column"><div class="card"><img src="/store/api/items/' + item.items[0].id + 
+            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/store/shoppingcart/' + item.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
             '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
             '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + item.size + 
@@ -118,8 +118,8 @@
             stock = "less than 5 articles avaialables";
         }
         $('.slider').append(
-            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/new/store/api/items/' + item.items[0].id + 
-            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/new/store/shoppingcart/' + item.id + 
+            '<div class="slider-img-container"><div class="column"><div class="card"><img src="/store/api/items/' + item.items[0].id + 
+            '/image" alt="camiseta" width="200" height="200"><div class="card-simple-options"><a href="/store/shoppingcart/' + item.id + 
             '/remove" class="btn btn--mini-rounded"><div class="columns is-multiline"><div class="column is-full is-marginless">REMOVE</div></div></a></div></div></div><h3 class="is-size-4">' + item.items[0].name +
             '</h3><h2 class="price is-size-4">' + (item.count)*item.items[0].price + '€<sup></sup></h2><div class="column"><p class="has-text-grey"><strong>Availability: </strong>' + stock + 
             '</p><p class="has-text-grey"><strong>Gender: </strong>' + item.items[0].gender + '</p><p class="has-text-grey"><strong>Size: </strong>' + item.size + 
@@ -130,7 +130,7 @@
 
     function showPreviousButton(n){
         $('.button-left').append(
-            '<div class="slider-button-left slider-buttons" onclick="previus(' + n + ')"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
+            '<div class="slider-button-left slider-buttons" onclick="previous(' + n + ')"><i class="zmdi zmdi-chevron-left zmdi-hc-3x"></i></div>'
         )
     }
 
@@ -156,12 +156,14 @@
                 }
                 showPreviousButton(items.length);
                 showNextButton(items.length);
+                console.log(items);
             } else {
                 console.log(null);
             }
         });
 
         loadShoppingCart(function(cart) {
+            console.log(cart);
             showSoppingCart(cart);
         })
 

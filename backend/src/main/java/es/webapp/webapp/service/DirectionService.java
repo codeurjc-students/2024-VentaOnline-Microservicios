@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.webapp.webapp.model.Direction;
-import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.DirectionRepo;
 
 @Service

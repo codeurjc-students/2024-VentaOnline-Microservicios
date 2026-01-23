@@ -1,5 +1,4 @@
 package es.webapp.webapp.model;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,8 @@ public class ShoppingCart {
 
     private String code;
 
-    @OneToOne(mappedBy="shoppingCart")
     @JsonIgnore
+    @OneToOne(mappedBy="shoppingCart")
     private User user;
     
     @Column(name = "totalCost")

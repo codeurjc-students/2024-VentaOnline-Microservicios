@@ -7,12 +7,12 @@ import java.util.UUID;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+//import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.webapp.webapp.model.Direction;
 import es.webapp.webapp.model.ShoppingCart;
@@ -38,24 +38,23 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private RedisTemplate<String, Object> redisTemplate;
+    //private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    //@Autowired
+    //private ObjectMapper objectMapper;
 
-    public UserService(RedisTemplate<String, Object> redisTemplate, PasswordEncoder passwordEncoder) {
-        this.redisTemplate = redisTemplate;
+    public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User authenticate(String username, String rawPassword) {
+    /*public User authenticate(String username, String rawPassword) {
         Object obj = redisTemplate.opsForValue().get("user:" + username);
         User user = objectMapper.convertValue(obj, User.class);
         if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
             return user;
         }
         return null;
-    }
+    }*/
 
     public User add(User user){
         if(user.getPassword().equals(user.getPasswordConfirmation())){
@@ -63,11 +62,11 @@ public class UserService {
             user.setPasswordConfirmation(passwordEncoder.encode(user.getPasswordConfirmation()));
             user.setRol("USER");
 
-            User userReddis = new User();
-            userReddis.setUsername(user.getUsername());
-            userReddis.setPassword(user.getPassword());
+            //User userReddis = new User();
+            //userReddis.setUsername(user.getUsername());
+            //userReddis.setPassword(user.getPassword());
 
-            redisTemplate.opsForValue().set("user:" + user.getUsername(), userReddis);
+            //redisTemplate.opsForValue().set("user:" + user.getUsername(), userReddis);
             return userRepo.save(user);
         } else
             return null;

@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -62,20 +61,20 @@ public class RestSecurityConfiguration{
         http
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/api/**");
-                registry.antMatchers(HttpMethod.GET,"/api/items/{id}/info").hasAnyRole("USER","ADMIN"); 
-                registry.antMatchers(HttpMethod.GET,"/api/items/favourites/**").hasRole("USER"); 
-                registry.antMatchers(HttpMethod.GET,"/api/shoppingcart/{username}/**").hasRole("USER");
-                registry.antMatchers(HttpMethod.DELETE,"/api/shoppingcart/{id}/**").hasRole("USER"); 
-                registry.antMatchers(HttpMethod.GET,"/api/users/current").hasAnyRole("ADMIN","USER"); 
-                registry.antMatchers(HttpMethod.POST,"/api/users/{id}/update").hasRole("USER");  
-                registry.antMatchers(HttpMethod.POST,"/api/users/{id}/update/address").hasRole("USER");  
-                registry.antMatchers(HttpMethod.GET,"/api/orders").hasRole("ADMIN"); 
-                registry.antMatchers(HttpMethod.GET,"/api/orders/user/{id}").hasRole("USER"); 
-                registry.antMatchers(HttpMethod.GET,"/api/orders/{id}/items").hasAnyRole("USER","ADMIN"); 
-                registry.antMatchers(HttpMethod.GET,"/api/orders/{ident}").hasAnyRole("USER","ADMIN"); 
-                registry.antMatchers(HttpMethod.POST,"/api/add/cart/users/{name}/items/{id}").hasRole("USER"); 
-                registry.antMatchers(HttpMethod.GET,"/api/orders/users/{username}").hasRole("USER"); 
-                registry.antMatchers(HttpMethod.POST,"/api/items/{code}/favourites/{id}/new").hasRole("USER");
+                registry.antMatchers(HttpMethod.GET,"/store/api/items/{id}/info").hasAnyRole("USER","ADMIN"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/items/favourites/**").hasRole("USER"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/shoppingcart/{username}/**").hasRole("USER");
+                registry.antMatchers(HttpMethod.DELETE,"/store/api/shoppingcart/{id}/**").hasRole("USER"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/users/current").hasAnyRole("ADMIN","USER"); 
+                registry.antMatchers(HttpMethod.POST,"/store/api/users/{id}/update").hasRole("USER");  
+                registry.antMatchers(HttpMethod.POST,"/store/api/users/{id}/update/address").hasRole("USER");  
+                registry.antMatchers(HttpMethod.GET,"/store/api/orders").hasRole("ADMIN"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/orders/user/{id}").hasRole("USER"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/orders/{id}/items").hasAnyRole("USER","ADMIN"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/orders/{ident}").hasAnyRole("USER","ADMIN"); 
+                registry.antMatchers(HttpMethod.POST,"/store/api/add/cart/users/{name}/items/{id}").hasRole("USER"); 
+                registry.antMatchers(HttpMethod.GET,"/store/api/orders/users/{username}").hasRole("USER"); 
+                registry.antMatchers(HttpMethod.POST,"/store/api/items/{code}/favourites/{id}/new").hasRole("USER");
                 registry.anyRequest().permitAll();
             })
             .csrf().disable()
@@ -92,7 +91,7 @@ public class RestSecurityConfiguration{
 
     public void addCorsMapping(CorsRegistry registry){
         registry.addMapping("/**")
-        .allowedOrigins("http://localhost:8442")
+        .allowedOrigins("https://localhost:8442")
                 .allowedOrigins("http://localhost:8444")
                 .allowedOrigins("http://localhost:8445")
                 .allowCredentials(true);

@@ -66,7 +66,6 @@ public class ItemService {
                 user.get().getShoppingCart().setTotalCost(shoppingCart.getTotalCost() + cost);
 
                 itemToBuyRepo.save(itemToBuy);
-
                 return true;
             }
             return false;

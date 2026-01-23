@@ -29,7 +29,6 @@ import es.webapp.webapp.data.AuthResponse;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.repository.UserRepo;
 import es.webapp.webapp.security.JWTGenerator;
-import es.webapp.webapp.service.TokenBlacklistService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,9 +36,6 @@ public class LoginController {
 
 	private AuthenticationManager authenticationManager;
 	private JWTGenerator jwtGenerator;
-
-	@Autowired
-	private TokenBlacklistService tokenBlacklistService;
 
     @Autowired
 	private UserDetailsService userDetailsService;
@@ -103,14 +99,6 @@ public class LoginController {
                 response.addCookie(cookie);
             }
         }
-
-        // Si viene con JWT, blacklist en Redis
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            long expiration = jwtGenerator.getExpirationMillis(token);
-            tokenBlacklistService.blacklistToken(token, expiration); // Redis
-        }
-
         return new ResponseEntity<>(new AuthResponse("logout successfully"),HttpStatus.OK);
     }
 }

@@ -53,7 +53,7 @@ public class OrderService {
 
             order.setTotalCost(Math.round(cost * 100.0) / 100.0);
             order.setCode(UUID.randomUUID().toString().toUpperCase().substring(0,7));
-            order.setState(State.PENDING);
+            order.setState(State.PENDING.name());
             String date = LocalDate.now().toString();
             order.setCreationDate(date);
             order.setUser(user.get());
