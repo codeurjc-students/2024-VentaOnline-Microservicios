@@ -4,3 +4,6 @@
 [submodule "Order-Microservice"]
 	path = Order-Microservice
 	url = https://github.com/MaAlami2020/Order-Microservice.git
+[submodule "onlinestore"]
+	path = onlinestore
+	url = https://github.com/MaAlami2020/onlinestore.git
