@@ -317,8 +317,8 @@ public class DataBaseInitializer {
 
         //if(!itemBuy01.isPresent()){
             itemToBuyRepo.save(itemBuy1);
-            item1.getItemsToBuy().add(itemBuy1);
-            itemRepo.save(item1);
+        //    item1.getItemsToBuy().add(itemBuy1);
+        //    itemRepo.save(item1);
         //}
 
         Item item3 = new Item();
