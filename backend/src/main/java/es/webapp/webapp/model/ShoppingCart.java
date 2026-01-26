@@ -22,6 +22,7 @@ public class ShoppingCart {
     @Column(name = "id")
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String code;
 
     @JsonIgnore

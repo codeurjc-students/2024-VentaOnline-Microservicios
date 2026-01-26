@@ -18,7 +18,7 @@ public class Direction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String code;
 
     @Column(name = "street")

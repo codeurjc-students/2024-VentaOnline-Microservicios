@@ -1,5 +1,6 @@
 package es.webapp.webapp.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Size implements SizeFactory{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     private String code;
 
     private String label;

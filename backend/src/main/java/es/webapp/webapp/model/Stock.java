@@ -24,6 +24,7 @@ public abstract class Stock<T> {
     @Column(name = "id")
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     private String code;
 
     //private boolean selected;
