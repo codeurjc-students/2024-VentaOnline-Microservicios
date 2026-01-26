@@ -89,10 +89,10 @@ public class DataBaseInitializer {
         address.setCode("address01");
         Optional<Direction> address01 = directionRepo.findByCode("address01");
 
-        if (!address01.isPresent())
+        if (!address01.isPresent()){
             directionRepo.save(address);
             user1.setDirection(address);
-        
+        }
         
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
 
