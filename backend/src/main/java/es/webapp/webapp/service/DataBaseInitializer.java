@@ -91,8 +91,11 @@ public class DataBaseInitializer {
 
         if (!address01.isPresent()){
             directionRepo.save(address);
-            user1.setDirection(address);
+        } else {
+            address = address01.get();
         }
+        user1.setDirection(address);
+        
         
         Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
 
@@ -109,7 +112,9 @@ public class DataBaseInitializer {
 
         if (!cart01.isPresent())
             shoppingCartRepo.save(shoppingCart);
-
+        else {
+            shoppingCart = cart01.get();
+        }
         
         User user2 = new User();
         user2.setUsername("carlos");
@@ -126,11 +131,14 @@ public class DataBaseInitializer {
 
         if (!address02.isPresent()){
             directionRepo.save(address2);
+        } else {
+            address2 = address02.get();
+        }
             user2.setDirection(address2);
         
        
             user2.setShoppingCart(shoppingCart);
-        }
+        
         Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
 
         if(!user02.isPresent())
