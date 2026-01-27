@@ -77,72 +77,57 @@ public class DataBaseInitializer {
     //USERS, DIRECTIONS & SHOPPING CARTS
         //1:1 bidirectional relationship
 
-        User user1 = new User();
-        user1.setUsername("administrator1");
-        user1.setEmail("administrator1@gmail.com");
-        user1.setPassword(passwordEncoder.encode("admin123"));
-        user1.setPasswordConfirmation(passwordEncoder.encode("admin123"));
-        user1.setRol("ADMIN");
+    // --- Direcciones ---
+        Direction address1 = directionRepo.findByCode("address01")
+                .orElseGet(() -> {
+                    Direction d = new Direction("Calle Roma", 2, 85503, "Almería");
+                    d.setCode("address01");
+                    directionRepo.save(d);
+                    return d;
+                });
 
-        Direction address = new Direction("Calle Roma",2,85503,"Almería");
-        //address.setCode(UUID.randomUUID().toString().toUpperCase().substring(0, 7));
-        address.setCode("address01");
-        Optional<Direction> address01 = directionRepo.findByCode("address01");
+        Direction address2 = directionRepo.findByCode("address02")
+                .orElseGet(() -> {
+                    Direction d = new Direction("Calle de la constitución", 1, 28933, "Madrid");
+                    d.setCode("address02");
+                    return directionRepo.save(d);
+                });
 
-        if (!address01.isPresent()){
-            directionRepo.save(address);
-        } else {
-            address = address01.get();
-        }
-        user1.setDirection(address);
-        
-        
-        Optional<User> user01 = userRepo.findByUsername(user1.getUsername());
+        // --- ShoppingCarts ---
+        ShoppingCart cart1 = shoppingCartRepo.findByCode("sh_cart1")
+                .orElseGet(() -> {
+                    ShoppingCart sc = new ShoppingCart();
+                    sc.setCode("sh_cart1");
+                    sc.setTotalCost(23.26);
+                    sc.setBuyTime(LocalTime.now().toString());
+                    return shoppingCartRepo.save(sc);
+                });
 
+        // --- Usuarios ---
+        User user1 = userRepo.findByUsername("administrator1")
+                .orElseGet(() -> {
+                    User u = new User();
+                    u.setUsername("administrator1");
+                    u.setEmail("administrator1@gmail.com");
+                    u.setPassword(passwordEncoder.encode("admin123"));
+                    u.setPasswordConfirmation(passwordEncoder.encode("admin123"));
+                    u.setRol("ADMIN");
+                    u.setDirection(address1);
+                    return userRepo.save(u);
+                });
 
-        if(!user01.isPresent())
-        
-            userRepo.save(user1);
-        
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setCode("sh_cart1");
-        shoppingCart.setTotalCost(23.26);
-        shoppingCart.setBuyTime(LocalTime.now().toString());
-        Optional<ShoppingCart> cart01 = shoppingCartRepo.findByCode("sh_cart1");
-
-        if (!cart01.isPresent())
-            shoppingCartRepo.save(shoppingCart);
-        else {
-            shoppingCart = cart01.get();
-        }
-        
-        User user2 = new User();
-        user2.setUsername("carlos");
-        user2.setName("carlos");
-        user2.setEmail("carlos@hotmail.es");
-        user2.setPassword(passwordEncoder.encode("user02"));
-        user2.setPasswordConfirmation(passwordEncoder.encode("user02"));
-        user2.setRol("USER");
-        setUserImage(user2, "/images/ava1.jpg");
-
-        Direction address2 = new Direction("Calle de la constitución",1,28933,"Madrid");
-        address2.setCode("address02");
-        Optional<Direction> address02 = directionRepo.findByCode("address02");
-
-        if (!address02.isPresent()){
-            directionRepo.save(address2);
-        } else {
-            address2 = address02.get();
-        }
-            user2.setDirection(address2);
-        
-       
-            user2.setShoppingCart(shoppingCart);
-        
-        Optional<User> user02 = userRepo.findByUsername(user2.getUsername());
-
-        if(!user02.isPresent())
-            userRepo.save(user2);
+        User user2 = userRepo.findByUsername("carlos")
+                .orElseGet(() -> {
+                    User u = new User();
+                    u.setUsername("carlos");
+                    u.setEmail("carlos@hotmail.es");
+                    u.setPassword(passwordEncoder.encode("user02"));
+                    u.setPasswordConfirmation(passwordEncoder.encode("user02"));
+                    u.setRol("USER");
+                    u.setDirection(address2);
+                    u.setShoppingCart(cart1);
+                    return userRepo.save(u);
+                });
         
 
         User user3 = new User();
