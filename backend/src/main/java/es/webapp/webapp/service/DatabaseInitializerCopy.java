@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.webapp.webapp.model.Clothes;
 import es.webapp.webapp.model.Direction;
@@ -71,6 +72,7 @@ public class DatabaseInitializerCopy {
     }
     
     @PostConstruct
+    @Transactional
     public void init() throws IOException, URISyntaxException {
 
         if (userRepo.count() > 0) {
