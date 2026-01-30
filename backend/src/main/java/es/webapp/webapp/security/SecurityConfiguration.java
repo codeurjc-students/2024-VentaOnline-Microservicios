@@ -22,14 +22,14 @@ public class SecurityConfiguration{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-            .formLogin(httpForm -> {
-                httpForm.loginPage("/login");
-                httpForm.loginProcessingUrl("/signin");
-                httpForm.defaultSuccessUrl("/");
-                httpForm.usernameParameter("username");
-                httpForm.passwordParameter("password"); 
-                httpForm.failureUrl("/error");
-            })
+            //.formLogin(httpForm -> {
+            //    httpForm.loginPage("/login");
+            //    httpForm.loginProcessingUrl("/signin");
+            //    httpForm.defaultSuccessUrl("/");
+            //    httpForm.usernameParameter("username");
+            //    httpForm.passwordParameter("password"); 
+            //    httpForm.failureUrl("/error");
+            //})
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
