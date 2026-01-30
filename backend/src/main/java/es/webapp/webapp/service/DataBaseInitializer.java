@@ -74,6 +74,13 @@ public class DataBaseInitializer {
     
     @PostConstruct
     public void init() throws IOException, URISyntaxException {
+        
+        if (userRepo.count() > 0) {
+            System.out.println("📦 Ya hay usuarios en la BD, no se inicializa");
+            return;
+        }
+
+        System.out.println("🚀 Inicializando base de datos...");
 
     //USERS, DIRECTIONS & SHOPPING CARTS
         //1:1 bidirectional relationship
