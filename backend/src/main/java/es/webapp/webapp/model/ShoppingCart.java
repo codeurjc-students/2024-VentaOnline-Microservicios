@@ -21,8 +21,6 @@ public class ShoppingCart {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
-    @Column(unique = true, nullable = false)
     private String code;
 
     @JsonIgnore

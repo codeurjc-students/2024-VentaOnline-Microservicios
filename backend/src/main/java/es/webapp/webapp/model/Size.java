@@ -18,7 +18,6 @@ public class Size implements SizeFactory{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
     private String code;
 
     private String label;
