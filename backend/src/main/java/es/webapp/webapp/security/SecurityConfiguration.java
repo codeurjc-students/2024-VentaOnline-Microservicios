@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
@@ -23,12 +24,19 @@ public class SecurityConfiguration{
             .csrf().disable()
             .formLogin(httpForm -> {
                 httpForm.loginPage("/login");
+                httpForm.loginProcessingUrl("/signin");
                 httpForm.defaultSuccessUrl("/");
                 httpForm.usernameParameter("username");
                 httpForm.passwordParameter("password"); 
                 httpForm.failureUrl("/error");
             })
-
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests(auth -> auth
+                .antMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
             .authorizeHttpRequests(registry -> {
                 registry.antMatchers("/").permitAll();
                 registry.antMatchers("/login").permitAll();
