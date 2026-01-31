@@ -102,7 +102,7 @@ public class Home {
     public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, LoginRequest login) {
 
         HttpHeaders responseHeaders = new HttpHeaders();
-		//authenticate the user
+		///authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 
