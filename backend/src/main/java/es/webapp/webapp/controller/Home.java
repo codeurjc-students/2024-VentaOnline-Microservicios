@@ -100,7 +100,7 @@ public class Home {
     }
 
     @PostMapping("/signin")
-    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
+    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestBody LoginRequest user){
 
 		HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
@@ -119,9 +119,9 @@ public class Home {
         request.getSession(true);
 		securityContextRepository.saveContext(securitycontext, request, response);
 
-       // addAttributes(model, request, userDetail);
+        addAttributes(model, request, userDetail);
 
-       return "login";
+       return "index";
     }
 
     
