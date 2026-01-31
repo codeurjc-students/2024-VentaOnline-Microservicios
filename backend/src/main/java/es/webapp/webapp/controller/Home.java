@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.webapp.webapp.model.LoginRequest;
 import es.webapp.webapp.model.User;
 import es.webapp.webapp.security.JWTGenerator;
 import es.webapp.webapp.service.UserService;
@@ -98,17 +99,17 @@ public class Home {
     }
 
     @PostMapping("/signin")
-    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String password) {
+    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, LoginRequest login) {
 
         HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(username, password));
+			new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 
 		SecurityContext securitycontext = SecurityContextHolder.getContext();
 		securitycontext.setAuthentication(authentication);
 
-		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+		UserDetails userDetail = userDetailsService.loadUserByUsername(login.getUsername());
 
 		String token = jwtGenerator.generateToken(userDetail);
 
