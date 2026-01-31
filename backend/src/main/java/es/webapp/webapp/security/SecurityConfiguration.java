@@ -22,56 +22,61 @@ public class SecurityConfiguration{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-            //.formLogin(httpForm -> {
-            //    httpForm.loginPage("/login");
-            //    httpForm.loginProcessingUrl("/signin");
-            //    httpForm.defaultSuccessUrl("/");
-            //    httpForm.usernameParameter("username");
-            //    httpForm.passwordParameter("password"); 
-            //    httpForm.failureUrl("/error");
-            //})
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeHttpRequests(auth -> auth
-                .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
+
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        )
+
+        .authorizeHttpRequests(auth -> auth
+            // 🔓 públicos
+            .antMatchers(
+                "/",
+                "/login",
+                "/signin",
+                "/signup",
+                "/signout",
+                "/loginerror",
+                "/users/session",
+                "/new",
+                "/api/auth/**"
+            ).permitAll()
+
+            // 👤 USER
+            .antMatchers(
+                "/my_profile",
+                "/items/*",
+                "/items/*/page",
+                "/items/*/purchase",
+                "/items/*/favourites/*/new",
+                "/orders/new/users/*",
+                "/orders/user",
+                "/shoppingcart/**",
+                "/update/*"
+            ).hasRole("USER")
+
+            // 👑 ADMIN
+            .antMatchers("/orders/*").hasAnyRole("USER","ADMIN")
+
+            // 🔒 TODO lo demás
+            .anyRequest().authenticated()
+        )
+
+        .logout(logout -> logout
+            .logoutUrl("/signout")
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+        )
+
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+        .headers(headers ->
+            headers.addHeaderWriter(
+                new StaticHeadersWriter("Access-Control-Allow-Origin", "*")
             )
-            .authorizeHttpRequests(registry -> {
-                registry.antMatchers("/").permitAll();
-                registry.antMatchers("/login").permitAll();
-                registry.antMatchers("/users/session").permitAll();
-                registry.antMatchers("/loginerror").permitAll();
-                registry.antMatchers("/signup").permitAll();
-                registry.antMatchers("/signin").permitAll();
-                registry.antMatchers("/new").permitAll();
-                registry.antMatchers("/signout").permitAll();
-                registry.antMatchers("/my_profile").hasAnyRole("USER");
-                registry.antMatchers("/items/{id}/page").hasAnyRole("USER");
-                registry.antMatchers("/items/{id}").hasAnyRole("USER");
-                registry.antMatchers("/items/{id}/purchase").hasAnyRole("USER");
-                registry.antMatchers("/items/{code}/favourites/{id}/new").hasAnyRole("USER");
-                registry.antMatchers("/orders/new/users/{username}").hasAnyRole("USER");
-                registry.antMatchers("/orders/user").hasAnyRole("USER");
-                registry.antMatchers("/orders/{id}").hasAnyRole("USER","ADMIN");
-                registry.antMatchers("/shoppingcart/page").hasAnyRole("USER");
-                registry.antMatchers("/shoppingcart/{id}/remove").hasAnyRole("USER");
-                registry.antMatchers("/shoppingcart/user").hasAnyRole("USER");
-                registry.antMatchers("/shoppingcart/user/items").hasAnyRole("USER");
-                registry.antMatchers("/update/{id}").hasAnyRole("USER");
-            })
+        )
 
-            .logout(httpLogout -> {
-                httpLogout.logoutUrl("/signout");
-                httpLogout.logoutSuccessUrl("/");
-                httpLogout.invalidateHttpSession(true);
-            })
+        .cors();
 
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.headers(header -> 
-        header.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*")));
-        http.cors();
         return http.build();
     }
 
