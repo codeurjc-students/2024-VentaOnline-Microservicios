@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
@@ -21,45 +22,41 @@ public class SecurityConfiguration{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-            .csrf().disable()
+            .csrf(csrf -> csrf.disable())
 
         .sessionManagement(session ->
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
 
         .authorizeHttpRequests(auth -> auth
-            // 🔓 públicos
-            .antMatchers(
-                "/",
-                "/login",
-                "/signin",
-                "/signup",
-                "/signout",
-                "/loginerror",
-                "/users/session",
-                "/new",
-                "/api/auth/**"
-            ).permitAll()
 
-            // 👤 USER
-            .antMatchers(
-                "/my_profile",
-                "/items/*",
-                "/items/*/page",
-                "/items/*/purchase",
-                "/items/*/favourites/*/new",
-                "/orders/new/users/*",
-                "/orders/user",
-                "/shoppingcart/**",
-                "/update/*"
-            ).hasRole("USER")
+    .requestMatchers(
+        new AntPathRequestMatcher("/"),
+        new AntPathRequestMatcher("/login"),
+        new AntPathRequestMatcher("/signin"),
+        new AntPathRequestMatcher("/signup"),
+        new AntPathRequestMatcher("/signout"),
+        new AntPathRequestMatcher("/loginerror"),
+        new AntPathRequestMatcher("/users/session"),
+        new AntPathRequestMatcher("/new"),
+        new AntPathRequestMatcher("/api/auth/**")
+    ).permitAll()
 
-            // 👑 ADMIN
-            .antMatchers("/orders/*").hasAnyRole("USER","ADMIN")
+    .requestMatchers(
+        new AntPathRequestMatcher("/my_profile"),
+        new AntPathRequestMatcher("/items/**"),
+        new AntPathRequestMatcher("/orders/new/users/**"),
+        new AntPathRequestMatcher("/orders/user"),
+        new AntPathRequestMatcher("/shoppingcart/**"),
+        new AntPathRequestMatcher("/update/**")
+    ).hasRole("USER")
 
-            // 🔒 TODO lo demás
-            .anyRequest().authenticated()
-        )
+    .requestMatchers(
+        new AntPathRequestMatcher("/orders/**")
+    ).hasAnyRole("USER","ADMIN")
+
+    .anyRequest().authenticated()
+)
 
         .logout(logout -> logout
             .logoutUrl("/signout")
@@ -77,7 +74,7 @@ public class SecurityConfiguration{
 
         .cors();
 
-        return http.build();
+    return http.build();
     }
 
 
