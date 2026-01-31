@@ -52,25 +52,25 @@ public class LoginController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
 
-		//HttpHeaders responseHeaders = new HttpHeaders();
+		HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-		//SecurityContext securitycontext = SecurityContextHolder.getContext();
-		//securitycontext.setAuthentication(authentication);
+		SecurityContext securitycontext = SecurityContextHolder.getContext();
+		securitycontext.setAuthentication(authentication);
 
         String username = user.getUsername();
 		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
 
 		String token = jwtGenerator.generateToken(userDetail);
 
-        //addAccessTokenCookie(responseHeaders, token);
-        //request.getSession(true);
-		//  securityContextRepository.saveContext(securitycontext, request, response);
+        addAccessTokenCookie(responseHeaders, token);
+        request.getSession(true);
+		securityContextRepository.saveContext(securitycontext, request, response);
 		
-		//return new ResponseEntity<>(new AuthResponse(token),HttpStatus.OK);
-        return ResponseEntity.ok(new AuthResponse(token));
+		return new ResponseEntity<>(new AuthResponse(token),HttpStatus.OK);
+        //return ResponseEntity.ok(new AuthResponse(token));
 	}
 
     private void addAccessTokenCookie(HttpHeaders httpHeaders, String token) {
