@@ -100,17 +100,16 @@ public class Home {
     }
 
     @PostMapping("/signin")
-    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestBody LoginRequest user){
+    public String processLogin(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String password){
 
 		HttpHeaders responseHeaders = new HttpHeaders();
 		//authenticate the user
 		Authentication authentication = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+			new UsernamePasswordAuthenticationToken(username, password));
 
 		SecurityContext securitycontext = SecurityContextHolder.getContext();
 		securitycontext.setAuthentication(authentication);
 
-        String username = user.getUsername();
 		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
 
 		String token = jwtGenerator.generateToken(userDetail);
