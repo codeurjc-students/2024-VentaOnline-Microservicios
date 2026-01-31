@@ -105,22 +105,20 @@ public class Home {
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(username, password));
 
-		
+		SecurityContext securitycontext = SecurityContextHolder.getContext();
+		securitycontext.setAuthentication(authentication);
 
 		UserDetails userDetail = userDetailsService.loadUserByUsername(username);
 
 		String token = jwtGenerator.generateToken(userDetail);
 
-        SecurityContext securitycontext = SecurityContextHolder.getContext();
-		securitycontext.setAuthentication(authentication);
-
         addAccessTokenCookie(responseHeaders, token);
         request.getSession(true);
 		securityContextRepository.saveContext(securitycontext, request, response);
 
-        addAttributes(model, request, userDetail);
+       // addAttributes(model, request, userDetail);
 
-       return "index";
+       return "login";
     }
 
     
