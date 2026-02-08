@@ -1,38 +1,37 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: mysqldb2
-#spec:
-#  selector:
-#    matchLabels:
-#      app: mysqldb2
-#  replicas: 1
-#  template:
-#    metadata:
-#      labels:
-#        app: mysqldb2
-#    spec:
-#      containers:
-#      - name: mysqldb2
-#        image: mysql:8.0
-#        ports:
-#        - containerPort: 3306
-#        env:
-#        - name: MYSQL_ROOT_PASSWORD
-#          value: Mundialmente1
-#        - name: MYSQL_DATABASE
-#          value: items
-##      nodeSelector:
-##        role: backend
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: mysqldb2
-#spec:
-#  selector:
-#    app: mysqldb2
-#  ports:
-#    - port: 3306
-#      targetPort: 3306
-#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      app: db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Mundialmente1
+        - name: MYSQL_DATABASE
+          value: items
+#      nodeSelector:
+#        role: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 3306
+      targetPort: 3306
